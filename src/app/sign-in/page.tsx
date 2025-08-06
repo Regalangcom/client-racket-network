@@ -12,15 +12,14 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { SignInFormSchema, SignInFormData } from "@/types/zodSchema"; // Pastikan tipe data yang digunakan konsisten
+import { SignInFormSchema, SignInFormData } from "@/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputError from "../components/input-errors";
 import Link from "next/link";
 import { iconGoogle } from "../images";
 import Image from "next/image";
-
-// import { Toaster } from "@/components/ui/sonner";
-// import { Router } from "next/router";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // interface SignUpFromProps {
 //   action: (formdata: FormData) => Promise<void>;
@@ -31,9 +30,9 @@ interface SignInFormProps {
 }
 
 function SignInPage({ action }: SignInFormProps) {
-  // const { data: session } = useSession();
+  const router = useRouter();
   const [isPending, setIsPending] = useState<boolean>(false);
-  // const [isResponse, setIsResponse] = useState<string | null>("");
+
   const {
     register,
     handleSubmit,
@@ -46,18 +45,47 @@ function SignInPage({ action }: SignInFormProps) {
   const onSubmit = async (data: SignInFormData) => {
     try {
       setIsPending(true);
-      await action(data);
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) console.log("login failed", result?.error);
+      if (!result?.error) {
+        router.refresh();
+        router.push("/profile");
+      }
+
       setIsPending(false);
     } catch (error) {
       setIsPending(false);
     }
   };
 
-  const handleLoginGoogle = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("click", e);
-    // await signIn("google", { redirect: true });
+  const handleLoginGoogle = async () => {
     window.open("http://localhost:8000/auth/google", "_self");
   };
+
+  // const resetPassword = async (data: SignInFormData) => {
+  //   try {
+  //     setIsPending(true);
+  //     const response = await axios.put(
+  //       `${process.env.NEXT_PUBLIC_URL_API}/api/v1/users/requestLinkPasswordReset`,
+  //       {
+  //         email: data.email,
+  //       },
+  //       { withCredentials: true }
+  //     );
+
+  //     toast.success(response.data.message);
+  //     setIsPending(false);
+  //     // const result = response.data.data;
+  //     // return result;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <section>
@@ -71,11 +99,6 @@ function SignInPage({ action }: SignInFormProps) {
         <CardContent>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            //   onSubmit={handleSubmit((data, e) => {
-            //     // Mengubah data form ke dalam FormData dan mengirimnya
-            //     const formData = new FormData(e?.target)
-            //     submitForm(formData)
-            //   })}
             className="space-y-4"
             noValidate
           >
@@ -97,7 +120,6 @@ function SignInPage({ action }: SignInFormProps) {
                 aria-invalid={errors.email ? "true" : "false"}
               />
               <InputError error={errors.email?.message} />
-              {/* <InputError error={isError?.email} /> */}
             </div>
             <div className="space-y-2">
               <Label
@@ -120,27 +142,11 @@ function SignInPage({ action }: SignInFormProps) {
               {/* <InputError error={isError?.password} /> */}
             </div>
             <Button className="w-full" type="submit" disabled={isPending}>
-              Sign In
+              {isPending ? "Sign in ..." : "Sign in"}
             </Button>
-
-            {/* Tombol Sign In dengan Google */}
-            {/* {!session?.user && (
-            <div className="mt-4">
-              <Button className="w-full  flex items-center justify-center">
-                <Image
-                  src={iconGoogle.src}
-                  alt="Google Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-                Sign In with Google
-              </Button>
-            </div>
-            )} */}
             <p className="text-center text-sm text-zinc-600">
               i don't have account ?{" "}
-              <Link href="/register" className="text-blue-600 hover:underline">
+              <Link href="/sign-up" className="text-blue-600 hover:underline">
                 Sign Up
               </Link>
             </p>
@@ -160,6 +166,13 @@ function SignInPage({ action }: SignInFormProps) {
               Sign In with Google
             </Button>
           </div>
+          {/* forget password */}
+          <Link
+            href="/reset-password"
+            className="text-blue-600 hover:underline text-sm"
+          >
+            Forget Password
+          </Link>
           <p className="text-muted-foreground mt-4 text-center text-sm">
             By joining, you agree to our{" "}
             <a href="/terms" className="hover:text-primary underline">

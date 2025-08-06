@@ -1,27 +1,54 @@
 // types/next-auth.d.ts
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DefaultSession } from "next-auth";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 
 // Augment the Session interface
 declare module "next-auth" {
-  interface Session {
-    accessToken?: string;
-    refreshToken?: string;
-    user: {
-      name: string;
-      email: string;
-      image?: string;
-    } & Record<string>;
+  interface User {
+    access_token?: string;
+    profile?: {
+      picture?: string;
+    };
   }
 }
 
-// Augment the JWT type
+declare module "next-auth" {
+  interface Profile {
+    picture?: string; // tambahkan field picture
+    emails?: string;
+  }
+}
+
+declare module "next-auth" {
+  interface Session {
+    access_token?: string;
+    google?: {
+      id_token?: string;
+      provider?: string;
+    };
+    user: {
+      id?: string | number;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      picture?: string | null;
+      profile?: string | null;
+      google?: {
+        access_token?: string;
+        id_token?: string;
+        provider?: string;
+      };
+    };
+  }
+}
+
 declare module "next-auth/jwt" {
   interface JWT {
-    accessToken?: string;
-    refreshToken?: string;
+    google?: {
+      access_token?: string;
+      id_token?: string;
+      provider?: string;
+    };
   }
 }
