@@ -7,7 +7,7 @@ export type SignInFormData = {
 
 export type SignUpFormData = {
   email: string;
-  notelpon: string;
+  phone_number: string;
   username: string;
   password: string;
   confirmPassword: string;
@@ -15,14 +15,22 @@ export type SignUpFormData = {
 
 export const SignUpFormSchema = z
   .object({
-    email: z.email("Silakan masukkan email yang valid").toLowerCase().trim(),
+    email: z
+      .string()
+      .toLowerCase()
+      .trim()
+      .regex(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Silakan masukkan email yang valid"
+      )
+      .email("Silakan masukkan email yang valid"),
     username: z
       .string()
       .min(5, { message: "Username minimal 5 karakter" })
       .max(10, { message: "Username maksimal 10 karakter" }),
     // .transform((val) => val.replace(/\s+/g, "")),
 
-    notelpon: z
+    phone_number: z
       .string()
       .nonempty({ message: "Nomor telepon wajib diisi" })
       .regex(/^[0-9]+$/, { message: "Nomor telepon hanya boleh angka" }),

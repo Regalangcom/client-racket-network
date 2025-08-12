@@ -91,10 +91,6 @@ function SignInPage({ action }: SignUpFormProps) {
     window.open("http://localhost:8000/auth/google", "_self");
   };
 
-  const handleInputChange = (e) => {
-    clearErrors(e.target.name); // Menghapus error untuk field yang diubah
-  };
-
   return (
     <>
       {/* =============================== */}
@@ -158,16 +154,16 @@ function SignInPage({ action }: SignUpFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="notelpon">No Telepon</Label>
+                  <Label htmlFor="phone_number">No Telepon</Label>
                   <Input
-                    {...register("notelpon")}
-                    id="notelpon"
+                    {...register("phone_number")}
+                    id="phone_number"
                     type="text"
                     className="border border-gray-300 w-full h-11"
-                    aria-invalid={errors.notelpon ? "true" : "false"}
+                    aria-invalid={errors.phone_number ? "true" : "false"}
                     placeholder="Masukkan no telepon"
                   />
-                  <InputError error={errors.notelpon?.message} />
+                  <InputError error={errors.phone_number?.message} />
                 </div>
 
                 <div className="space-y-2">
