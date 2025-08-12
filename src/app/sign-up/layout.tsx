@@ -1,15 +1,26 @@
 import React from "react";
+import { logoRc } from "@/public";
+import Image from "next/image";
 
 function SignUpLayout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="w-full h-screen bg-zinc-50 flex flex-col items-center justify-center px-4">
-      {/* <h3 className="text-xl font-semibold mb-4">
-        Welcome! Please sign in
-      </h3>{" "} */}
-      {/* Card yang berisi form */}
-      {/* <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md"> */}
-      {children}
-      {/* </div> */}
+    <section className="min-h-screen flex flex-col bg-white">
+      <header className="text-center px-6 py-8">
+        <nav>
+          <Image
+            src={logoRc}
+            alt="racket network logo"
+            priority
+            width={144}
+            height={144}
+            className="w-36 h-37 object-cover rounded"
+          />
+        </nav>
+      </header>
+      {/* flex-grow  */}
+      <main className="flex-grow container-lg w-full mx-auto py-2 p-4">
+        {children}
+      </main>
     </section>
   );
 }

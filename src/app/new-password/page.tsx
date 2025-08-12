@@ -12,7 +12,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { NewPasswordFormSchema } from "@/types/zodSchema";
+import { NewPasswordFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputError from "../components/input-errors";
 import axios from "axios";

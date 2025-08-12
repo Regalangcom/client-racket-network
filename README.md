@@ -1,36 +1,381 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+{/_ =============== _/}
+{/_ MODE MOBILE _/}
+{/_ =============== _/}
 
-## Getting Started
+<section className="sm:hidden  flex flex-col mx-auto py-5 px-4 sm:px-8">
+<div className="flex-1 flex justify-center items-center">
+<h1 className="text-[27px] sm:text-[36px] font-semibold text-green-rc mb-6 tracking-tight text-left">
+Bergabung dengan Racket Network
+</h1>
+</div>
 
-First, run the development server:
+        {/* Formulir Sign Up */}
+        <div className="flex-1 max-w-md mx-auto">
+          <Card className="w-full border-none shadow-none">
+            <CardHeader>
+              <CardDescription className="text-[16px] sm:text-[18px] w-full sm:w-[370px] text-left">
+                Buat akunmu dengan mengisi formulir di bawah ini
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button
+                onClick={handleLoginGoogle}
+                type="button"
+                className="w-full h-12 border border-gray-300 flex items-center justify-center py-3 bg-white text-black rounded-md hover:bg-background-button-rc hover:text-white mb-4"
+              >
+                <Image
+                  src={iconGoogle.src}
+                  alt="Google Icon"
+                  width={24}
+                  height={24}
+                  className="mr-2"
+                  priority
+                />
+                Daftar dengan Google
+              </Button>
+              <form className="space-y-4 w-full" noValidate>
+                <div className="flex items-center mt-5 justify-center space-x-2">
+                  <div className="flex-1 border-t border-gray-400"></div>
+                  <span className="text-sm text-gray-500">atau</span>
+                  <div className="flex-1 border-t border-gray-400"></div>
+                </div>
+                {/* Input Fields */}
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nama Lengkap</Label>
+                  <Input
+                    {...register("username")}
+                    id="username"
+                    type="text"
+                    className="border border-gray-300 w-full h-11"
+                    aria-invalid={errors.username ? "true" : "false"}
+                    placeholder="Masukkan nama lengkap"
+                  />
+                  <InputError error={errors.username?.message} />
+                </div>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+                <div className="space-y-2">
+                  <Label htmlFor="phone">No Telepon</Label>
+                  <Input
+                    {...register("notelpon")}
+                    id="notelpon"
+                    type="text"
+                    className="border border-gray-300 w-full h-11"
+                    aria-invalid={errors.notelpon ? "true" : "false"}
+                    placeholder="Masukkan no telepon"
+                  />
+                  <InputError error={errors.notelpon?.message} />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    {...register("email")}
+                    id="email"
+                    type="email"
+                    className="border border-gray-300 w-full h-11"
+                    aria-invalid={errors.email ? "true" : "false"}
+                    placeholder="Masukkan email"
+                  />
+                  <InputError error={errors.email?.message} />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      {...register("password")}
+                      id="password"
+                      type={isVisible ? "text" : "password"}
+                      className="border border-gray-300 w-full h-11 pr-10"
+                      aria-invalid={errors.password ? "true" : "false"}
+                      placeholder="Masukkan password"
+                    />
+                    <button
+                      type="button"
+                      onClick={toogleIsVisibility}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2"
+                    >
+                      {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                  <InputError error={errors.password?.message} />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Konfirmasi Password</Label>
+                  <div className="relative">
+                    <Input
+                      {...register("confirmPassword")}
+                      id="confirmPassword"
+                      type={isVisible ? "text" : "password"}
+                      className="border border-gray-300 w-full h-11 pr-10"
+                      aria-invalid={errors.confirmPassword ? "true" : "false"}
+                      placeholder="Konfirmasi password"
+                    />
+                    <button
+                      type="button"
+                      onClick={toogleIsVisibility}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2"
+                    >
+                      {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                  <InputError error={errors.confirmPassword?.message} />
+                </div>
+
+                {/* Button Daftar */}
+                <div className="py-2">
+                  <Button
+                    disabled={isPending}
+                    className="bg-background-button-rc border border-gray-300 w-full h-11"
+                    type="submit"
+                  >
+                    {isPending ? "Daftar..." : "Daftar"}
+                  </Button>
+                </div>
+
+                {/* Tautan ke Halaman Login */}
+                <p className="text-center text-sm text-zinc-600 mt-4">
+                  Sudah punya akun?{" "}
+                  <Link
+                    href="/sign-in"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Masuk
+                  </Link>
+                </p>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
 ```
+"use client";
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Card, CardHeader, CardContent, CardDescription } from "@/components/ui/card";
+import { SignUpFormData, SignUpFormSchema } from "@/constant/types/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import InputError from "../components/input-errors";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { iconGoogle } from "@/public";
+import { Eye, EyeOff } from "lucide-react";
+import axios from "axios";
+import { toast } from "sonner";
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+function SignInPage({ action }: SignUpFormProps) {
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [isMessageError, setisMessageError] = useState<string | null>("");
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const router = useRouter();
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  // handle toogle hide password
+  const toogleIsVisibility = () => setIsVisible((prevState) => !prevState);
 
-## Learn More
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(SignUpFormSchema),
+    mode: "onChange", // Validasi dilakukan saat input berubah
+  });
 
-To learn more about Next.js, take a look at the following resources:
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      setIsPending(true);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/users/register`,
+        data,
+        { withCredentials: true }
+      );
+      toast.success(response.data.message);
+      router.push(`/otp?email=${response.data.email}`);
+      setIsPending(false);
+      reset();
+      return response.data.data;
+    } catch (error: any) {
+      if (error.response) {
+        setisMessageError(error.response.data.message);
+        toast.error(error.response.data.errors);
+      } else {
+        setisMessageError("Terjadi kesalahan, coba lagi!");
+      }
+      setIsPending(false);
+    }
+  };
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  const handleLoginGoogle = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("click", e);
+    window.open("http://localhost:8000/auth/google", "_self");
+  };
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+  const handleInputChange = (e) => {
+    clearErrors(e.target.name); // Menghapus error untuk field yang diubah
+  };
 
-## Deploy on Vercel
+  return (
+    <section className="flex flex-col sm:flex-row mx-auto py-3 sm:px-8 min-h-screen">
+      {/* Kolom Kiri: Judul */}
+      <div className="flex-1 flex justify-center items-center sm:items-start sm:max-w-6xl">
+        <h1 className="text-[40px] sm:text-[81px] font-bold text-green-rc mb-6 sm:mb-64 tracking-tight sm:text-left">
+          Bergabung dengan Racket Network
+        </h1>
+      </div>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+      {/* Kolom Kanan: Formulir Sign Up */}
+      <div className="flex-1 max-w-md mx-auto sm:mx-0">
+        <Card className="w-full border-none shadow-none">
+          <CardHeader>
+            <CardDescription className="text-[18px] sm:text-[21px] w-full sm:w-[370px] text-left">
+              Buat akunmu dengan mengisi formulir di bawah ini
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button
+              type="button"
+              onClick={handleLoginGoogle}
+              className="w-full sm:w-[360px] h-12 border border-gray-300 flex items-center justify-center py-3 bg-white text-black rounded-md hover:bg-background-button-rc hover:text-white mb-4"
+            >
+              <Image
+                src={iconGoogle.src}
+                alt="Google Icon"
+                width={24}
+                height={24}
+                className="mr-2"
+                priority
+              />
+              Daftar dengan Google
+            </Button>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="w-full sm:w-[360px]"
+              noValidate
+            >
+              <div className="flex items-center mt-5 justify-center space-x-2">
+                <div className="flex-1 border-t border-gray-400"></div>
+                <span className="text-sm text-gray-500">atau</span>
+                <div className="flex-1 border-t border-gray-400"></div>
+              </div>
+              {/* Input Fields */}
+              <div className="space-y-2">
+                <Label htmlFor="username">Nama Lengkap</Label>
+                <Input
+                  {...register("username")}
+                  id="username"
+                  type="text"
+                  className="border border-gray-300 w-full h-11"
+                  placeholder="Masukkan nama lengkap"
+                  aria-invalid={errors.username ? "true" : "false"}
+                />
+                <InputError error={errors.username?.message} />
+              </div>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+              <div className="space-y-2">
+                <Label htmlFor="notelpon">No Telepon</Label>
+                <Input
+                  {...register("notelpon")}
+                  id="notelpon"
+                  type="text"
+                  className="border border-gray-300 w-full h-11"
+                  aria-invalid={errors.notelpon ? "true" : "false"}
+                  placeholder="Masukkan no telepon"
+                />
+                <InputError error={errors.notelpon?.message} />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  {...register("email")}
+                  id="email"
+                  type="email"
+                  className="border border-gray-300 w-full h-11"
+                  aria-invalid={errors.email ? "true" : "false"}
+                  placeholder="Masukkan email"
+                />
+                <InputError error={errors.email?.message} />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    {...register("password")}
+                    id="password"
+                    type={isVisible ? "text" : "password"}
+                    className="border border-gray-300 w-full h-11 pr-10"
+                    aria-invalid={errors.password ? "true" : "false"}
+                    placeholder="Masukkan password"
+                  />
+                  <button
+                    type="button"
+                    onClick={toogleIsVisibility}
+                    className="absolute top-1/2 right-3 transform -translate-y-1/2"
+                  >
+                    {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <InputError error={errors.password?.message} />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Konfirmasi Password</Label>
+                <div className="relative">
+                  <Input
+                    {...register("confirmPassword")}
+                    id="confirmPassword"
+                    type={isVisible ? "text" : "password"}
+                    className="border border-gray-300 w-full h-11 pr-10"
+                    placeholder="Konfirmasi password"
+                  />
+                  <button
+                    type="button"
+                    onClick={toogleIsVisibility}
+                    className="absolute top-1/2 right-3 transform -translate-y-1/2"
+                  >
+                    {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <InputError error={errors.confirmPassword?.message} />
+              </div>
+
+              {/* Button Daftar */}
+              <div className="py-5">
+                <Button
+                  disabled={isPending}
+                  className="bg-background-button-rc border border-gray-300 w-full h-11 block"
+                  type="submit"
+                >
+                  {isPending ? "Daftar..." : "Daftar"}
+                </Button>
+              </div>
+
+              {/* Tautan ke Halaman Login */}
+              <p className="text-center text-sm text-zinc-600">
+                Sudah punya akun?{" "}
+                <Link href="/sign-in" className="text-blue-600 hover:underline">
+                  Masuk
+                </Link>
+              </p>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+    </>
+  );
+}
+
+export default SignInPage;
+
+```

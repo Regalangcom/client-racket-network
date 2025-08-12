@@ -13,7 +13,7 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { reqPasswordFormSchema } from "@/types/zodSchema";
+import { reqPasswordFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputError from "../components/input-errors";
 import axios from "axios";

@@ -4,15 +4,15 @@ import "./globals.css";
 import { SessProvider } from "./components/sess-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const manRope = localFont({
+  src: [
+    {
+      path: "../app/fonts/Manrope-Regular.ttf",
+      weight: "100 900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-manrope",
 });
 
 export const metadata: Metadata = {
@@ -34,10 +34,7 @@ export default function RootLayout({
         {/* Mengatur favicon dan meta */}
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* {children} */}
+      <body className={`${manRope.variable} antialiased`}>
         <SessProvider>{children}</SessProvider>
         <Toaster />
       </body>

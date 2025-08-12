@@ -20,7 +20,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useEffect, useState } from "react";
-import { OtpInFormSchema } from "@/types/zodSchema";
+import { OtpInFormSchema } from "@/constant/types/zodSchema";
 import {
   Card,
   CardHeader,
@@ -72,7 +72,8 @@ export function InputOTPForm() {
       router.push("/sign-in");
     } catch (error: any) {
       if (error?.response?.data.errors === "OTP Expired") {
-        setIsMessageError(error.response.data.errors);
+        // setIsMessageError(error.response.data.errors);
+        toast.error(error.response.data.errors);
         setShowResendButton(true);
         setIsPending(false);
         setIsPendingResendCode(false);
@@ -105,6 +106,7 @@ export function InputOTPForm() {
       setIsPendingResendCode(false);
     } catch (error: any) {
       setIsMessageError(error.response?.data?.errors || "Failed to resend OTP");
+      toast.error(error.response.data.errors);
     } finally {
       setIsPendingResendCode(false);
     }

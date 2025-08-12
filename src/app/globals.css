@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 body {
-  /* color: var(--foreground);
-  background: var(--background); */
+  font-family: var(--font-manrope), sans-serif;
 }
 
 @layer utilities {
@@ -12,8 +11,6 @@ body {
     text-wrap: balance;
   }
 }
-
-
 
 @layer base {
   :root {
@@ -42,6 +39,8 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --color-green-rc: #174038;
+    --background-button-rc: #174038;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -70,8 +69,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {

@@ -8,7 +8,7 @@ interface InputErrorProps {
 const InputError: React.FC<InputErrorProps> = ({ error }) => {
   if (!error) return null;
 
-  return <p className="text-destructive text-sm mt-1">{error}</p>;
+  return <p className="text-destructive text-xs">{error}</p>;
 };
 
 export default InputError;

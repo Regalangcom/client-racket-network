@@ -9,17 +9,17 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { SignInFormSchema, SignInFormData } from "@/types/zodSchema";
+import { SignInFormSchema, SignInFormData } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputError from "../components/input-errors";
 import Link from "next/link";
-import { iconGoogle } from "../images";
+import { iconGoogle } from "../../public";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 // interface SignUpFromProps {
 //   action: (formdata: FormData) => Promise<void>;
@@ -32,6 +32,7 @@ interface SignInFormProps {
 function SignInPage({ action }: SignInFormProps) {
   const router = useRouter();
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const {
     register,
@@ -42,6 +43,8 @@ function SignInPage({ action }: SignInFormProps) {
     mode: "onTouched",
   });
 
+  // handle toogle hide password
+  const toogleIsVisibility = () => setIsVisible((prevState) => !prevState);
   const onSubmit = async (data: SignInFormData) => {
     try {
       setIsPending(true);
@@ -88,104 +91,127 @@ function SignInPage({ action }: SignInFormProps) {
   // };
 
   return (
-    <section>
-      <Card className="mx-auto w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>Sign in your account</CardTitle>
-          <CardDescription>
-            Welcome! Please fill in the details to get started.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4"
-            noValidate
-          >
-            <div className="space-y-2">
-              <Label
-                htmlFor="email"
-                className={errors.email ? "text-destructive" : ""}
+    <>
+      {/* =============================== */}
+      {/* MOBILE AND DESKTOP RESPONSIVE FORM */}
+      {/* =============================== */}
+      <section className="flex flex-col sm:flex-row mx-auto py-3 sm:px-8 min-h-screen">
+        {/* Kolom Kiri: Judul */}
+        <div className="flex-1 flex justify-center items-center sm:items-start sm:max-w-6xl  sm:mt-36">
+          <h1 className="text-[40px] sm:text-[81px] font-bold text-green-rc mb-6 sm:mb-64 tracking-tight sm:text-left">
+            Bergabung dengan Racket Network
+          </h1>
+        </div>
+
+        {/* Kolom Kanan: Formulir Sign Up */}
+        <div className="flex-1 max-w-md mx-auto sm:mx-0">
+          <Card className="w-full border-none shadow-none">
+            <CardHeader>
+              <CardDescription className="text-[18px] sm:text-[21px] w-full sm:w-[370px] text-left">
+                Buat akunmu dengan mengisi formulir di bawah ini
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button
+                type="button"
+                onClick={handleLoginGoogle}
+                className="w-full sm:w-[360px] h-12 border border-gray-300 flex items-center justify-center py-3 bg-white text-black rounded-md hover:bg-background-button-rc hover:text-white mb-4"
               >
-                Email
-              </Label>
-              <Input
-                {...register("email")}
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                className={
-                  errors.email ? "border-destructive ring-destructive" : ""
-                }
-                aria-invalid={errors.email ? "true" : "false"}
-              />
-              <InputError error={errors.email?.message} />
-            </div>
-            <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className={errors.password ? "text-destructive" : ""}
+                <Image
+                  src={iconGoogle.src}
+                  alt="Google Icon"
+                  width={24}
+                  height={24}
+                  className="mr-2"
+                  priority
+                />
+                Daftar dengan Google
+              </Button>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="w-full sm:w-[360px]"
+                noValidate
               >
-                Password
-              </Label>
-              <Input
-                {...register("password")}
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className={
-                  errors.password ? "border-destructive ring-destructive" : ""
-                }
-                aria-invalid={errors.password ? "true" : "false"}
-              />
-              <InputError error={errors.password?.message} />
-              {/* <InputError error={isError?.password} /> */}
-            </div>
-            <Button className="w-full" type="submit" disabled={isPending}>
-              {isPending ? "Sign in ..." : "Sign in"}
-            </Button>
-            <p className="text-center text-sm text-zinc-600">
-              i don't have account ?{" "}
-              <Link href="/sign-up" className="text-blue-600 hover:underline">
-                Sign Up
-              </Link>
-            </p>
-          </form>
-          <div className="mt-4">
-            <Button
-              onClick={handleLoginGoogle}
-              className="w-full  flex items-center justify-center"
-            >
-              <Image
-                src={iconGoogle.src}
-                alt="Google Icon"
-                width={24}
-                height={24}
-                className="mr-2"
-              />
-              Sign In with Google
-            </Button>
-          </div>
-          {/* forget password */}
-          <Link
-            href="/reset-password"
-            className="text-blue-600 hover:underline text-sm"
-          >
-            Forget Password
-          </Link>
-          <p className="text-muted-foreground mt-4 text-center text-sm">
-            By joining, you agree to our{" "}
-            <a href="/terms" className="hover:text-primary underline">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a href="/privacy" className="hover:text-primary underline">
-              Privacy Policy
-            </a>
-          </p>
-        </CardContent>
-      </Card>
-    </section>
+                <div className="flex items-center mt-5 justify-center space-x-2">
+                  <div className="flex-1 border-t border-gray-400"></div>
+                  <span className="text-sm text-gray-500">atau</span>
+                  <div className="flex-1 border-t border-gray-400"></div>
+                </div>
+
+                {/* Input Fields */}
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    {...register("email")}
+                    id="email"
+                    type="email"
+                    className="border border-gray-300 w-full h-11"
+                    aria-invalid={errors.email ? "true" : "false"}
+                    placeholder="Masukkan email"
+                  />
+                  <InputError error={errors.email?.message} />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      {...register("password")}
+                      id="password"
+                      type={isVisible ? "text" : "password"}
+                      className="border border-gray-300 w-full h-11 pr-10"
+                      aria-invalid={errors.password ? "true" : "false"}
+                      placeholder="Masukkan password"
+                    />
+                    <button
+                      type="button"
+                      onClick={toogleIsVisibility}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2"
+                    >
+                      {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                  <InputError error={errors.password?.message} />
+                </div>
+                {/* ======================= */}
+                {/* Reset Password */}
+                {/* ======================= */}
+                <div className="w-full flex justify-end py-3">
+                  <Link
+                    href="/reset-password"
+                    className="text-blue-600 text-sm hover:underline "
+                  >
+                    Lupa password ?
+                  </Link>
+                </div>
+                {/* Button Daftar */}
+                <div className="py-5">
+                  <Button
+                    disabled={isPending}
+                    className="bg-background-button-rc border border-gray-300 w-full sm:w-[360px] h-11 block"
+                    type="submit"
+                  >
+                    {isPending ? "Daftar..." : "Daftar"}
+                  </Button>
+                </div>
+
+                {/* Tautan ke Halaman Login */}
+                <p className="text-center text-sm text-zinc-600">
+                  belum punya akun?{" "}
+                  <Link
+                    href="/sign-up"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Daftar
+                  </Link>
+                </p>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    </>
   );
 }
 
