@@ -14,6 +14,7 @@ const config: Config = {
         foreground: "hsl(var(--foreground))",
         "green-rc": "var(--color-green-rc)",
         "background-button-rc": "var(--background-button-rc)",
+        "background-card": "var(--background-card-rc)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

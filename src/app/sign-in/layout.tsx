@@ -1,13 +1,16 @@
 "use client";
+
 import Image from "next/image";
 import { logoRc } from "@/public";
 import React from "react";
+// import Navbar from "../components/navbar/navbar";
 
 function SignInLayout({ children }: { children: React.ReactNode }) {
   return (
     <section className="min-h-screen flex flex-col bg-white">
-      <header className="text-center px-6 py-8">
-        <nav>
+      <header className="text-center px-6 py-8 ">
+        {/* <Navbar variant="sign-up" /> */}
+        <nav className="">
           <Image
             src={logoRc}
             alt="racket network logo"

@@ -41,6 +41,7 @@ body {
     --radius: 0.5rem;
     --color-green-rc: #174038;
     --background-button-rc: #174038;
+    --background-card-rc: #f5f5f4;
   }
   .dark {
     --background: 240 10% 3.9%;
