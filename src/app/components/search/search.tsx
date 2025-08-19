@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 const SearchForm: React.FC = () => {
   return (
     <>
-      <section className="max-w-full sm:max-w-[72%]  pl-11  mx-6 h-32 flex flex-col justify-center bg-background-card py-8 px-8 rounded-xl transition-all">
+      <section className="max-w-full sm:max-w-[70%] pl-9  mx-10 h-32 flex flex-col  bg-background-card py-8 px-8 rounded-xl transition-all">
         <p className="text-black font-bold mb-4">Search match</p>
         <div className="relative">
           <Input
