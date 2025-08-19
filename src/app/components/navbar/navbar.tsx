@@ -8,7 +8,7 @@ import NavItem from "./navItem";
 import { Logo } from "./logo";
 
 interface NavbarProps {
-  variant: "default" | "match" | "club" | "competition";
+  variant: "default" | "match" | "club" | "competitions";
 }
 
 const Navbar: React.FC<NavbarProps> = ({ variant }) => {
@@ -24,11 +24,17 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
     >
       {/* Logo */}
       <header className="pl-2 flex items-center">
-        {(variant === "match" || variant === "club") && !isMobile && <Logo />}
+        {(variant === "match" ||
+          variant === "club" ||
+          variant === "competitions") &&
+          !isMobile && <Logo />}
       </header>
 
       {/* Nav Items */}
-      {(variant === "default" || variant === "match" || variant === "club") && (
+      {(variant === "default" ||
+        variant === "match" ||
+        variant === "club" ||
+        variant === "competitions") && (
         <nav
           className={`${
             isMobile
