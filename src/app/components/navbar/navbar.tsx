@@ -24,11 +24,11 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
     >
       {/* Logo */}
       <header className="pl-2 flex items-center">
-        {variant === "match" && !isMobile && <Logo />}
+        {(variant === "match" || variant === "club") && !isMobile && <Logo />}
       </header>
 
       {/* Nav Items */}
-      {(variant === "default" || variant === "match") && (
+      {(variant === "default" || variant === "match" || variant === "club") && (
         <nav
           className={`${
             isMobile
