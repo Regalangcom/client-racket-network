@@ -5,6 +5,7 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, MapPin } from "lucide-react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
+import Link from "next/link";
 
 const CompetitionsCard: React.FC = () => {
   const { isMobile } = useWindowDimension();
@@ -70,12 +71,15 @@ const CompetitionsCard: React.FC = () => {
           <span className="mx-3">5 Sport Leave</span>
         </div>
 
-        {/* Join Button */}
+        {/* see details Button */}
         <div className="max-w-full">
           <span className="w-full  mt-4 flex justify-end items-end  border-gray-400 text-gray-800 bg-transparent hover:bg-gray-100 rounded-lg">
-            <a href="" className="text-right font-bold text-base text-green-rc">
+            <Link
+              href="/competitions/1"
+              className="text-right font-bold text-base text-green-rc"
+            >
               See detail
-            </a>
+            </Link>
           </span>
         </div>
       </CardContent>
