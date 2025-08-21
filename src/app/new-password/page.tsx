@@ -100,4 +100,6 @@ function NewPasswordPage() {
   );
 }
 
-export default NewPasswordPage;
+export default function Page() {
+  return <NewPasswordPage />;
+}
