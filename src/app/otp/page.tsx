@@ -31,7 +31,7 @@ import {
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function InputOTPForm() {
+function InputOTPForm() {
   const [counter, setCounter] = useState<number>(120);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isPendingResend, setIsPendingResendCode] = useState<boolean>(false);
@@ -214,4 +214,6 @@ export function InputOTPForm() {
   );
 }
 
-export default InputOTPForm;
+export default function Page() {
+  return <InputOTPForm />;
+}

@@ -8,7 +8,6 @@ import axios from "axios";
 export default function AuthSuccess() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState<string | null>("");
   const [error, setError] = useState<string | null>(null);
   // const [hasAuthenticated, setHasAuthenticated] = useState<boolean>(false);
   const searchParams = useSearchParams();
@@ -29,7 +28,7 @@ export default function AuthSuccess() {
             );
             const userData = response.data.data;
             localStorage.setItem("user", JSON.stringify(userData));
-            setUsers(userData);
+            // setUsers(userData);
             router.push("/profile");
           } else if (result?.error) {
             router.push("/sign-in");

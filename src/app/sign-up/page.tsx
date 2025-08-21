@@ -33,7 +33,7 @@ interface SignUpFormProps {
   action: (formData: SignUpFormData) => Promise<void>;
 }
 
-function SignInPage({ action }: SignUpFormProps) {
+function SignUpPage() {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isMessageError, setisMessageError] = useState<string | null>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -46,7 +46,6 @@ function SignInPage({ action }: SignUpFormProps) {
     register,
     handleSubmit,
     reset,
-    clearErrors,
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(SignUpFormSchema),
@@ -252,4 +251,6 @@ function SignInPage({ action }: SignUpFormProps) {
   );
 }
 
-export default SignInPage;
+export default function Page() {
+  return <SignUpPage />;
+}

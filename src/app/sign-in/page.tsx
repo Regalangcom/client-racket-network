@@ -29,7 +29,7 @@ interface SignInFormProps {
   action: (formData: SignInFormData) => Promise<void>;
 }
 
-function SignInPage({ action }: SignInFormProps) {
+function SignInPage() {
   const router = useRouter();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -215,4 +215,6 @@ function SignInPage({ action }: SignInFormProps) {
   );
 }
 
-export default SignInPage;
+export default function Page() {
+  return <SignInPage />;
+}
