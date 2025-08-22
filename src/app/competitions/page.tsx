@@ -10,8 +10,8 @@ export default function CompetitionsPage() {
       {" "}
       {/* Hapus min-h-screen atau atur ulang */}
       <div className="flex flex-col sm:flex-row gap-4">
-        {/* Sidebar w-1/4 */}
-        <div className="w-full sm:w-[27%]   text-white">
+        {/* Sidebar sm:w-[27%] */}
+        <div className="w-full  sm:w-[27%] text-white">
           <CompetitionsSearch />
         </div>
         {/* Main Content */}

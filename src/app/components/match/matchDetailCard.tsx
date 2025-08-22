@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Calendar, MapPin, Users, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TimeSelector from "@/app/components/match/timeSelector";
+import Link from "next/link";
 
 interface MatchDetailCardProps {
   title: string;
@@ -67,9 +68,11 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
         <TimeSelector times={times} />
 
         {/* Join button */}
-        <Button className="w-full py-3 bg-background-button-rc text-white font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
-          Join
-        </Button>
+        <Link href={`/match/1/join-match`}>
+          <Button className="w-full py-3 bg-background-button-rc text-white font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
+            Join
+          </Button>
+        </Link>
       </div>
     </div>
   );

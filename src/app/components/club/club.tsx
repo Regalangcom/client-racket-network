@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Clock, MapPin } from "lucide-react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
+import Link from "next/link";
 
 const ClubCard: React.FC = () => {
   const { isMobile } = useWindowDimension();
@@ -14,7 +15,9 @@ const ClubCard: React.FC = () => {
     <Card className="w-full bg-gray-100 rounded-2xl overflow-hidden shadow-sm border border-gray-200 flex flex-col p-0">
       {/* Header */}
       <div className="flex items-center px-6 py-3">
-        <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden" />
+        <Link href="/club/1">
+          <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden" />
+        </Link>
         <span className="font-semibold text-gray-800 px-4">Green Club</span>
       </div>
       {/* Content */}

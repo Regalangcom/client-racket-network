@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const TABLET_BREAKPOINT = 768;
-const LAPTOP_BREAKPOINT = 1024;
+const LAPTOP_BREAKPOINT = 1028;
 
 export type DeviceType = "mobile" | "tablet" | "laptop";
 

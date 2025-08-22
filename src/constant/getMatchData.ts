@@ -58,3 +58,38 @@ export async function getCompData(id: string) {
 
   return dummyData[id] || null;
 }
+
+export async function getProfileClubData(id: string) {
+  const dummyData: Record<string, any> = {
+    "1": {
+      title: "Jakarta - Women Single",
+      logo: sampeImage,
+      contact_avatar: sampeImage,
+      genre: "Tennis",
+      location: "Smes Sport Bintaro",
+      member: "28 Members",
+      club: "Green Club",
+      stars: "4 Stars",
+      name_contact: "andi cobra",
+    },
+  };
+
+  return dummyData[id] || null;
+}
+
+// constant/getMatchData.ts
+export async function getMatchDataBeforePayment(id: string) {
+  const dummyData: Record<string, any> = {
+    "1": {
+      title: "Jaksel Cup - Women Single", // Tambahkan title
+      date: "07 August - 20 August 2025",
+      location: "Smes Sport Bintaro",
+      price: "Rp 100.000",
+      genre: "Tennis",
+      club: "Green Club",
+      times: ["18:00 - 19:00", "20:00 - 21:00"],
+    },
+  };
+
+  return dummyData[id] || null;
+}

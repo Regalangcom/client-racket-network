@@ -10,7 +10,8 @@ import Link from "next/link";
 
 const MatchCard: React.FC = () => {
   return (
-    <Card className="w-full sm:w-[290px] md:w-[290px] h-[466px] rounded-2xl overflow-hidden shadow-sm border border-gray-200 flex flex-col p-0">
+    // w-full w-[350px] lg:w-[295px]
+    <Card className=" sm:w-[290px] w-full md:[290px] h-[466px] rounded-2xl overflow-hidden shadow-sm border border-gray-200 flex flex-col p-0">
       {/* Header */}
       <div className="bg-gray-200 flex items-center px-6 py-3">
         <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">

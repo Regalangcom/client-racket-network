@@ -14,7 +14,7 @@ export const navItems: NavItemType[] = [
   { label: "Home", href: "/", icon: Home },
   { label: "Match", href: "/match", icon: Users },
   { label: "Club", href: "/club", icon: Home },
-  { label: "competitions", href: "/competitions", icon: Gamepad },
+  { label: "Competitions", href: "/competitions", icon: Gamepad },
   { label: "Account", href: "/account", icon: Home, showOnMobile: true },
   { label: "Log in", button: true },
 ];
