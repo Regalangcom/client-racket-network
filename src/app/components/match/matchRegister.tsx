@@ -165,7 +165,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                     {...register("level")}
                     className="w-full p-2 border rounded appearance-none"
                   >
-                    <option value="">Pilih Level</option>
+                    <option value="">Level</option>
                     <option value="beginner">Beginner</option>
                     <option value="expert">Expert</option>
                   </select>
@@ -178,15 +178,6 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                     </p>
                   )}
                 </div>
-                {/* 
-                <div>
-                  <input
-                    {...register("additionalInfo")}
-                    type="text"
-                    placeholder="Informasi Tambahan (Opsional)"
-                    className="w-full p-2 border rounded"
-                  />
-                </div> */}
               </div>
             </div>
 
