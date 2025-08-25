@@ -12,7 +12,6 @@ export default async function MatchRegisterPage({
   // Ambil data match berdasarkan ID
   const match = await getMatchDataBeforePayment(id);
 
-  // Jika tidak ada data match, arahkan ke halaman notFound
   if (!match) {
     notFound();
   }
