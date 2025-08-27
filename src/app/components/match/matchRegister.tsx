@@ -13,7 +13,7 @@ const registrationSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
   phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
   level: z.enum(["beginner", "expert"], {
-    errorMap: () => ({ message: "Pilih level yang valid" }),
+    error: "Pilih level yang valid",
   }),
   additionalInfo: z.string().optional(),
 });
