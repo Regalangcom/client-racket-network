@@ -29,9 +29,9 @@ import { Eye, EyeOff } from "lucide-react";
 //   action: (formdata: FormData) => Promise<void>;
 // }
 
-interface SignUpFormProps {
-  action: (formData: SignUpFormData) => Promise<void>;
-}
+// interface SignUpFormProps {
+//   action: (formData: SignUpFormData) => Promise<void>;
+// }
 
 function SignUpPage() {
   const [isPending, setIsPending] = useState<boolean>(false);

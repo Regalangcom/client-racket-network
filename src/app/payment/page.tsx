@@ -1,7 +1,5 @@
 "use client";
 
-import SearchForm from "../components/search/search";
-import MatchCard from "../components/match/match";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import Payment from "../components/payment/payment";
 

@@ -25,9 +25,9 @@ import { Eye, EyeOff } from "lucide-react";
 //   action: (formdata: FormData) => Promise<void>;
 // }
 
-interface SignInFormProps {
-  action: (formData: SignInFormData) => Promise<void>;
-}
+// interface SignInFormProps {
+//   action: (formData: SignInFormData) => Promise<void>;
+// }
 
 function SignInPage() {
   const router = useRouter();
