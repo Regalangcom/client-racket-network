@@ -9,6 +9,21 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        "slide-up-popup": {
+          "0%": {
+            transform: "translateY(100%)",
+            opacity: "0",
+          },
+          "100%": {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
+      },
+      animation: {
+        "slide-up-popup": "slide-up-popup 0.3s ease-out",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
