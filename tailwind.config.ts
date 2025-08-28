@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "480px",
+        laptop: "1024px",
+        desktop: "1280px",
+      },
       keyframes: {
         "slide-up-popup": {
           "0%": {

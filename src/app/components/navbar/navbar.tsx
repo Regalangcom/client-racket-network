@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
       className={`${
         isMobile
           ? "fixed bottom-0 right-0 left-0 justify-evenly bg-gray-100 px-3 z-10"
-          : "flex justify-between items-center bg-white py-8 px-5"
+          : "flex justify-between items-center bg-white py-8 px-5 mx-auto max-w-screen-2xl"
       }`}
     >
       {/* Logo */}

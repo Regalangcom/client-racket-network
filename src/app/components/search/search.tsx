@@ -117,9 +117,21 @@ const SearchForm: React.FC = () => {
   };
 
   return (
-    <section className="max-w-full sm:max-w-[70%] pl-9 mx-10 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
+    // <section
+    //   className="w-full max-w-full md:max-w-[70%]
+    //   pl-4 pr-4 md:pl-9 md:pr-0
+    //   h-auto md:h-32
+    //   flex flex-col
+    //   bg-background-card
+    //   py-4 md:py-8
+    //   px-4 md:px-8
+    //   rounded-xl
+    //   transition-all
+    //   relative"
+    // >
+    <section className="max-w-full md:max-w-[80%] pl-9 mx-10 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
+      {/* <section className="max-w-full md:max-w-[60%] pl-9 mx-10 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative"> */}
       <p className="text-black font-bold mb-4">Search match</p>
-
       <div className="relative flex items-center space-x-2">
         <div className="flex-grow relative">
           <Input
@@ -136,7 +148,6 @@ const SearchForm: React.FC = () => {
             <Search size={13} className="text-black" />
           </button>
         </div>
-
         <button
           type="button"
           className="bg-white border rounded-md p-2"
