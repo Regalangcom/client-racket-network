@@ -9,7 +9,7 @@ export default function MatchPage() {
   console.log("laptop", isLaptop);
   //
   return (
-    <section className="p-4 container-lg max-w-screen-2xl mx-auto">
+    <section className="p-4  container-lg max-w-screen-2xl mx-auto">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Sidebar w-1/4 */}
         {/* xl:w-[20%] */}

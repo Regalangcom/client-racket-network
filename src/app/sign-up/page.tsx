@@ -139,8 +139,8 @@ function SignUpPage() {
                 </div>
 
                 {/* Input Fields */}
-                <div className="space-y-2">
-                  <Label htmlFor="username">Nama Lengkap</Label>
+                <div className="space-y-4">
+                  <Label htmlFor="username"></Label>
                   <Input
                     {...register("username")}
                     id="username"
@@ -152,8 +152,8 @@ function SignUpPage() {
                   <InputError error={errors.username?.message} />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone_number">No Telepon</Label>
+                <div className="space-y-4">
+                  <Label htmlFor="phone_number"></Label>
                   <Input
                     {...register("phone_number")}
                     id="phone_number"
@@ -165,8 +165,8 @@ function SignUpPage() {
                   <InputError error={errors.phone_number?.message} />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                <div className="space-y-4">
+                  <Label htmlFor="email"></Label>
                   <Input
                     {...register("email")}
                     id="email"
@@ -178,8 +178,8 @@ function SignUpPage() {
                   <InputError error={errors.email?.message} />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                <div className="space-y-4">
+                  <Label htmlFor="password"></Label>
                   <div className="relative">
                     <Input
                       {...register("password")}
@@ -199,9 +199,13 @@ function SignUpPage() {
                   </div>
                   <InputError error={errors.password?.message} />
                 </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Minimal 8 karakter, harus mengandung setidaknya satu huruf
+                  besar, satu huruf kecil, dan satu angka
+                </p>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Konfirmasi Password</Label>
+                <div className="space-y-4">
+                  <Label htmlFor="confirmPassword"></Label>
                   <div className="relative">
                     <Input
                       {...register("confirmPassword")}
@@ -228,7 +232,9 @@ function SignUpPage() {
                     className="bg-background-button-rc border border-gray-300 w-full sm:w-[360px] h-11 block"
                     type="submit"
                   >
-                    {isPending ? "Daftar..." : "Daftar"}
+                    <span className="text-[#E1FFA0]">
+                      {isPending ? "Daftar..." : "Daftar"}
+                    </span>
                   </Button>
                 </div>
 

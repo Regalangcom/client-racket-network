@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        xs: "480px",
+        xs: "375px",
         laptop: "1024px",
         desktop: "1280px",
       },

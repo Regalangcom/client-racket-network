@@ -108,7 +108,7 @@ function SignInPage() {
           <Card className="w-full border-none shadow-none">
             <CardHeader>
               <CardDescription className="text-[18px] sm:text-[21px] w-full sm:w-[370px] text-left">
-                Buat akunmu dengan mengisi formulir di bawah ini
+                Masuk ke Racket Network
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -140,8 +140,8 @@ function SignInPage() {
 
                 {/* Input Fields */}
 
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                <div className="space-y-4">
+                  <Label htmlFor="email"></Label>
                   <Input
                     {...register("email")}
                     id="email"
@@ -154,7 +154,7 @@ function SignInPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password"></Label>
                   <div className="relative">
                     <Input
                       {...register("password")}
@@ -192,7 +192,9 @@ function SignInPage() {
                     className="bg-background-button-rc border border-gray-300 w-full sm:w-[360px] h-11 block"
                     type="submit"
                   >
-                    {isPending ? "Daftar..." : "Daftar"}
+                    <span className=" text-[#E1FFA0]">
+                      {isPending ? "Masuk..." : "Masuk"}
+                    </span>
                   </Button>
                 </div>
 
