@@ -15,7 +15,7 @@ interface FilterSectionProps {
 }
 
 const FilterSection: React.FC<FilterSectionProps> = ({
-  label,
+  // label,
   options,
   type = "button",
   selectedValues = [],

@@ -35,7 +35,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 function SignUpPage() {
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [isMessageError, setisMessageError] = useState<string | null>("");
+  const [isMessageError, setIsMessageError] = useState<string | null>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const router = useRouter();
 
@@ -70,10 +70,10 @@ function SignUpPage() {
       return response.data.data;
     } catch (error: any) {
       if (error.response) {
-        setisMessageError(error.response.data.message);
+        setIsMessageError(error.response.data.message);
         toast.error(error.response.data.errors);
       } else {
-        setisMessageError("Terjadi kesalahan, coba lagi!");
+        setIsMessageError("Terjadi kesalahan, coba lagi!");
       }
       setIsPending(false);
     }
@@ -224,6 +224,7 @@ function SignUpPage() {
                   </div>
                   <InputError error={errors.confirmPassword?.message} />
                 </div>
+                {isMessageError}
 
                 {/* Button Daftar */}
                 <div className="py-5">
