@@ -40,15 +40,3 @@ jobs:
             npm ci
             npm run build
             pm2 restart rn
-
-    # Notifikasi Discord/Telegram
-    # - name: Send Discord Notification
-    #   uses: sarisia/actions-status-discord@v1
-    #   if: always()
-    #   with:
-    #     webhook: ${{ secrets.DISCORD_WEBHOOK }}
-    #     status: ${{ job.status }}
-    #     description: |
-    #       Deployed to VPS successfully! 🚀
-    #       Branch: ${{ github.ref }}
-    #       Commit: ${{ github.sha }}
