@@ -97,21 +97,22 @@ function SignInPage() {
       {/* =============================== */}
       <section className="flex flex-col sm:flex-row mx-auto py-3 sm:px-8 min-h-screen">
         {/* Kolom Kiri: Judul */}
-        <div className="flex-1 flex justify-center items-center sm:items-start sm:max-w-6xl  sm:mt-36">
-          <h1 className="text-[40px] sm:text-[81px] font-bold text-green-rc mb-6 sm:mb-64 tracking-tight sm:text-left">
+        {/* flex-1 flex */}
+        <div className="justify-center sm:justify-center  items-start md:items-start sm:max-w-6xl sm:mt-24">
+          <h1 className="text-[40px]  sm:text-[81px] font-bold text-green-rc mb-6 tracking-tight sm:text-left md:mx-1">
             Bergabung dengan Racket Network
           </h1>
         </div>
 
-        {/* Kolom Kanan: Formulir Sign Up */}
-        <div className="flex-1 max-w-md mx-auto sm:mx-0">
-          <Card className="w-full border-none shadow-none">
-            <CardHeader>
+        {/* Kolom Kanan: Formulir Sign In */}
+        <div className="flex-1 sm:items-start sm:max-w-6xl md:max-w-md sm:mx-0">
+          <Card className="full border-none shadow-none">
+            <CardHeader className="p-0 mb-3">
               <CardDescription className="text-[18px] sm:text-[21px] w-full sm:w-[370px] text-left">
                 Masuk ke Racket Network
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <Button
                 type="button"
                 onClick={handleLoginGoogle}
