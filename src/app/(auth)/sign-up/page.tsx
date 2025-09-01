@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { SignUpFormData, SignUpFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputError from "../components/input-errors";
+import InputError from "../../components/input-errors";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";

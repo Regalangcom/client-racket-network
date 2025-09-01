@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { NewPasswordFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputError from "../components/input-errors";
+import InputError from "@/app/components/input-errors";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";

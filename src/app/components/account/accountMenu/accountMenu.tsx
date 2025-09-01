@@ -2,25 +2,35 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { MoveLeft } from "lucide-react";
 
-interface SettingsHeaderProps {
+interface HeaderProps {
   title: string;
+  showBackButton?: boolean;
   rightAction?: React.ReactNode;
-  showBackButton: boolean;
+  className?: string;
+  onBackClick?: () => void;
 }
 
-export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
+export const AccountMenu: React.FC<HeaderProps> = ({
   title,
   showBackButton = false,
-  //   rightAction,
+  rightAction,
+  className = "",
+  onBackClick,
 }) => {
   const router = useRouter();
 
   const handleBackMoveLeft = () => {
-    router.back();
+    if (onBackClick) {
+      onBackClick();
+    } else {
+      router.back();
+    }
   };
 
   return (
-    <div className="sticky top-0 z-10 bg-white shadow-sm px-4 py-4 flex items-center">
+    <div
+      className={`sticky top-0 z-10 bg-white shadow-sm px-4 py-4 flex items-center ${className}`}
+    >
       {showBackButton && (
         <MoveLeft
           className="h-6 w-6 cursor-pointer text-gray-700 mr-4"
@@ -28,7 +38,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
         />
       )}
       <span className="text-2xl font-bold flex-grow">{title}</span>
-      {/* {rightAction} */}
+      {rightAction}
     </div>
   );
 };

@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/card";
 import { SignInFormSchema, SignInFormData } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputError from "../components/input-errors";
+import InputError from "../../components/input-errors";
 import Link from "next/link";
-import { iconGoogle } from "../../public";
+import { iconGoogle } from "../../../public";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";

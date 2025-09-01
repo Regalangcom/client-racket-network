@@ -22,8 +22,8 @@ export const SignUpFormSchema = z
       .regex(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Silakan masukkan email yang valid"
-      )
-      .email("Silakan masukkan email yang valid"),
+      ),
+    // .email("Silakan masukkan email yang valid"),
     username: z
       .string()
       .min(5, { message: "Username minimal 5 karakter" })
@@ -85,8 +85,26 @@ export const NewPasswordFormSchema = z.object({
     .regex(/[0-9]/, { message: "Contain at least one number" })
     .regex(/[^a-zA-Z0-9]/, { message: "Contain at least special characters" }),
 });
+
+export const profileFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z
+    .string()
+    .toLowerCase()
+    .trim()
+    .regex(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Silakan masukkan email yang valid"
+    ),
+  phone: z.string().min(10, { message: "Phone number is required" }),
+  level: z.enum(["Beginner", "Intermediate", "Advanced"], {
+    message: "Please select a level",
+  }),
+});
+
 export type SignUpFormSchema = z.infer<typeof SignUpFormSchema>;
 export type SignInFormSchema = z.infer<typeof SignInFormSchema>;
 export type OtpInFormSchema = z.infer<typeof OtpInFormSchema>;
 export type reqPasswordFormSchema = z.infer<typeof reqPasswordFormSchema>;
 export type NewPasswordFormSchema = z.infer<typeof NewPasswordFormSchema>;
+export type ProfileFormData = z.infer<typeof profileFormSchema>;

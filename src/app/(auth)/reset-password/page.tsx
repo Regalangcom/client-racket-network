@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { reqPasswordFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputError from "../components/input-errors";
+import InputError from "@/app/components/input-errors";
 import axios from "axios";
 import { toast } from "sonner";
 
