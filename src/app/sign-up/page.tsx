@@ -98,7 +98,7 @@ function SignUpPage() {
       <section className="flex flex-col sm:flex-row mx-auto py-3 sm:px-8 min-h-screen">
         {/* Kolom Kiri: Judul */}
         {/* flex-1 flex justify-center items-center sm:items-start sm:max-w-6xl  sm:mt-36 */}
-        <div className="justify-center sm:justify-center  items-start md:items-start sm:max-w-6xl sm:mt-24">
+        <div className="justify-center sm:justify-center items-start md:items-start sm:max-w-6xl sm:mt-24">
           <h1 className="text-[40px] sm:text-[81px] font-bold text-green-rc mb-6 sm:mb-64 tracking-tight sm:text-left md:mx-1">
             Bergabung dengan Racket Network
           </h1>
@@ -153,7 +153,7 @@ function SignUpPage() {
                   <InputError error={errors.username?.message} />
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <Label htmlFor="phone_number"></Label>
                   <Input
                     {...register("phone_number")}
@@ -166,7 +166,7 @@ function SignUpPage() {
                   <InputError error={errors.phone_number?.message} />
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <Label htmlFor="email"></Label>
                   <Input
                     {...register("email")}
@@ -179,7 +179,7 @@ function SignUpPage() {
                   <InputError error={errors.email?.message} />
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <Label htmlFor="password"></Label>
                   <div className="relative">
                     <Input
@@ -205,7 +205,7 @@ function SignUpPage() {
                   besar, satu huruf kecil, dan satu angka
                 </p>
 
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <Label htmlFor="confirmPassword"></Label>
                   <div className="relative">
                     <Input
