@@ -1,20 +1,19 @@
 pipeline {
     agent any
 
-     triggers {
-        githubPush() // Trigger otomatis saat push
-        //  pollSCM('H/15 * * * *') // Polling cadangan
+    triggers {
+        githubPush()
     }
     
-    
     tools {
-        nodejs "dc_node"  // Nama Node di Jenkins
+        nodejs "dc_node"
     }
     
     environment {
         DEPLOY_PATH = '/var/www/html/client-racket-network'
         REPO_URL = 'https://github.com/Regalangcom/client-racket-network.git'
-        // Gunakan credentials ID dari Jenkins
+        // Tambahkan kredensial GitHub
+        GITHUB_CREDENTIALS = credentials('1232c8da-3e75-4d43-ab30-4bd694a053df')
         VPS_CREDENTIALS = credentials('vps-ssh-key')
         VPS_HOST = '31.97.222.232'
         VPS_USERNAME = 'root'
@@ -23,36 +22,56 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', 
+                // Gunakan kredensial GitHub
+                git credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
+                    branch: 'main', 
                     url: "${REPO_URL}"
             }
         }
         
         stage('Install Dependencies') {
             steps {
-                sh 'npm ci'
+                // Tambahkan error handling
+                script {
+                    try {
+                        sh 'npm ci'
+                    } catch (err) {
+                        error "Dependency installation failed: ${err}"
+                    }
+                }
             }
         }
         
         stage('Build') {
             steps {
-                sh 'npm run build'
+                script {
+                    try {
+                        sh 'npm run build'
+                    } catch (err) {
+                        error "Build failed: ${err}"
+                    }
+                }
             }
         }
         
         stage('Deploy to VPS') {
             steps {
-                // Deploy menggunakan SSH
                 sshagent(['vps-ssh-key']) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
-                        cd ${DEPLOY_PATH}
-                        git pull origin main
-                        npm ci
-                        npm run build
-                        pm2 restart rn || pm2 start npm --name "rn" -- start
+                    script {
+                        try {
+                            sh """
+                                ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
+                                cd ${DEPLOY_PATH}
+                                git pull origin main
+                                npm ci
+                                npm run build
+                                pm2 restart rn || pm2 start npm --name "rn" -- start
 EOF
-                    """
+                            """
+                        } catch (err) {
+                            error "VPS Deployment failed: ${err}"
+                        }
+                    }
                 }
             }
         }
@@ -61,12 +80,14 @@ EOF
     post {
         success {
             echo 'Deployment successful!'
+            // Tambahkan notifikasi atau logging tambahan
+            slackSend (color: 'good', message: "Deployment successful for ${env.JOB_NAME}")
         }
         failure {
             echo 'Deployment failed!'
             mail to: 'your-email@example.com',
                  subject: 'Deployment Failed',
-                 body: 'Deployment process failed. Check Jenkins logs.'
+                 body: "Deployment process failed in job ${env.JOB_NAME}. Check Jenkins logs."
         }
     }
 }
