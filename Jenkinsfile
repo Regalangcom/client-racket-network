@@ -6,6 +6,7 @@ pipeline {
     }
     
     tools {
+         git 'Default'  
         nodejs "dc_node"
     }
     
@@ -59,7 +60,7 @@ pipeline {
                             sh """
                                 ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
                                 cd ${DEPLOY_PATH}
-                                git pull 
+                                git pull origin main 
                                 npm install
                                 npm run build
                                 pm2 restart rn || pm2 start npm --name "rn" -- start
@@ -77,17 +78,10 @@ EOF
     post {
         success {
             echo 'Deployment successful!'
-            // Optional: Tambahkan notifikasi sukses
-            // mail to: 'galangmiftah03@gmail.com',
-            //      subject: 'Deployment Successful',
-            //      body: "Deployment for ${env.JOB_NAME} completed successfully.\nBuild Number: ${env.BUILD_NUMBER}"
         }
         failure {
               echo 'Deployment failed!'
-            // Tambahkan body pada mail
-            // mail to: 'galangmiftah03@gmail.com',
-            //      subject: 'Deployment Failed',
-            //      body: "Deployment for ${env.JOB_NAME} failed.\nBuild Number: ${env.BUILD_NUMBER}\nCheck Jenkins logs for details."
+            
         }
     }
 }
