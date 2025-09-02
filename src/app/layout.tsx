@@ -4,6 +4,7 @@ import "./globals.css";
 import { SessProvider } from "./components/sess-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "./components/footer/footer";
+import ReduxProvider from "@/redux/redux-provider";
 
 const manRope = localFont({
   src: [
@@ -29,27 +30,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const pathname = usePathname(); // Mengambil path sekarang
-
-  // // Tentukan variant berdasarkan pathname
-  // let navbarVariant: "default" | "sign-in" | "sign-up" | "match" = "default"; // Default variant
-
-  // if (pathname.includes("sign-in")) {
-  //   navbarVariant = "sign-in";
-  // } else if (pathname.includes("sign-up")) {
-  //   navbarVariant = "sign-up";
-  // } else if (pathname.includes("match")) {
-  //   navbarVariant = "match";
-  // }
-
   return (
     <html lang="en">
       <head>
-        {/* Mengatur favicon dan meta */}
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`${manRope.variable} antialiased`}>
-        <SessProvider>{children}</SessProvider>
+        <SessProvider>
+          <ReduxProvider>{children}</ReduxProvider>
+        </SessProvider>
         <Toaster />
         <Footer />
       </body>
