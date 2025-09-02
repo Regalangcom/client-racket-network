@@ -6,7 +6,7 @@ pipeline {
     }
     
     tools {
-        git 'Default'  
+         git 'Default'  
         nodejs "dc_node"
     }
     
@@ -56,29 +56,19 @@ pipeline {
             steps {
                 sshagent(['vps-ssh-key']) {
                     script {
-                        sh '''
-                            echo "Deploying to VPS..."
-                            ssh -o StrictHostKeyChecking=no $VPS_USERNAME@$VPS_HOST '
-                                mkdir -p $DEPLOY_PATH
-                                cd $DEPLOY_PATH
-
-                                if [ ! -d ".git" ]; then
-                                    git clone https://github.com/Regalangcom/client-racket-network.git .
-                                fi
-
-                                git config --global user.name "galangdotjs"
-                                git config --global user.email "galangmiftah03@gmail.com"
-
-                                git fetch origin
-                                git reset --hard origin/main
-                                git pull origin main
-
-                                npm ci
+                        try {
+                            sh """
+                                ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
+                                cd ${DEPLOY_PATH}
+                                git pull origin main 
+                                npm install
                                 npm run build
-
-                                pm2 restart rn || pm2 start npm --name "rn" -- start
-                            '
-                        '''
+                                pm2 restart rn 
+EOF
+                            """
+                        } catch (err) {
+                            error "VPS Deployment failed: ${err}"
+                        }
                     }
                 }
             }
@@ -87,10 +77,11 @@ pipeline {
     
     post {
         success {
-            echo 'Deployment successful! 🚀'
+            echo 'Deployment successful!'
         }
         failure {
-            echo 'Deployment failed! 😱'
+              echo 'Deployment failed!'
+            
         }
     }
 }
