@@ -12,7 +12,6 @@ pipeline {
     environment {
         DEPLOY_PATH = '/var/www/html/client-racket-network'
         REPO_URL = 'https://github.com/Regalangcom/client-racket-network.git'
-        // Tambahkan kredensial GitHub
         GITHUB_CREDENTIALS = credentials('1232c8da-3e75-4d43-ab30-4bd694a053df')
         VPS_CREDENTIALS = credentials('vps-ssh-key')
         VPS_HOST = '31.97.222.232'
@@ -22,7 +21,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Gunakan kredensial GitHub
                 git credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
                     branch: 'main', 
                     url: "${REPO_URL}"
@@ -31,7 +29,6 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                // Tambahkan error handling
                 script {
                     try {
                         sh 'npm ci'
@@ -80,11 +77,16 @@ EOF
     post {
         success {
             echo 'Deployment successful!'
+            // Optional: Tambahkan notifikasi sukses
+            mail to: 'galangmiftah03@gmail.com',
+                 subject: 'Deployment Successful',
+                 body: "Deployment for ${env.JOB_NAME} completed successfully.\nBuild Number: ${env.BUILD_NUMBER}"
         }
         failure {
-            echo 'Deployment failed!'
-            mail to: 'your-email@example.com',
-                 subject: 'Deployment Failed'
+            // Tambahkan body pada mail
+            mail to: 'galangmiftah03@gmail.com',
+                 subject: 'Deployment Failed',
+                 body: "Deployment for ${env.JOB_NAME} failed.\nBuild Number: ${env.BUILD_NUMBER}\nCheck Jenkins logs for details."
         }
     }
 }
