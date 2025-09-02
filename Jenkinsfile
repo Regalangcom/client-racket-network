@@ -52,25 +52,25 @@ pipeline {
             }
         }
         
-   stage('Deploy to VPS') {
+stage('Deploy to VPS') {
     steps {
         sshagent(['vps-ssh-key']) {
             script {
-                sh """
+                sh '''
                     echo "Deploying to VPS..."
-                    ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} '
+                    ssh -o StrictHostKeyChecking=no $VPS_USERNAME@$VPS_HOST '
                         echo "Current directory: $(pwd)"
                         git status
-                        cd ${DEPLOY_PATH}
+                        cd $DEPLOY_PATH
                         git config --global credential.helper cache
-                        git config --global user.name 'galangdotjs'
-                        git config --global user.email 'galangmiftah03@gmail.com'
+                        git config --global user.name "galangdotjs"
+                        git config --global user.email "galangmiftah03@gmail.com"
                         git pull https://github.com/Regalangcom/client-racket-network.git main
                         npm install
                         npm run build
                         pm2 restart rn 
                     '
-                """
+                '''
             }
         }
     }
