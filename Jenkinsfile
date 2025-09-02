@@ -62,7 +62,7 @@ pipeline {
                             sh """
                                 ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
                                 cd ${DEPLOY_PATH}
-                                git pull origin main
+                                git pull 
                                 npm ci
                                 npm run build
                                 pm2 restart rn || pm2 start npm --name "rn" -- start
@@ -80,14 +80,11 @@ EOF
     post {
         success {
             echo 'Deployment successful!'
-            // Tambahkan notifikasi atau logging tambahan
-            slackSend (color: 'good', message: "Deployment successful for ${env.JOB_NAME}")
         }
         failure {
             echo 'Deployment failed!'
             mail to: 'your-email@example.com',
                  subject: 'Deployment Failed',
-                 body: "Deployment process failed in job ${env.JOB_NAME}. Check Jenkins logs."
         }
     }
 }
