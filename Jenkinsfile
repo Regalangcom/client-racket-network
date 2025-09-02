@@ -56,19 +56,33 @@ pipeline {
             steps {
                 sshagent(['vps-ssh-key']) {
                     script {
-                        try {
-                            sh """
-                                ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} '
+                                # Pindah ke direktori project
                                 cd ${DEPLOY_PATH}
-                                git pull origin main 
-                                npm install
+
+                                # Konfigurasi Git Global
+                                git config --global user.name "galangdotjs"
+                                git config --global user.email "galangmiftah03@gmail.com"
+
+                                # Set remote URL dengan token
+                                git remote set-url origin https://${GITHUB_CREDENTIALS}@github.com/Regalangcom/client-racket-network.git
+
+                                # Fetch dan reset ke origin/main
+                                git fetch origin
+                                git reset --hard origin/main
+                                git pull origin main
+
+                                # Install dependencies
+                                npm ci
+
+                                # Build project
                                 npm run build
-                                pm2 restart rn 
-EOF
-                            """
-                        } catch (err) {
-                            error "VPS Deployment failed: ${err}"
-                        }
+
+                                # Restart PM2
+                                pm2 restart rn || pm2 start npm --name rn -- start
+                            '
+                        """
                     }
                 }
             }
