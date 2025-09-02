@@ -52,27 +52,27 @@ pipeline {
             }
         }
         
-        stage('Deploy to VPS') {
-            steps {
-                sshagent(['vps-ssh-key']) {
-                    script {
-                        try {
-                            sh """
-                                ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
-                                cd ${DEPLOY_PATH}
-                                git pull origin main 
-                                npm install
-                                npm run build
-                                pm2 restart rn || pm2 start npm --name "rn" -- start
-EOF
-                            """
-                        } catch (err) {
-                            error "VPS Deployment failed: ${err}"
-                        }
-                    }
-                }
+   stage('Deploy to VPS') {
+    steps {
+        sshagent(['vps-ssh-key']) {
+            script {
+                sh """
+                    echo "Deploying to VPS..."
+                    ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} '
+                        echo "Current directory: $(pwd)"
+                        echo "git status:"
+                        git status
+                        cd ${DEPLOY_PATH}
+                        git pull origin main 
+                        npm install
+                        npm run build
+                        pm2 restart rn 
+                    '
+                """
             }
         }
+    }
+}
     }
     
     post {
