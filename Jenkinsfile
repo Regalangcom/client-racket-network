@@ -59,8 +59,8 @@ pipeline {
                             sh """
                                 ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} << EOF
                                 cd ${DEPLOY_PATH}
-                                git pull origin main
-                                npm ci
+                                git pull 
+                                npm install
                                 npm run build
                                 pm2 restart rn || pm2 start npm --name "rn" -- start
 EOF
