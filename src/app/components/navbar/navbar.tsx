@@ -18,7 +18,8 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
     <section
       className={`${
         isMobile
-          ? "fixed bottom-0  right-0 left-0 justify-evenly bg-gray-100 px-3 z-10 w-full"
+          ? // px-3
+            "fixed bottom-0  right-0 left-0 justify-between bg-gray-300   z-10 w-full"
           : "flex justify-between items-center bg-white py-8 px-5 mx-auto max-w-screen-2xl"
       }`}
     >
@@ -40,14 +41,14 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
         <nav
           className={`${
             isMobile
-              ? "flex justify-center px-4"
+              ? "flex  justify-center items-center"
               : "pr-4 flex items-center space-x-9"
           }`}
         >
           <div
             className={`${
               isMobile
-                ? "grid grid-cols-5  gap-14 "
+                ? "grid grid-cols-5 gap-[57px]"
                 : "flex items-center space-x-9"
             }`}
           >
