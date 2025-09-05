@@ -6,12 +6,12 @@ import SearchForm from "../components/search/search";
 
 export default function ClubPage() {
   return (
-    <section className="p-4 container-lg ">
+    <section className="p-4 container-lg max-w-screen-2xl mx-auto ">
       {" "}
       {/* Hapus min-h-screen atau atur ulang */}
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Sidebar w-full sm:w-[27%] */}
-        <div className=" w-full  md:w-[24%]    text-white">
+        <div className=" w-full  md:w-[26%]    text-white">
           <SearchForm />
           <div className="mt-6">
             <CreateClub />
