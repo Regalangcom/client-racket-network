@@ -44,7 +44,7 @@ const NavItem: React.FC<NavItemProps> = ({
         transition-all 
         duration-300 
         ease-in-out 
-        ${isActive ? "bg-white rounded-lg" : "bg-transparent"}
+        ${isActive ? "" : "bg-transparent"}
         py-5
       `}
       onClick={handleNavigation}
