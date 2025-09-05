@@ -23,15 +23,47 @@ const NavItem: React.FC<NavItemProps> = ({
 
   const isActive = pathname === href || pathname.startsWith(href);
 
+  const handleNavigation = () => {
+    // Pastikan hanya navigasi untuk non-button item
+    if (!button) {
+      router.push(href);
+    }
+  };
+  console.log("Current Pathname:", pathname);
+  console.log("Navigating to:", href);
+
   return (
     <div
-      className={`${
-        isActive ? "text-green-rc" : "text-red-800"
-      } py-7 md:relative  cursor-pointer transition-all duration-300 ease-in-out flex flex-col items-center`}
-      onClick={() => !button && router.push(href)}
+      className={`
+        md:relative 
+        flex 
+        flex-col 
+        items-center 
+        justify-center 
+        cursor-pointer 
+        transition-all 
+        duration-300 
+        ease-in-out 
+        ${isActive ? "bg-white rounded-lg" : "bg-transparent"}
+        py-5
+      `}
+      onClick={handleNavigation}
+
+      // onClick={() => !button && router.push(href)}
     >
       {icon && (
-        <div className="flex justify-center items-center mb-1 sm:hidden w-full">
+        <div
+          className={`
+            flex 
+            justify-center 
+            items-center 
+            mb-1 
+            sm:hidden
+            w-full
+            ${isActive ? "opacity-100" : "opacity-30"}
+          `}
+        >
+          {/* <div className="flex justify-center items-center mb-1 sm:hidden w-full"> */}
           <Image
             src={icon}
             alt={label}
@@ -41,26 +73,51 @@ const NavItem: React.FC<NavItemProps> = ({
           />
         </div>
       )}
-      {button ? (
+      {/* {button ? (
         <button className="py-2 px-8 bg-background-button-rc text-white rounded transition-all">
           {label}
         </button>
       ) : (
         <div className="text-center w-full flex flex-col  absolute md:relative items-center justify-center">
-          <span className="text-xs sm:text-base mt-6  md:mt-0 tracking-tight">
+          <span
+            className={`
+              text-xs 
+              mt-10
+              md:mt-0
+              sm:text-base 
+              text-center 
+              ${isActive ? "text-green-rc" : "text-gray-500"}
+            `}
+          >
+            {label}
+          </span>
+        </div>
+      )} */}
+      {!button && (
+        <div className="text-center">
+          <span
+            className={`
+              text-xs 
+              mt-10
+              md:mt-0
+              sm:text-base 
+              text-center 
+              ${isActive ? "text-green-rc" : "text-gray-500"}
+            `}
+          >
             {label}
           </span>
         </div>
       )}
+
+      {button && (
+        <button className="py-2 px-8 bg-background-button-rc text-white rounded transition-all">
+          {label}
+        </button>
+      )}
     </div>
+    // </div>
   );
 };
 
 export default NavItem;
-
-//  <div
-//       className={`${
-//         isActive ? "text-green-rc" : "text-red-800"
-//       } relative w-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ease-in-out`}
-//       onClick={() => !button && router.push(href)}
-//     ></div>

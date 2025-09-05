@@ -8,7 +8,7 @@ import NavItem from "./navItem";
 import { Logo } from "./logo";
 
 interface NavbarProps {
-  variant: "default" | "match" | "club" | "competitions" | "account";
+  variant: "home" | "match" | "club" | "competitions" | "account";
 }
 
 const Navbar: React.FC<NavbarProps> = ({ variant }) => {
@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
       className={`${
         isMobile
           ? // px-3
-            "fixed bottom-0  right-0 left-0 justify-between bg-gray-300   z-10 w-full"
+            "fixed bottom-0 right-0 left-0 justify-between bg-gray-100   z-10 w-full"
           : "flex justify-between items-center bg-white py-8 px-5 mx-auto max-w-screen-2xl"
       }`}
     >
@@ -33,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
       </header>
 
       {/* Nav Items */}
-      {(variant === "default" ||
+      {(variant === "home" ||
         variant === "match" ||
         variant === "club" ||
         variant === "competitions" ||
@@ -41,21 +41,22 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
         <nav
           className={`${
             isMobile
-              ? "flex  justify-center items-center"
+              ? "flex justify-center items-center"
               : "pr-4 flex items-center space-x-9"
           }`}
         >
           <div
             className={`${
               isMobile
-                ? "grid grid-cols-5 gap-[57px]"
+                ? "grid grid-cols-5 gap-[20px]"
                 : "flex items-center space-x-9"
             }`}
           >
             {navItems
               .filter((item) => {
                 if (isMobile) {
-                  return item.showOnMobile || !item.button; // mobile: tampilkan item mobile + non-button bro
+                  return !item.button; // mobile: tampilkan item mobile + non-button bro
+                  // return item.showOnMobile || !item.button; // mobile: tampilkan item mobile + non-button bro
                 } else {
                   return !item.showOnMobile; // desktop: sembunyikan item yg khusus mobile
                 }
