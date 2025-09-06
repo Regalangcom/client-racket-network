@@ -25,7 +25,7 @@ pipeline {
                     script {
                         // GITHUB_USER dan GITHUB_TOKEN sudah terisi secara otomatis cok !
                         sh """
-                              git remote set-url origin https://\$GITHUB_USER:\$GITHUB_TOKEN@github.com/Regalangcom/client-racket-network.git
+                            git remote set-url origin https://\$GITHUB_USER:\$GITHUB_TOKEN@github.com/Regalangcom/client-racket-network.git
                             git fetch origin
                             git reset --hard origin/main
                         """
@@ -65,7 +65,7 @@ pipeline {
                                                    usernameVariable: 'SSH_USER')]) {
                     script {
                         sh """
-                             ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \$SSH_USER@\$VPS_HOST'
+                          ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \$SSH_USER@\${VPS_HOST} '
                                 echo "Deploying to VPS..."
                                 cd ${DEPLOY_PATH}
                                 git pull origin main
