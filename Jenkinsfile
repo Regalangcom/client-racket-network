@@ -13,18 +13,20 @@ pipeline {
     environment {
         DEPLOY_PATH = '/var/www/html/client-racket-network'
         REPO_URL = 'https://github.com/Regalangcom/client-racket-network.git'
-        GITHUB_CREDENTIALS = credentials('1232c8da-3e75-4d43-ab30-4bd694a053df')
-        VPS_CREDENTIALS = credentials('vps-ssh-key')
         VPS_HOST = '31.97.222.232'
-        VPS_USERNAME = 'root'
     }
     
     stages {
         stage('Checkout') {
-            steps {
-                git credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
-                    branch: 'main', 
-                    url: "${REPO_URL}"
+             steps {
+                withCredentials([usernamePassword(credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
+                                                 usernameVariable: 'GITHUB_USER', 
+                                                 passwordVariable: 'GITHUB_TOKEN'
+                                                 )]) {
+                    git credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
+                        branch: 'main', 
+                        url: "${REPO_URL}"
+                }
             }
         }
         
@@ -53,11 +55,14 @@ pipeline {
         }
         
         stage('Deploy to VPS') {
-            steps {
-                sshagent(['vps-ssh-key']) {
+               steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'vps-ssh-key', 
+                                                   keyFileVariable: 'SSH_KEY', 
+                                                   usernameVariable: 'SSH_USER'
+                                                   )]) {
                     script {
                         sh """
-                            ssh -o StrictHostKeyChecking=no ${VPS_USERNAME}@${VPS_HOST} '
+                            ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_USER}@${VPS_HOST} '
                                 # Pindah ke direktori project
                                 cd ${DEPLOY_PATH}
 
@@ -66,7 +71,7 @@ pipeline {
                                 git config --global user.email "galangmiftah03@gmail.com"
 
                                 # Set remote URL dengan token
-                                git remote set-url origin https://${GITHUB_CREDENTIALS}@github.com/Regalangcom/client-racket-network.git
+                                git remote set-url origin https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Regalangcom/client-racket-network.git
 
                                 # Fetch dan reset ke origin/main
                                 git fetch origin
