@@ -19,12 +19,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Gunakan withCredentials untuk menyimpan kredensial GitHub secara aman
+                // Menggunakan kredensial GitHub dengan safely menggunakan withCredentials
                 withCredentials([usernamePassword(credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
-                                                  usernameVariable: 'Regalangcom', 
-                                                  passwordVariable: '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')]) {
+                                                  usernameVariable: 'GITHUB_USER', 
+                                                  passwordVariable: 'GITHUB_TOKEN')]) {
                     script {
-                        // Di dalam blok ini, GITHUB_USER dan GITHUB_TOKEN sudah terisi
+                        // GITHUB_USER dan GITHUB_TOKEN sudah terisi secara otomatis
                         sh """
                             git remote set-url origin https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Regalangcom/client-racket-network.git
                             git fetch origin
@@ -65,6 +65,7 @@ pipeline {
                                                    keyFileVariable: 'SSH_KEY', 
                                                    usernameVariable: 'SSH_USER')]) {
                     script {
+                        // Menggunakan SSH key dengan aman
                         sh """
                             ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_USER}@${VPS_HOST} '
                                 echo "Deploying to VPS..."
