@@ -6,8 +6,8 @@ pipeline {
     }
 
     tools {
-        git 'Default'  
-        nodejs "dc_node"
+        git 'Default'
+        nodejs 'dc_node'
     }
 
     environment {
@@ -19,9 +19,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                withCredentials([usernamePassword(credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
-                                                  usernameVariable: 'GITHUB_USER', 
-                                                  passwordVariable: 'GITHUB_TOKEN')]) {
+                withCredentials([usernamePassword(credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df',
+                                                  usernameVariable: 'GITHUB_USER',
+                                                  passwordVariable: 'GITHUB_TOKEN'
+                                                  )]) {
                     script {
                         // GITHUB_USER dan GITHUB_TOKEN sudah terisi secara otomatis cok !
                         sh """
@@ -30,7 +31,7 @@ pipeline {
                             git reset --hard origin/main
                         """
                     }
-                }
+                                                  }
             }
         }
 
@@ -60,9 +61,10 @@ pipeline {
 
         stage('Deploy to VPS') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'vps-ssh-key', 
-                                                   keyFileVariable: 'SSH_KEY', 
-                                                   usernameVariable: 'SSH_USER')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'vps-ssh-key',
+                                                   keyFileVariable: 'SSH_KEY',
+                                                   usernameVariable: 'SSH_USER'
+                                                   )]) {
                     script {
                         sh """
                           ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \$SSH_USER@\${VPS_HOST} '
@@ -75,7 +77,7 @@ pipeline {
                             '
                         """
                     }
-                }
+                                                   }
             }
         }
     }
