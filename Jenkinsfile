@@ -6,7 +6,7 @@ pipeline {
     }
     
     tools {
-         git 'Default'  
+        git 'Default'  
         nodejs "dc_node"
     }
     
@@ -18,14 +18,18 @@ pipeline {
     
     stages {
         stage('Checkout') {
-             steps {
+            steps {
                 withCredentials([usernamePassword(credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
-                                                 usernameVariable: 'GITHUB_USER', 
-                                                 passwordVariable: 'GITHUB_TOKEN'
-                                                 )]) {
-                    git credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df', 
-                        branch: 'main', 
-                        url: "${REPO_URL}"
+                                                  usernameVariable: 'GITHUB_USER', 
+                                                  passwordVariable: 'GITHUB_TOKEN')]) {
+                    // Hanya gunakan kredensial di dalam withCredentials scope
+                    script {
+                        sh """
+                            git remote set-url origin https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Regalangcom/client-racket-network.git
+                            git fetch origin
+                            git reset --hard origin/main
+                        """
+                    }
                 }
             }
         }
@@ -55,12 +59,12 @@ pipeline {
         }
         
         stage('Deploy to VPS') {
-               steps {
+            steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'vps-ssh-key', 
                                                    keyFileVariable: 'SSH_KEY', 
-                                                   usernameVariable: 'SSH_USER'
-                                                   )]) {
+                                                   usernameVariable: 'SSH_USER')]) {
                     script {
+                        // Gunakan SSH key dengan aman
                         sh """
                             ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_USER}@${VPS_HOST} '
                                 # Pindah ke direktori project
@@ -99,8 +103,7 @@ pipeline {
             echo 'Deployment successful!'
         }
         failure {
-              echo 'Deployment failed!'
-            
+            echo 'Deployment failed!'
         }
     }
 }
