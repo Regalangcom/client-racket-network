@@ -99,7 +99,7 @@ function SignInPage() {
         {/* Kolom Kiri: Judul */}
         {/* flex-1 flex */}
         <div className="justify-center sm:justify-center items-start md:items-start sm:max-w-6xl mb-9 md:mb-0  sm:mt-24">
-          <h1 className="text-[27px] sm:text-[81px] font-bold text-green-rc mb-6 max-w-72 md:max-w-6xl tracking-tight sm:text-left md:mx-1">
+          <h1 className="text-[27px] sm:text-[81px] font-bold text-green-rc mb-4 max-w-72 md:max-w-6xl tracking-tight sm:text-left md:mx-1">
             Bergabung dengan Racket Network
           </h1>
         </div>
