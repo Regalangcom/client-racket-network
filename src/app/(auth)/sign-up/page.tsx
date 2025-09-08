@@ -98,8 +98,8 @@ function SignUpPage() {
       <section className="flex flex-col sm:flex-row mx-auto py-3 sm:px-8 min-h-screen">
         {/* Kolom Kiri: Judul */}
         {/* flex-1 flex justify-center items-center sm:items-start sm:max-w-6xl  sm:mt-36 */}
-        <div className="justify-center sm:justify-center items-start md:items-start sm:max-w-6xl sm:mt-24">
-          <h1 className="text-[40px] sm:text-[81px] font-bold text-green-rc mb-6 sm:mb-64 tracking-tight sm:text-left md:mx-1">
+        <div className="justify-center sm:justify-center items-start md:items-start sm:max-w-6xl mb-9 md:mb-0  sm:mt-24">
+          <h1 className="text-[27px] sm:text-[81px] font-bold text-green-rc mb-6 sm:mb-64 max-w-72  md:max-w-6xl tracking-tight sm:text-left md:mx-1">
             Bergabung dengan Racket Network
           </h1>
         </div>
