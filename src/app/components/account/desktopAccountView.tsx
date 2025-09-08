@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 // import { AccountMenuItemType } from './AccountMenuItem';
 import { AccountMenuItemType } from "./accountMenuItem";
+import Image from "next/image";
 
 interface DesktopAccountViewProps {
   user: {
@@ -32,7 +33,9 @@ export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({
             href={item.path}
             className="flex items-center p-3 hover:bg-gray-100 rounded-lg group transition-colors"
           >
-            <span className="mr-4 text-xl">{item.icon}</span>
+            <span className="mr-4 text-xl">
+              <Image src={item.icon} width={23} height={23} alt="image" />
+            </span>
             <span className="flex-grow text-base">{item.title}</span>
             {item.hasNotification && (
               <span className="w-3 h-3 bg-red-500 rounded-full ml-2"></span>

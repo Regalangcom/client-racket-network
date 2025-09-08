@@ -10,9 +10,19 @@ import match from "@/public/assets/icons/match.svg";
 import club from "@/public/assets/icons/Subtract.svg";
 import home from "@/public/assets/icons/Vector.svg";
 import account from "@/public/assets/icons/account.svg";
+import settings from "@/public/assets/icons/settings.svg";
+import signout from "@/public/assets/icons/sign-out.svg";
+import inbox from "@/public/assets/icons/inboc.svg";
+import pay from "@/public/assets/icons/pay.svg";
+import star from "@/public/assets/icons/star-1.svg";
 
 export {
   home,
+  star,
+  settings,
+  signout,
+  inbox,
+  pay,
   account,
   iconGoogle,
   logoRc,

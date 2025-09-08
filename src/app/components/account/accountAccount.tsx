@@ -5,6 +5,7 @@ import React from "react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { MobileAccountView } from "./mobileAccount";
 import { DesktopAccountView } from "./desktopAccountView";
+import { settings, signout, inbox, pay, star } from "@/public";
 
 export default function AccountPage() {
   const { isMobile } = useWindowDimension();
@@ -15,31 +16,31 @@ export default function AccountPage() {
 
   const accountMenuItems = [
     {
-      icon: "⚙️",
+      icon: settings,
       title: "Settings",
       path: "/account/setting",
       hasNotification: false,
     },
     {
-      icon: "📨",
+      icon: inbox,
       title: "Inbox",
       path: "/account/inbox",
       hasNotification: true,
     },
     {
-      icon: "💰",
+      icon: pay,
       title: "Payment",
       path: "/account/payment",
       hasNotification: false,
     },
     {
-      icon: "⭐",
+      icon: star,
       title: "Review",
       path: "/account/review",
       hasNotification: false,
     },
     {
-      icon: "🚪",
+      icon: signout,
       title: "Log out",
       path: "/logout",
       hasNotification: false,
