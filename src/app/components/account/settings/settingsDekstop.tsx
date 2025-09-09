@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import Link from "next/link";
 // import { AccountMenuItemType } from './AccountMenuItem';
 import { AccountMenuItemType } from "../accountMenuItem";
+import Image from "next/image";
 
 interface DesktopSettingsViewProps {
   user: {
@@ -36,7 +37,9 @@ export const DesktopSettingsView: React.FC<DesktopSettingsViewProps> = ({
                   : "hover:bg-gray-100"
               } rounded-lg transition-colors`}
             >
-              <span className="mr-4 text-xl">{item.icon}</span>
+              <span className="mr-4 text-xl">
+                <Image src={item.icon} width={23} height={23} alt="icon" />
+              </span>
               <span className="flex-grow text-base">{item.title}</span>
             </div>
           ))}

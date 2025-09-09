@@ -56,7 +56,6 @@ const Navbar: React.FC<NavbarProps> = ({ variant }) => {
               .filter((item) => {
                 if (isMobile) {
                   return !item.button; // mobile: tampilkan item mobile + non-button bro
-                  // return item.showOnMobile || !item.button; // mobile: tampilkan item mobile + non-button bro
                 } else {
                   return !item.showOnMobile; // desktop: sembunyikan item yg khusus mobile
                 }

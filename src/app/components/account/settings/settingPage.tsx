@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { SettingMobileView } from "./settingsMobile";
 import { DesktopSettingsView } from "./settingsDekstop";
+import { security, notification, language } from "@/public";
 
 export default function SettingsPage() {
   const { isMobile } = useWindowDimension();
@@ -14,17 +15,17 @@ export default function SettingsPage() {
 
   const settingsMenuItems = [
     {
-      icon: "🔒",
+      icon: security,
       title: "Security",
       path: "/settings/security",
     },
     {
-      icon: "🔔",
+      icon: notification,
       title: "Notifications",
       path: "/settings/notifications",
     },
     {
-      icon: "🌐",
+      icon: language,
       title: "Language",
       path: "/settings/language",
     },

@@ -5,6 +5,7 @@ import { SessProvider } from "./components/sess-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "./components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";
+import Navbar from "./components/navbar/navbar";
 
 const manRope = localFont({
   src: [
@@ -36,6 +37,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`${manRope.variable} antialiased`}>
+        <Navbar variant="home" />
         <SessProvider>
           <ReduxProvider>{children}</ReduxProvider>
         </SessProvider>

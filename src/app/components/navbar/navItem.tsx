@@ -10,6 +10,7 @@ interface NavItemProps {
   href?: string;
   icon?: StaticImageData;
   button?: boolean;
+  active?: boolean;
 }
 
 const NavItem: React.FC<NavItemProps> = ({
@@ -21,14 +22,25 @@ const NavItem: React.FC<NavItemProps> = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const isActive = pathname === href || pathname.startsWith(href);
+  // Perbaiki logika active state
+  const isActive =
+    href !== "#"
+      ? pathname === href || (href !== "/" && pathname.startsWith(href))
+      : false;
+
+  // const handleNavigation = () => {
+  //   // Pastikan hanya navigasi untuk non-button item
+  //   if (!button) {
+  //     router.push(href);
+  //   }
+  // };
 
   const handleNavigation = () => {
-    // Pastikan hanya navigasi untuk non-button item
-    if (!button) {
+    if (!button && href && href !== "#") {
       router.push(href);
     }
   };
+
   console.log("Current Pathname:", pathname);
   console.log("Navigating to:", href);
 
@@ -73,26 +85,6 @@ const NavItem: React.FC<NavItemProps> = ({
           />
         </div>
       )}
-      {/* {button ? (
-        <button className="py-2 px-8 bg-background-button-rc text-white rounded transition-all">
-          {label}
-        </button>
-      ) : (
-        <div className="text-center w-full flex flex-col  absolute md:relative items-center justify-center">
-          <span
-            className={`
-              text-xs 
-              mt-10
-              md:mt-0
-              sm:text-base 
-              text-center 
-              ${isActive ? "text-green-rc" : "text-gray-500"}
-            `}
-          >
-            {label}
-          </span>
-        </div>
-      )} */}
       {!button && (
         <div className="text-center">
           <span
