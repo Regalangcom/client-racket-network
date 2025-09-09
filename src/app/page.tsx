@@ -1,36 +1,38 @@
-import MatchCard from "../app/components/match/match";
-import { useWindowDimension } from "@/hooks/useWindowdimension";
+import HomeCard from "../app/components/home/cardHome";
+import Notification from "./components/home/notification/notification";
 
 export default function Home() {
-  // const { isLaptop } = useWindowDimension();
-  // console.log("laptop", isLaptop);
-  //
   return (
-    <section className="p-4  container-lg max-w-screen-2xl mx-auto">
+    <section className="container-lg min-h-screen mx-auto">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Sidebar w-1/4 */}
         {/* xl:w-[20%] */}
-        <div className="w-full md:w-[26%]  text-white">
-          {/* <div className=" w-full  md:w-[26%]  text-white"> */}
-          {/* <SearchForm /> */}
+        <div className="w-full md:w-[27%] text-white">
+          <div className="">
+            {/* <Notification
+              type="join"
+              username="Padel Cihuy"
+              message="just joined Racket Network"
+            /> */}
+          </div>
         </div>
         {/* Main Content */}
-        <div className="flex-1 p-4 max-w-full">
+        <div className="flex-1 md:p-4 max-w-full">
           <div className="mb-4 font-semibold">
-            <p className="text-3xl">Join a match</p>
+            <p className="text-3xl"></p>
             <p className="font-semibold mt-1">
-              Compete against other players of your level in your area
+              <Notification
+                type="join"
+                username="Padel Cihuy"
+                message="just joined Racket Network"
+              />
             </p>
           </div>
           <div
             className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4`}
           >
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
+            <HomeCard />
+            <HomeCard />
           </div>
         </div>
       </div>
