@@ -9,7 +9,7 @@ const InProgressBadge: React.FC<InProgressBadgeProps> = ({
   text = "In Progress",
 }) => {
   return (
-    <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#B5D9D2] text-green-800">
+    <div className="inline-flex items-center px-2.5  py-0.5   rounded-full text-xs  md:w-28 font-medium bg-[#B5D9D2] text-green-800">
       {text}
     </div>
   );

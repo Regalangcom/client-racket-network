@@ -3,11 +3,11 @@
 import React from "react";
 import Navbar from "../components/navbar/navbar";
 
-function MatchLayout({ children }: { children: React.ReactNode }) {
+function AccountLayout({ children }: { children: React.ReactNode }) {
   return (
     <section className="min-h-screen flex flex-col bg-white">
       <header className="text-center px-6 ">
-        <Navbar variant="match" />
+        <Navbar />
       </header>
       {/* flex-grow  */}
       <main>{children}</main>
@@ -15,4 +15,4 @@ function MatchLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default MatchLayout;
+export default AccountLayout;

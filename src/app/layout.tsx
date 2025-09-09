@@ -37,7 +37,6 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`${manRope.variable} antialiased`}>
-        <Navbar variant="home" />
         <SessProvider>
           <ReduxProvider>{children}</ReduxProvider>
         </SessProvider>

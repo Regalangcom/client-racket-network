@@ -1,8 +1,8 @@
 "use client";
 
-import CreateClub from "../components/club/createClub";
-import ClubCard from "../components/club/club";
-import SearchForm from "../components/search/search";
+import CreateClub from "../../components/club/createClub";
+import ClubCard from "../../components/club/club";
+import SearchForm from "../../components/search/search";
 
 export default function ClubPage() {
   return (
