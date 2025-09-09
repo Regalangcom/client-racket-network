@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getProfileClubData } from "@/constant/getMatchData";
-import ClubProfileDetails from "@/app/components/club/clubProfileDetail";
+import ClubProfileDetails from "@/components/club/clubProfileDetail";
 export default async function CompetitionDetails({
   params,
 }: {

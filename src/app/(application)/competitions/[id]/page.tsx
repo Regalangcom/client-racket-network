@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getCompData } from "@/constant/getMatchData";
-import CompetitionsDetails from "@/app/components/Competitions/CompetitionsDetail";
+import CompetitionsDetails from "@/components/Competitions/CompetitionsDetail";
 export default async function CompetitionDetails({
   params,
 }: {

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Navbar from "../components/navbar/navbar";
+import Navbar from "../../components/navbar/navbar";
 
 function AccountLayout({ children }: { children: React.ReactNode }) {
   return (
