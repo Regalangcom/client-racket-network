@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getMatchDataBeforePayment } from "@/constant/getMatchData";
-import MatchRegister from "@/app/components/match/matchRegister";
+import MatchRegister from "@/components/match/matchRegister";
 
 export default async function MatchRegisterPage({
   params,
