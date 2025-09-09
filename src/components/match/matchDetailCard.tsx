@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Calendar, MapPin, Users, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import TimeSelector from "@/app/components/match/timeSelector";
+import TimeSelector from "./timeSelector";
 import Link from "next/link";
 
 interface MatchDetailCardProps {
