@@ -5,7 +5,8 @@ import { SessProvider } from "./components/sess-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "../components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";
-import Navbar from "../components/navbar/navbar";
+
+console.log("hai");
 
 const manRope = localFont({
   src: [
