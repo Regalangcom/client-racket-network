@@ -91,7 +91,7 @@ const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
 
             {/* Join button */}
             <div className="mb-8">
-              <Button className="w-full py-6 bg-green-900 text-white font-semibold rounded-md hover:bg-green-800">
+              <Button className="w-full py-6 bg-green-900 border-[#174038]  border  text-white font-semibold rounded-md hover:bg-green-800">
                 Join
               </Button>
             </div>

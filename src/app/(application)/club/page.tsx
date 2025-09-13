@@ -11,14 +11,17 @@ export default function ClubPage() {
       {/* Hapus min-h-screen atau atur ulang */}
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Sidebar w-full sm:w-[27%] */}
-        <div className=" w-full  md:w-[26%]    text-white">
+        <div className=" w-full  md:w-[26%] text-white">
           <SearchForm />
-          <div className="mt-6">
+          <div className="mt-6 md:ml-3">
+            <p className="text-black mb-2">Create your own club</p>
+            {/* <div className=""> */}
             <CreateClub />
+            {/* </div> */}
           </div>
         </div>
         {/* Main Content */}
-        <div className="flex-1 p-4 max-w-full ">
+        <div className="flex-1 max-w-full ">
           <div className="mb-4 font-semibold">
             <p className="text-3xl">Club</p>
             <p className="font-semibold mt-1">

@@ -131,7 +131,7 @@ const SearchForm: React.FC = () => {
     //   transition-all
     //   relative"
     // >
-    <section className="max-w-full md:max-w-[85%] pl-9  sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
+    <section className="max-w-full md:max-w-[85%] md:right-2  pl-9 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
       {/* <section className="max-w-full md:max-w-[60%] pl-9 mx-10 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative"> */}
       <p className="text-black font-bold mb-2">Search match</p>
       <div className="relative flex items-center space-x-2">

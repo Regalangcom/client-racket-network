@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      spacing: {
+        "76": "19rem", // jika ingin spesifik 76px
+        "40": "10rem", // Tambahkan spasi kustom
+      },
       screens: {
         xs: "375px",
         laptop: "1024px",

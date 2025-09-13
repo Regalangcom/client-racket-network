@@ -77,7 +77,7 @@ const ClubCard: React.FC = () => {
         </div>
 
         {/* Join Button */}
-        <Button className="w-full mt-4 border border-gray-400 text-gray-800 bg-transparent hover:bg-gray-100 rounded-lg">
+        <Button className="w-full mt-4 border-[#174038]  border  text-gray-800 bg-transparent hover:bg-gray-100 rounded-lg">
           Join
         </Button>
       </CardContent>
