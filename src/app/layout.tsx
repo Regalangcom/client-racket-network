@@ -7,6 +7,7 @@ import Footer from "../components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";
 
 console.log("hai");
+console.log("hai");
 
 const manRope = localFont({
   src: [
