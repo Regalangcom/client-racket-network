@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                withCredentials([usernamePassword(credentialsId: '1232c8da-3e75-4d43-ab30-4bd694a053df',
+                withCredentials([usernamePassword(credentialsId: 'token_github',
                                                   usernameVariable: 'GITHUB_USER',
                                                   passwordVariable: 'GITHUB_TOKEN'
                                                   )]) {

@@ -8,6 +8,7 @@ import ReduxProvider from "@/redux/redux-provider";
 
 console.log("hai");
 console.log("hai");
+console.log("haiii");
 
 const manRope = localFont({
   src: [
