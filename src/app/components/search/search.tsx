@@ -6,6 +6,8 @@ import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import FilterSection, { FilterOption } from "./filterSection";
 import { cn } from "@/lib/utils";
+import { filter } from "@/public";
+import Image from "next/image";
 
 // Separate component for filter options
 const FilterOptions = ({ onClose }: { onClose: () => void }) => {
@@ -129,9 +131,9 @@ const SearchForm: React.FC = () => {
     //   transition-all
     //   relative"
     // >
-    <section className="max-w-full mt-3 md:max-w-[80%] pl-9 mx-10 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
+    <section className="max-w-full md:max-w-[85%] pl-9  sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
       {/* <section className="max-w-full md:max-w-[60%] pl-9 mx-10 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative"> */}
-      <p className="text-black font-bold mb-4">Search match</p>
+      <p className="text-black font-bold mb-2">Search match</p>
       <div className="relative flex items-center space-x-2">
         <div className="flex-grow relative">
           <Input
@@ -150,10 +152,20 @@ const SearchForm: React.FC = () => {
         </div>
         <button
           type="button"
-          className="bg-white border rounded-md p-2"
+          className="bg-white border rounded-md p-2 w-12"
           onClick={togglePopup}
         >
-          <Filter size={13} className="text-black" />
+          <span className="">
+            <Image
+              src={filter}
+              width={18}
+              height={18}
+              alt="filter"
+              className="mx-auto"
+              priority
+            />
+          </span>
+          {/* <Filter size={13} className="text-black" /> */}
         </button>
       </div>
 

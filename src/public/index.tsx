@@ -18,8 +18,10 @@ import star from "@/public/assets/icons/star-1.svg";
 import security from "@/public/assets/icons/lock.svg";
 import notification from "@/public/assets/icons/bell.svg";
 import language from "@/public/assets/icons/lang.svg";
+import filter from "@/public/assets/icons/mi_filter.svg";
 
 export {
+  filter,
   security,
   notification,
   language,
