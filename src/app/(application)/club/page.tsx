@@ -11,7 +11,7 @@ export default function ClubPage() {
       {/* Hapus min-h-screen atau atur ulang */}
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Sidebar w-full sm:w-[27%] */}
-        <div className=" w-full  md:w-[26%] text-white">
+        <div className="w-full md:w-[26%] text-white">
           <SearchForm />
           <div className="mt-6 md:ml-3 ml:0">
             <p className="text-black mb-2">Create your own club test</p>

@@ -6,16 +6,16 @@ import CompetitionsSearch from "../../../components/Competitions/compSearch";
 
 export default function CompetitionsPage() {
   return (
-    <section className="p-4  container-lg max-w-screen-2xl mx-auto">
+    <section className="p-4 container-lg max-w-screen-2xl mx-auto">
       {" "}
       {/* Hapus min-h-screen atau atur ulang */}
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Sidebar sm:w-[27%] */}
-        <div className="w-full  sm:w-[26%] text-white mt-3">
+        <div className="w-full sm:w-[26%] text-white mt-3">
           <CompetitionsSearch />
         </div>
         {/* Main Content */}
-        <div className="flex-1 p-4 max-w-full ">
+        <div className="flex-1  max-w-full">
           <div className="mb-4 font-semibold">
             {/* filter */}
             <CompetitionFilter />

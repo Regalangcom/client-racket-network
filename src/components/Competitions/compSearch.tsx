@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 const CompetitionsSearch: React.FC = () => {
   return (
     <>
-      <section className="max-w-full mt-3 md:max-w-[80%] pl-9 mx-10 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
+      <section className="max-w-full mt-3 md:max-w-[85%] md:right-2 md:ml-3 ml-0 sm:mx-5 h-32 flex flex-col bg-background-card py-8 px-8 rounded-xl transition-all relative">
         {/* <section className="max-w-full sm:max-w-[70%] pl-9  mx-10 h-32 flex flex-col  bg-background-card py-8 px-8 rounded-xl transition-all"> */}
         <p className="text-black font-bold mb-4">Search Competitions</p>
         <div className="relative">
