@@ -85,7 +85,7 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
         {/* Times */}
         <TimeSelector times={times} />
 
-        {/* Join button */}
+        {/* Join buttons */}
         <Link href={`/match/1/join-match`}>
           <Button className="w-full py-3 bg-background-button-rc text-white font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
             Join
