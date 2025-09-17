@@ -13,7 +13,7 @@ export default async function CompetitionDetails({
   if (!competitions) return notFound();
 
   return (
-    <section className="p-4 sm:p-8 container mx-auto">
+    <section className="sm:p-8 w-full container-lg mx-auto">
       <CompetitionsDetails
         title={competitions.title}
         logo={competitions.logo}

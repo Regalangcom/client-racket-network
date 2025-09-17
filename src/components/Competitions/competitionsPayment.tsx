@@ -3,16 +3,24 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ChevronDown, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
+import { Button } from "../ui/button";
 
 // Skema validasi menggunakan Zod
 const competitionPaymentSchema = z.object({
   email: z.email("Email tidak valid"),
   name: z.string().min(2, "Nama minimal 2 karakter"),
   phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
-  level: z.enum(["beginner", "expert"], {
+  level: z.enum(["Beginner", "Intermediate", "Advanced"], {
     error: "Pilih level yang valid",
   }),
 
@@ -31,7 +39,7 @@ interface MatchRegisterProps {
 }
 
 const CompetitionPayment: React.FC<MatchRegisterProps> = ({
-  title,
+  // title,
   date,
   location,
   price,
@@ -43,11 +51,14 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(competitionPaymentSchema),
   });
 
+  // pantau field tertentu, misalnya "name"
+  const nameValue = watch("name");
   const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {
       // Proses pendaftaran
@@ -59,22 +70,22 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="container-lg mx-auto max-w-full px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-6">
         {/* Kolom Kiri - Match Information */}
-        <div className="space-y-6">
+        <div className="space-y-6 mb-8">
           {/* Tombol Kembali untuk Mobile */}
           {isMobile && (
-            <div className="flex items-center space-x-4 mb-4 bg-gray-100 p-3 rounded-lg">
-              <button
+            <div className=" flex gap-3 relative w-full ">
+              <span
                 onClick={() => router.back()}
                 className="flex items-center text-gray-600 hover:text-gray-800"
               >
                 <ArrowLeft className="h-6 w-6" />
-              </button>
-              <p className="text-2xl font-bold flex-grow">
+              </span>
+              <span className="text-2xl font-bold flex-grow">
                 Competition details
-              </p>
+              </span>
             </div>
           )}
 
@@ -83,8 +94,8 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
             <p className="text-3xl font-bold mb-4">Competition details</p>
           )}
           {/* Card Match Detail */}
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-xl font-bold mb-4">{title}</h2>
+          <div className="bg-white">
+            {/* <h2 className="text-xl font-bold mb-4">{title}</h2> */}
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-gray-600">
                 <Calendar className="w-5 h-5 text-green-600" />
@@ -96,24 +107,22 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Calendar className="w-5 h-5 text-green-600" />
-                <strong>Harga:</strong> {price}
-              </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <Calendar className="w-5 h-5 text-green-600" />
                 <strong>Klub:</strong> {club}
               </div>
             </div>
           </div>
-
-          {/* Card Waktu Pertandingan */}
         </div>
 
         {/* Kolom Kanan - Registrasi & Pembayaran */}
         <div className="space-y-6">
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Card Informasi Pendaftaran */}
-            <div className="bg-white rounded-2xl shadow p-6 mb-6">
-              <h3 className="text-lg font-semibold mb-4">Informations</h3>
+            <div className="bg-white ">
+              {/* Card Waktu Pertandingan */}
+              <div className="py-2">
+                <div className="relative bg-gray-200 py-[4px] px-6"></div>
+              </div>
+              <h3 className="text-lg font-semibold mb-4 mt-3">Informations</h3>
               <div className="space-y-4">
                 <div>
                   <input
@@ -157,17 +166,16 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
 
                 {/* Dropdown Level */}
                 <div className="relative">
-                  <select
-                    {...register("level")}
-                    className="w-full p-2 border rounded appearance-none"
-                  >
-                    <option value="">Level</option>
-                    <option value="beginner">Beginner</option>
-                    <option value="expert">Expert</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <ChevronDown className="h-5 w-5" />
-                  </div>
+                  <Select {...register("level")}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select skill level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Beginner">Beginner</SelectItem>
+                      <SelectItem value="Intermediate">Intermediate</SelectItem>
+                      <SelectItem value="Advanced">Advanced</SelectItem>
+                    </SelectContent>
+                  </Select>
                   {errors.level && (
                     <p className="text-red-500 text-sm mt-1">
                       {errors.level.message}
@@ -178,7 +186,7 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
             </div>
 
             {/* Card Promo */}
-            <div className="bg-white rounded-2xl shadow p-6 mb-6">
+            <div className="bg-white mb-2 mt-4">
               <h3 className="text-lg font-semibold mb-4">Kode Promo</h3>
               <input
                 type="text"
@@ -188,19 +196,25 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
             </div>
 
             {/* Card Detail Pembayaran */}
-            <div className="bg-white rounded-2xl shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">Detail Pembayaran</h3>
+            <div className="bg-white rounded-2xl shadow">
+              <div className="py-8">
+                <div className="relative bg-gray-200 py-[4px] px-6"></div>
+              </div>
+              <h3 className="text-lg font-semibold mb-4">Payment detail</h3>
               <div className="flex justify-between mb-4">
                 <span>Total Biaya:</span>
-                <span className="font-bold">Rp {price}</span>
+                <span className="font-bold">{price}</span>
               </div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-background-button-rc text-white p-3 rounded hover:bg-green-700 transition-colors disabled:opacity-50"
-              >
-                {isSubmitting ? "Prosesing..." : "Continue"}
-              </button>
+              <div className="mt-[100px] grid min-h-[200px] items-start">
+                <Button
+                  type="submit"
+                  disabled={!nameValue}
+                  // disabled={isSubmitting}
+                  className="w-full bg-background-button-rc text-white font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2"
+                >
+                  {isSubmitting ? "Prosesing..." : "Continue"}
+                </Button>
+              </div>
             </div>
           </form>
         </div>

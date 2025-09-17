@@ -18,7 +18,7 @@ export default async function MatchDetail({
   }
 
   return (
-    <section className="p-4 sm:p-8 container mx-auto">
+    <section className="sm:p-8 md:container-lg ">
       <MatchDetailCard
         title={match.title}
         logo={match.logo}

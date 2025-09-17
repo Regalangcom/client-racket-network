@@ -17,7 +17,7 @@ export default async function CompetitonsPaymentPage({
   }
 
   return (
-    <section className="p-4 sm:p-8 container mx-auto">
+    <section className="sm:p-8 md:container">
       <CompetitionPayment
         title={match.title}
         times={match.times}

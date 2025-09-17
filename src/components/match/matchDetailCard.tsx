@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
-import { Calendar, MapPin, Users, Tag } from "lucide-react";
+import { Calendar, MapPin, Users, Tag, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TimeSelector from "./timeSelector";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useWindowDimension } from "@/hooks/useWindowdimension";
 
 interface MatchDetailCardProps {
   title: string;
@@ -25,6 +29,9 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   description,
   times,
 }) => {
+  const router = useRouter();
+  const isMobile = useWindowDimension();
+
   return (
     <div className="flex flex-col sm:flex-row gap-6 sm:gap-10">
       {/* Left side image */}
@@ -34,10 +41,21 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
           alt={`${title} logo`}
           width={600}
           height={400}
-          className="rounded-2xl object-cover w-full h-full"
+          className=" object-cover w-full h-[190px] md:h-auto"
           priority
         />
       </div>
+
+      {isMobile && (
+        <div className="p-3 absolute mt-2">
+          <span
+            className=" text-white hover:text-gray-800"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </span>
+        </div>
+      )}
 
       {/* Right side content */}
       <div className="w-full sm:w-[60%] bg-white p-6 rounded-3xl shadow-md">

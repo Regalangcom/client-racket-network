@@ -17,7 +17,7 @@ export default async function MatchRegisterPage({
   }
 
   return (
-    <section className="p-4 sm:p-8 container mx-auto">
+    <section className="sm:p-8 md:container">
       <MatchRegister
         title={match.title}
         times={match.times}

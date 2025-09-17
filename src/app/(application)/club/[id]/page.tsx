@@ -13,7 +13,7 @@ export default async function CompetitionDetails({
   if (!club) return notFound();
 
   return (
-    <section className="p-4 sm:p-8 container mx-auto">
+    <section className="sm:p-8  mx-auto">
       <ClubProfileDetails
         title={club.title}
         genre={club.genre}
