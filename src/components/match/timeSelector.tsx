@@ -13,11 +13,11 @@ export default function TimeSelector({ times }: { times: string[] }) {
           <button
             key={idx}
             onClick={() => setSelected(time)}
-            className={`px-4 py-1 font-bold rounded-lg border-2 transition 
+            className={`px-3  font-bold rounded-full border-2 transition 
               ${
                 isActive
-                  ? "bg-[#B5D9D2] border-[#4A918E] text-black"
-                  : "bg-white border-gray-300 text-gray-700 hover:bg-gray-100"
+                  ? "bg-[#B5D9D2] border-[#4A918E] text-black text-sm"
+                  : "bg-gray-100 border-gray-300 text-gray-700 text-sm hover:bg-gray-100"
               }`}
           >
             {time}
