@@ -63,7 +63,9 @@ const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
       )}
 
       <div
-        className={`container mx-auto px-4 ${isMobile ? "pt-16 pb-8" : "py-4"}`}
+        className={`container mx-auto md:px-4 ${
+          isMobile ? "pt-16 pb-8" : "py-4"
+        }`}
       >
         {isMobile ? (
           /* Mobile Layout */
@@ -90,8 +92,8 @@ const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
             </div>
 
             {/* Join button */}
-            <div className="mb-8">
-              <Button className="w-full py-6 bg-green-900 border-[#174038]  border  text-white font-semibold rounded-md hover:bg-green-800">
+            <div className="mb-8 w-full flex justify-center ">
+              <Button className="py-3 w-1/3 bg-green-900 border-[#174038]  border  text-[#E1FFA0] font-semibold rounded-md hover:bg-green-800">
                 Join
               </Button>
             </div>

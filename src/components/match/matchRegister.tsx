@@ -1,9 +1,9 @@
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Calendar, MapPin, Users, ArrowLeft, Timer } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -94,19 +94,23 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
           {/* Card Match Detail */}
           <div className="bg-white rounded-2xl ">
             <h2 className="text-xl font-bold mb-4">{title}</h2>
-            <div className="space-y-2">
-              <p>
-                <strong>Tanggal:</strong> {date}
-              </p>
-              <p>
-                <strong>Lokasi:</strong> {location}
-              </p>
-              <p>
-                <strong>Harga:</strong> {price}
-              </p>
-              <p>
-                <strong>Klub:</strong> {club}
-              </p>
+            <div className="space-y-2 mb-4">
+              <div className="flex items-center mb-6 gap-2 text-gray-600">
+                <Calendar className="w-5 h-5 text-green-600" />
+                <span className="text-xl">{date}</span>
+              </div>
+              <div className="flex items-center mb-6 gap-2 text-gray-600">
+                <MapPin className="w-5 h-5 text-green-600" />
+                <span className="text-xl">{location}</span>
+              </div>
+              <div className="flex items-center mb-6 gap-2 text-gray-600">
+                <MapPin className="w-5 h-5 text-green-600" />
+                <span className="text-xl">{price}</span>
+              </div>
+              <div className="flex items-center mb-6 gap-2 text-gray-600">
+                <Users className="w-5 h-5 text-green-600" />
+                <span className="text-xl">{club}</span>
+              </div>
             </div>
           </div>
 
@@ -115,7 +119,10 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
             <h3 className="text-lg font-semibold mb-4">Waktu Pertandingan</h3>
             <div className="space-y-2">
               {times.map((time, index) => (
-                <p key={index}>{time}</p>
+                <p className="flex items-center gap-2" key={index}>
+                  <Timer className="w-5 h-5 text-green-600" />
+                  {time}
+                </p>
               ))}
             </div>
           </div>

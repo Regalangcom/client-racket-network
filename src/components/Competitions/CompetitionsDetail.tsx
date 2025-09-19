@@ -123,7 +123,7 @@ const CompetitionsDetails: React.FC<CompetitonsDetailCardProps> = ({
         </div>
         {/* Join button */}
         <Link href={`/competitions/1/comp-payment`}>
-          <Button className="w-full py-3 bg-background-button-rc text-white font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
+          <Button className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
             Register
           </Button>
         </Link>

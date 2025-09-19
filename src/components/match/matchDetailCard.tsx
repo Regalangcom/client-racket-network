@@ -87,7 +87,7 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 
         {/* Join buttons */}
         <Link href={`/match/1/join-match`}>
-          <Button className="w-full py-3 bg-background-button-rc text-white font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
+          <Button className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
             Join
           </Button>
         </Link>

@@ -210,7 +210,7 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
                   type="submit"
                   disabled={!nameValue}
                   // disabled={isSubmitting}
-                  className="w-full bg-background-button-rc text-white font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2"
+                  className="w-full bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2"
                 >
                   {isSubmitting ? "Prosesing..." : "Continue"}
                 </Button>

@@ -9,6 +9,7 @@ interface NavItemProps {
   label: string;
   href?: string;
   icon?: StaticImageData;
+  activeIcon?: StaticImageData;
   button?: boolean;
   active?: boolean;
 }
@@ -17,6 +18,7 @@ const NavItem: React.FC<NavItemProps> = ({
   label,
   href = "#",
   icon,
+  activeIcon,
   button,
 }) => {
   const router = useRouter();
@@ -28,21 +30,16 @@ const NavItem: React.FC<NavItemProps> = ({
       ? pathname === href || (href !== "/" && pathname.startsWith(href))
       : false;
 
-  // const handleNavigation = () => {
-  //   // Pastikan hanya navigasi untuk non-button item
-  //   if (!button) {
-  //     router.push(href);
-  //   }
-  // };
-
   const handleNavigation = () => {
     if (!button && href && href !== "#") {
       router.push(href);
     }
   };
 
-  console.log("Current Pathname:", pathname);
-  console.log("Navigating to:", href);
+  const displayIcons = isActive && activeIcon ? activeIcon : icon;
+
+  // console.log("Current Pathname:", pathname);
+  // console.log("Navigating to:", href);
 
   return (
     <div
@@ -63,7 +60,7 @@ const NavItem: React.FC<NavItemProps> = ({
 
       // onClick={() => !button && router.push(href)}
     >
-      {icon && (
+      {displayIcons && (
         <div
           className={`
             flex 
@@ -75,9 +72,8 @@ const NavItem: React.FC<NavItemProps> = ({
             ${isActive ? "opacity-100" : "opacity-30"}
           `}
         >
-          {/* <div className="flex justify-center items-center mb-1 sm:hidden w-full"> */}
           <Image
-            src={icon}
+            src={displayIcons}
             alt={label}
             width={23}
             height={23}

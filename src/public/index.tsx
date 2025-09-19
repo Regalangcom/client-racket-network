@@ -19,8 +19,34 @@ import security from "@/public/assets/icons/lock.svg";
 import notification from "@/public/assets/icons/bell.svg";
 import language from "@/public/assets/icons/lang.svg";
 import filter from "@/public/assets/icons/mi_filter.svg";
+import tenis from "@/public/assets/icons/bola.svg";
+import padel from "@/public/assets/icons/tenis.svg";
+import badmindton from "@/public/assets/icons/bultang.svg";
+
+// ========================
+// ICON ACTIVE
+// ========================
+import tenisActive from "@/public/assets/icons/tennis-green.svg";
+import padelActive from "@/public/assets/icons/padel-green.svg";
+import badmindtonActive from "@/public/assets/icons/badmindton-green.svg";
+import matchActive from "@/public/assets/icons/match-active.svg";
+import clubActive from "@/public/assets/icons/match-active.svg";
+import homeActive from "@/public/assets/icons/home-active.svg";
+import compeActive from "@/public/assets/icons/compe-active.svg";
+import accountActive from "@/public/assets/icons/account-active.svg";
 
 export {
+  matchActive,
+  homeActive,
+  compeActive,
+  clubActive,
+  accountActive,
+  tenisActive,
+  padelActive,
+  badmindtonActive,
+  tenis,
+  padel,
+  badmindton,
   filter,
   security,
   notification,
