@@ -58,7 +58,7 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
       )}
 
       {/* Right side content */}
-      <div className="w-full sm:w-[60%] bg-white p-6 rounded-3xl shadow-md">
+      <div className="w-full sm:w-[60%] bg-white p-6 rounded-3xl">
         <h2 className="text-3xl font-bold mb-4">{title}</h2>
 
         <div className="space-y-2 mb-4">
@@ -80,17 +80,20 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
           </div>
         </div>
 
+        <h2 className="text-gray-700 text-3xl mb-4">Description</h2>
         <p className="text-gray-700 mb-4">{description}</p>
 
         {/* Times */}
         <TimeSelector times={times} />
 
         {/* Join buttons */}
-        <Link href={`/match/1/join-match`}>
-          <Button className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
-            Join
-          </Button>
-        </Link>
+        <div className="mt-[100px] grid min-h-[200px] items-start">
+          <Link href={`/match/1/join-match`}>
+            <Button className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
+              Join
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

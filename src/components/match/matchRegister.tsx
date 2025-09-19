@@ -95,21 +95,21 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
           <div className="bg-white rounded-2xl ">
             <h2 className="text-xl font-bold mb-4">{title}</h2>
             <div className="space-y-2 mb-4">
-              <div className="flex items-center mb-6 gap-2 text-gray-600">
+              <div className="flex items-center  gap-2 text-gray-600">
                 <Calendar className="w-5 h-5 text-green-600" />
-                <span className="text-xl">{date}</span>
+                <span className="text-md font-semibold">{date}</span>
               </div>
               <div className="flex items-center mb-6 gap-2 text-gray-600">
                 <MapPin className="w-5 h-5 text-green-600" />
-                <span className="text-xl">{location}</span>
+                <span className="text-md font-semibold">{location}</span>
               </div>
               <div className="flex items-center mb-6 gap-2 text-gray-600">
                 <MapPin className="w-5 h-5 text-green-600" />
-                <span className="text-xl">{price}</span>
+                <span className="text-md font-semibold">{price}</span>
               </div>
               <div className="flex items-center mb-6 gap-2 text-gray-600">
                 <Users className="w-5 h-5 text-green-600" />
-                <span className="text-xl">{club}</span>
+                <span className="text-md font-semibold">{club}</span>
               </div>
             </div>
           </div>
@@ -154,7 +154,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                   <input
                     {...register("name")}
                     type="text"
-                    placeholder="Nama Lengkap"
+                    placeholder="Name"
                     className="w-full p-2 border rounded"
                   />
                   {errors.name && (
@@ -167,7 +167,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                   <input
                     {...register("phoneNumber")}
                     type="text"
-                    placeholder="Nomor Telepon"
+                    placeholder="Phone no"
                     className="w-full p-2 border rounded"
                   />
                   {errors.phoneNumber && (
@@ -203,17 +203,17 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
               <h3 className="text-lg font-semibold mb-4">Kode Promo</h3>
               <input
                 type="text"
-                placeholder="Masukkan Kode Referral"
+                placeholder="Referral code"
                 className="w-full p-2 border rounded"
               />
             </div>
 
             {/* Card Detail Pembayaran */}
-            <div className="bg-white rounded-2xl shadow">
+            <div className="bg-white rounded-2xl ">
               <h3 className="text-lg font-semibold mb-4">Detail Pembayaran</h3>
               <div className="flex justify-between mb-4">
                 <span>Total Biaya:</span>
-                <span className="font-bold">Rp {price}</span>
+                <span className="font-bold">{price}</span>
               </div>
               <div className="mt-[100px] grid min-h-[200px] items-start">
                 <Button
