@@ -47,7 +47,7 @@ const CompetitionsCard: React.FC = () => {
           }`}
         >
           <MapPin size={16} className="shrink-0" />
-          <span>Jakarta</span>
+          <span>Jakartah</span>
         </div>
 
         {/* Arena */}
@@ -68,7 +68,7 @@ const CompetitionsCard: React.FC = () => {
               : "flex items-center mb-5  py-2 w-28 bg-[#B5D9D2] rounded-full  text-sm text-gray-700 gap-2"
           }`}
         >
-          <span className="mx-3">5 Sport Leave</span>
+          <span className="mx-3">5 Sport Left</span>
         </div>
 
         {/* see details Button */}
