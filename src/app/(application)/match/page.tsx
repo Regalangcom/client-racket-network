@@ -13,7 +13,7 @@ export default function MatchPage() {
       <div className="flex flex-col md:flex-row gap-4">
         {/* Sidebar w-1/4 */}
         {/* xl:w-[20%] */}
-        <div className="w-full relative md:w-[34%] text-white">
+        <div className="w-full relative md:w-[34%] text-white mb-6">
           {/* <div className=" w-full  md:w-[26%]  text-white"> */}
           <SearchForm />
         </div>

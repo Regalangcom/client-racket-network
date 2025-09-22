@@ -1,7 +1,8 @@
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Calendar, MapPin, Users, ArrowLeft, Timer } from "lucide-react";
+import { ArrowLeft, Timer } from "lucide-react";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,8 @@ import {
 } from "@/components/ui/select";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { Button } from "../ui/button";
+import Image, { StaticImageData } from "next/image";
+import { reviews, maps, accounts, prices } from "@/public";
 
 // Skema validasi menggunakan Zod
 const registrationSchema = z.object({
@@ -29,19 +32,22 @@ const registrationSchema = z.object({
 type RegistrationFormData = z.infer<typeof registrationSchema>;
 
 interface MatchRegisterProps {
-  title: string;
-  date: string;
   location: string;
+  time: string;
   price: string;
   club: string;
-  times: string[];
 }
 
+type DetailItem = {
+  icon: StaticImageData;
+  label: string;
+};
+
 const MatchRegister: React.FC<MatchRegisterProps> = ({
-  title,
-  times,
-  date,
   location,
+  // title,
+  time,
+  // times,
   price,
   club,
 }) => {
@@ -69,6 +75,14 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     }
   };
 
+  const details: DetailItem[] = [
+    { icon: accounts, label: "Women only" },
+    { icon: maps, label: location },
+    { icon: prices, label: price },
+    { icon: reviews, label: club },
+    { icon: reviews, label: time },
+  ];
+
   return (
     <div className="container-lg mx-auto max-w-full px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -81,7 +95,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                 onClick={() => router.back()}
                 className="flex items-center text-gray-600 hover:text-gray-800"
               >
-                <ArrowLeft className="h-6 w-6" />
+                <ArrowLeft className="h-5 w-5" />
               </button>
               <p className="text-2xl font-bold flex-grow">Match details</p>
             </div>
@@ -92,39 +106,26 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
             <p className="text-3xl font-bold mb-4">Match details</p>
           )}
           {/* Card Match Detail */}
-          <div className="bg-white rounded-2xl ">
-            <h2 className="text-xl font-bold mb-4">{title}</h2>
+          <div className="bg-white rounded-2xl">
             <div className="space-y-2 mb-4">
-              <div className="flex items-center  gap-2 text-gray-600">
-                <Calendar className="w-5 h-5 text-green-600" />
-                <span className="text-md font-semibold">{date}</span>
-              </div>
-              <div className="flex items-center mb-6 gap-2 text-gray-600">
-                <MapPin className="w-5 h-5 text-green-600" />
-                <span className="text-md font-semibold">{location}</span>
-              </div>
-              <div className="flex items-center mb-6 gap-2 text-gray-600">
-                <MapPin className="w-5 h-5 text-green-600" />
-                <span className="text-md font-semibold">{price}</span>
-              </div>
-              <div className="flex items-center mb-6 gap-2 text-gray-600">
-                <Users className="w-5 h-5 text-green-600" />
-                <span className="text-md font-semibold">{club}</span>
-              </div>
+              {details.map((item, index) => (
+                <div key={index} className="flex items-center gap-4 text-black">
+                  <Image
+                    src={item.icon}
+                    alt={item.label}
+                    width={14}
+                    height={15}
+                    className="w-4 h-4"
+                  />
+                  <p className="text-md font-bold">{item.label}</p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Card Waktu Pertandingan */}
-          <div className="bg-white">
-            <h3 className="text-lg font-semibold mb-4">Waktu Pertandingan</h3>
-            <div className="space-y-2">
-              {times.map((time, index) => (
-                <p className="flex items-center gap-2" key={index}>
-                  <Timer className="w-5 h-5 text-green-600" />
-                  {time}
-                </p>
-              ))}
-            </div>
+          {/* SEPARATOR */}
+          <div className="py-4 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+            <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
           </div>
         </div>
 
@@ -133,9 +134,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Card Informasi Pendaftaran */}
             <div className="bg-white rounded-2xl mb-6">
-              <h3 className="text-lg font-semibold mb-4">
-                Informasi Pendaftaran
-              </h3>
+              <h3 className="text-2xl font-semibold mb-4">Information</h3>
               <div className="space-y-4">
                 <div>
                   <input
@@ -198,9 +197,14 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
               </div>
             </div>
 
+            {/* SEPARATOR */}
+            <div className="py-10 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+              <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
+            </div>
+
             {/* Card Promo */}
             <div className="bg-white rounded-2xl  mb-6">
-              <h3 className="text-lg font-semibold mb-4">Kode Promo</h3>
+              <h3 className="text-2xl font-semibold mb-4">Promo</h3>
               <input
                 type="text"
                 placeholder="Referral code"
@@ -208,9 +212,14 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
               />
             </div>
 
+            {/* SEPARATOR */}
+            <div className="py-10 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+              <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
+            </div>
+
             {/* Card Detail Pembayaran */}
             <div className="bg-white rounded-2xl ">
-              <h3 className="text-lg font-semibold mb-4">Detail Pembayaran</h3>
+              <h3 className="text-2xl font-semibold mb-4">Payment Detail</h3>
               <div className="flex justify-between mb-4">
                 <span>Total Biaya:</span>
                 <span className="font-bold">{price}</span>

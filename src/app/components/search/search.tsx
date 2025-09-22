@@ -190,7 +190,7 @@ const SearchForm: React.FC = () => {
             <div
               className={cn(
                 "bg-white rounded-t-2xl shadow-2xl", // Rounded top corners
-                "md:max-w-6xl w-[440px] mx-auto p-6",
+                "md:max-w-6xl w-[400px] mx-auto p-6",
                 "md:h-[60vh] sm:h-[80vh] overflow-y-auto"
               )}
               // max-h-[80vh]

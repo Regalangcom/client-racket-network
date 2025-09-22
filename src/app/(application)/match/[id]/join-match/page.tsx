@@ -19,9 +19,7 @@ export default async function MatchRegisterPage({
   return (
     <section className="sm:p-8 md:container">
       <MatchRegister
-        title={match.title}
-        times={match.times}
-        date={match.date}
+        time={match.time}
         location={match.location}
         price={match.price}
         club={match.club}

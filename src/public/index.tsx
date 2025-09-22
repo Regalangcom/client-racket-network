@@ -22,6 +22,10 @@ import filter from "@/public/assets/icons/mi_filter.svg";
 import tenis from "@/public/assets/icons/bola.svg";
 import padel from "@/public/assets/icons/tenis.svg";
 import badmindton from "@/public/assets/icons/bultang.svg";
+import accounts from "@/public/assets/icons/accounts.svg";
+import reviews from "@/public/assets/icons/reviews.svg";
+import prices from "@/public/assets/icons/prices.png";
+import maps from "@/public/assets/icons/maps.svg";
 
 // ========================
 // ICON ACTIVE
@@ -36,6 +40,10 @@ import compeActive from "@/public/assets/icons/compe-active.svg";
 import accountActive from "@/public/assets/icons/account-active.svg";
 
 export {
+  accounts,
+  reviews,
+  maps,
+  prices,
   matchActive,
   homeActive,
   compeActive,

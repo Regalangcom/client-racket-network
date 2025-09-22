@@ -1,12 +1,14 @@
 "use client";
 
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Calendar, MapPin, Users, Tag, ArrowLeft } from "lucide-react";
+import { reviews, maps, accounts, prices } from "@/public";
 import { Button } from "@/components/ui/button";
 import TimeSelector from "./timeSelector";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
+import React from "react";
 
 interface MatchDetailCardProps {
   title: string;
@@ -18,6 +20,12 @@ interface MatchDetailCardProps {
   description: string;
   times: string[];
 }
+
+type DetailItem = {
+  icon: StaticImageData;
+  label: string;
+  hasTimeSelector?: boolean;
+};
 
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   title,
@@ -31,6 +39,13 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 }) => {
   const router = useRouter();
   const isMobile = useWindowDimension();
+
+  const details: DetailItem[] = [
+    { icon: accounts, label: "Women only", hasTimeSelector: true },
+    { icon: maps, label: location },
+    { icon: prices, label: price },
+    { icon: reviews, label: club },
+  ];
 
   return (
     <div className="flex flex-col sm:flex-row md:gap-6 sm:gap-10">
@@ -62,31 +77,35 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
         <h2 className="text-3xl font-bold mb-2">{title}</h2>
 
         <div className="space-y-2 mb-4">
-          <div className="flex items-center gap-3 mb-5 text-gray-600">
-            <Calendar className="w-5 h-5 text-green-600" />
-            <span>Women only</span>
-          </div>
-          {/* timer */}
-          <p className="text-xl font-semibold">Select your time</p>
-          <div className="flex items-center gap-3 text-gray-600">
-            {/* Times */}
-            <TimeSelector times={times} />
-          </div>
-          <div className="flex items-center gap-3 text-gray-600">
-            <MapPin className="w-5 h-5 text-green-600" />
-            <span>{location}</span>
-          </div>
-          <div className="flex items-center gap-3 text-gray-600">
-            <Tag className="w-5 h-5 text-green-600" />
-            <span>{price}</span>
-          </div>
-          <div className="flex items-center gap-3 text-gray-600">
-            <Users className="w-5 h-5 text-green-600" />
-            <span>{club}</span>
-          </div>
+          {details.map((detail, index) => (
+            <React.Fragment key={index}>
+              <div className="flex items-center gap-3 rounded-3xl mb-5 ">
+                <Image
+                  src={detail.icon}
+                  alt={detail.label}
+                  width={14}
+                  height={15}
+                  className="w-4 h-4"
+                />
+                <span className="text-black">{detail.label}</span>
+              </div>
+
+              {/* Tambahkan TimeSelector setelah "Women only" */}
+              {detail.hasTimeSelector && (
+                <>
+                  <p className="text-xl font-semibold mt-2">Select your time</p>
+                  <div className="flex items-center gap-3 text-gray-600 mb-2">
+                    <TimeSelector times={times} />
+                  </div>
+                </>
+              )}
+            </React.Fragment>
+          ))}
         </div>
-        <div className="py-3 w-full relative justify-center">
-          <div className="relative bg-gray-300 py-[4px] px-6"></div>
+
+        {/* SEPARATOR */}
+        <div className="py-3 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+          <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
         </div>
 
         <h2 className="text-gray-700 text-xl mb-1 mt-2 font-semibold">

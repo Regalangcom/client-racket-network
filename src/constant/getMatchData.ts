@@ -81,13 +81,11 @@ export async function getProfileClubData(id: string) {
 export async function getMatchDataBeforePayment(id: string) {
   const dummyData: Record<string, any> = {
     "1": {
-      title: "Jaksel Cup - Women Single", // Tambahkan title
-      date: "07 August - 20 August 2025",
+      time: "20:00 - 23:00",
       location: "Smes Sport Bintaro",
       price: "Rp 100.000",
       genre: "Tennis",
       club: "Green Club",
-      times: ["18:00 - 19:00", "20:00 - 21:00"],
     },
   };
 
