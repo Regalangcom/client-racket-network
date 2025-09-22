@@ -12,6 +12,8 @@ pipeline {
 
     environment {
         DEPLOY_PATH = '/var/www/html/client-racket-network'
+        FOONTE_API_KEY = credentials('FONNTE_TOKEN') // simpan token di Jenkins Credentials
+        TARGET_NUMBER  = "6282111648584" // lebih dari 1, pisahkan pakai koma
         REPO_URL = 'https://github.com/Regalangcom/client-racket-network.git'
         VPS_HOST = '31.97.222.232'
     }
@@ -82,12 +84,22 @@ pipeline {
         }
     }
 
-    post {
+     post {
         success {
-            echo 'Deployment successful!'
+            sh """
+              curl -X POST https://api.fonnte.com/send \
+                -H "Authorization: $FOONTE_API_KEY" \
+                -F "target=$TARGET_NUMBER" \
+                -F "message=✅ Deploy Sukses!\\n\\n📌 Job: ${JOB_NAME}\\n📦 Build: #${BUILD_NUMBER}\\n🌿 Branch: ${BRANCH_NAME}\\n🔗 Detail: ${BUILD_URL}"
+            """
         }
         failure {
-            echo 'Deployment failed!'
+            sh """
+              curl -X POST https://api.fonnte.com/send \
+                -H "Authorization: $FOONTE_API_KEY" \
+                -F "target=$TARGET_NUMBER" \
+                -F "message=❌ Deploy Gagal!\\n\\n📌 Job: ${JOB_NAME}\\n📦 Build: #${BUILD_NUMBER}\\n🌿 Branch: ${BRANCH_NAME}\\n🔗 Detail: ${BUILD_URL}"
+            """
         }
     }
 }
