@@ -90,7 +90,7 @@ pipeline {
               curl -X POST https://api.fonnte.com/send \
                 -H "Authorization: $FOONTE_API_KEY" \
                 -F "target=$TARGET_NUMBER" \
-                -F "message=✅ Deploy Sukses!\\n\\n📌 Job: ${JOB_NAME}\\n📦 Build: #${BUILD_NUMBER}\\n🌿 Branch: ${BRANCH_NAME}\\n🔗 Detail: ${BUILD_URL}"
+                -F "message=✅ Deploy Sukses!\\n\\n📌"
             """
         }
         failure {
@@ -98,7 +98,7 @@ pipeline {
               curl -X POST https://api.fonnte.com/send \
                 -H "Authorization: $FOONTE_API_KEY" \
                 -F "target=$TARGET_NUMBER" \
-                -F "message=❌ Deploy Gagal!\\n\\n📌 Job: ${JOB_NAME}\\n📦 Build: #${BUILD_NUMBER}\\n🌿 Branch: ${BRANCH_NAME}\\n🔗 Detail: ${BUILD_URL}"
+                -F "message=❌ Deploy Gagal!\\n\\n📌"
             """
         }
     }

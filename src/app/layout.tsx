@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/sonner";
 import Footer from "../components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";
 
+console.log("hhe");
+
 const manRope = localFont({
   src: [
     {
