@@ -35,7 +35,7 @@ export async function getCompData(id: string) {
       organized: "Organized by GRC",
       logo: sampeImage,
       contact_avatar: sampeImage,
-      date: "30 April, 19:15",
+      date: "07 August - 20 August 2025",
       location: "Smes Sport Bintaro",
       price: "Rp 100,000",
       club: "Green Club",
@@ -69,7 +69,7 @@ export async function getProfileClubData(id: string) {
       location: "Smes Sport Bintaro",
       member: "28 Members",
       club: "Green Club",
-      stars: "4 Stars",
+      stars_label: "4 Stars",
       name_contact: "andi cobra",
     },
   };
@@ -81,7 +81,8 @@ export async function getProfileClubData(id: string) {
 export async function getMatchDataBeforePayment(id: string) {
   const dummyData: Record<string, any> = {
     "1": {
-      time: "20:00 - 23:00",
+      title: "Jaksel Cup - Women Single",
+      time: "07 August - 20 August 2025",
       location: "Smes Sport Bintaro",
       price: "Rp 100.000",
       genre: "Tennis",

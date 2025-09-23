@@ -20,6 +20,7 @@ export default async function CompetitonsPaymentPage({
     <section className="sm:p-8 md:container">
       <CompetitionPayment
         title={match.title}
+        time={match.time}
         times={match.times}
         date={match.date}
         location={match.location}

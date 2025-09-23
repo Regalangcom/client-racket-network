@@ -41,7 +41,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
       <button
         key={option.value}
         className={`
-          px-2 py-1 
+          px-2 py-1  rounded-xl border-gray-300 border
           ${
             selectedValues.includes(option.value)
               ? "bg-green-500 text-white"

@@ -102,9 +102,22 @@ export const profileFormSchema = z.object({
   }),
 });
 
+// Skema validasi menggunakan Zod
+export const CompetitionPaymentSchema = z.object({
+  email: z.email("Email tidak valid"),
+  name: z.string().min(2, "Nama minimal 2 karakter"),
+  phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
+  level: z.enum(["Beginner", "Intermediate", "Advanced"], {
+    error: "Pilih level yang valid",
+  }),
+
+  additionalInfo: z.string().optional(),
+});
+
 export type SignUpFormSchema = z.infer<typeof SignUpFormSchema>;
 export type SignInFormSchema = z.infer<typeof SignInFormSchema>;
 export type OtpInFormSchema = z.infer<typeof OtpInFormSchema>;
 export type reqPasswordFormSchema = z.infer<typeof reqPasswordFormSchema>;
 export type NewPasswordFormSchema = z.infer<typeof NewPasswordFormSchema>;
 export type ProfileFormData = z.infer<typeof profileFormSchema>;
+export type RegistrationFormData = z.infer<typeof CompetitionPaymentSchema>;

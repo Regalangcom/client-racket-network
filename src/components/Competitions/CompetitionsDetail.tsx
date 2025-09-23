@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Calendar, MapPin, Users, Tag, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -9,21 +9,11 @@ import { FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
+import { CompetitionsDetailCardProps } from "@/constant/types";
+import CompetitionTag from "./competitons-tags";
+import { Competitions } from "@/constant/competitions";
 
-interface CompetitonsDetailCardProps {
-  title: string;
-  logo: string;
-  date: string;
-  location: string;
-  price: string;
-  club: string;
-  description: string;
-  name_contact: string;
-  organized: string;
-  contact_avatar: string;
-}
-
-const CompetitionsDetails: React.FC<CompetitonsDetailCardProps> = ({
+const CompetitionsDetails: React.FC<CompetitionsDetailCardProps> = ({
   title,
   logo,
   date,
@@ -66,29 +56,19 @@ const CompetitionsDetails: React.FC<CompetitonsDetailCardProps> = ({
       {/* Right side content */}
       <div className="w-full sm:w-[60%] p-4 bg-white rounded-3xl shadow-md min-h-[820px] overflow-scroll ">
         <h2 className="text-2xl font-bold ">{title}</h2>
-        <h2 className="text-sm font-bold mb-4">{organized}</h2>
+        <h2 className="text-sm font-bold mb-6">{organized}</h2>
 
-        <div className="space-y-1 mb-4">
-          <div className="flex items-center mb-6 gap-2 text-gray-600">
-            <Calendar className="w-5 h-5 text-green-600" />
-            <span className="text-xl">{date}</span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-600">
-            <MapPin className="w-5 h-5 text-green-600" />
-            <span>{location}</span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-600">
-            <Tag className="w-5 h-5 text-green-600" />
-            <span>{price}</span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-600">
-            <Users className="w-5 h-5 text-green-600" />
-            <span>{club}</span>
-          </div>
+        {/* CREATE REUSABLE */}
+        <div className="space-y-1 mb-2">
+          {Competitions(date, location, price, club).map((tag, idx) => (
+            <CompetitionTag key={idx} {...tag} containerClass="mb-6" />
+          ))}
         </div>
+        {/* CREATE REUSABLE */}
 
-        <div className="py-6">
-          <div className=" relative bg-gray-200 py-[4px] px-6"></div>
+        {/* SEPARATOR */}
+        <div className="py-8 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+          <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
         </div>
 
         <p className="text-[#292524] text-2xl mt-4 mb-2">Description</p>

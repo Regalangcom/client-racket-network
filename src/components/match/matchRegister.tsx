@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ArrowLeft, Timer } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ import {
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { Button } from "../ui/button";
 import Image, { StaticImageData } from "next/image";
-import { reviews, maps, accounts, prices } from "@/public";
+import { reviews, maps, accounts, prices, times } from "@/public";
 
 // Skema validasi menggunakan Zod
 const registrationSchema = z.object({
@@ -80,7 +80,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     { icon: maps, label: location },
     { icon: prices, label: price },
     { icon: reviews, label: club },
-    { icon: reviews, label: time },
+    { icon: times, label: time },
   ];
 
   return (

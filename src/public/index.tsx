@@ -26,6 +26,12 @@ import accounts from "@/public/assets/icons/accounts.svg";
 import reviews from "@/public/assets/icons/reviews.svg";
 import prices from "@/public/assets/icons/prices.png";
 import maps from "@/public/assets/icons/maps.svg";
+import times from "@/public/assets/icons/times.svg";
+import members from "@/public/assets/icons/member.svg";
+import city from "@/public/assets/icons/kota.svg";
+import stars from "@/public/assets/icons/stars.svg";
+import calender from "@/public/assets/icons/calendar-.svg";
+import Trophy from "@/public/assets/icons/tropi.svg";
 
 // ========================
 // ICON ACTIVE
@@ -40,6 +46,12 @@ import compeActive from "@/public/assets/icons/compe-active.svg";
 import accountActive from "@/public/assets/icons/account-active.svg";
 
 export {
+  Trophy,
+  calender,
+  members,
+  city,
+  stars,
+  times,
   accounts,
   reviews,
   maps,

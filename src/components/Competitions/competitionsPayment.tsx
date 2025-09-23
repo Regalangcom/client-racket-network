@@ -14,33 +14,18 @@ import {
 } from "@/components/ui/select";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { Button } from "../ui/button";
+import {
+  CompetitionPaymentSchema,
+  RegistrationFormData,
+} from "@/constant/types/zodSchema";
+import { CompetitionsRegisterProps } from "@/constant/types";
+import { CompetitionsDetail } from "@/constant/competitions";
+import CompetitionTag from "./competitons-tags";
 
-// Skema validasi menggunakan Zod
-const competitionPaymentSchema = z.object({
-  email: z.email("Email tidak valid"),
-  name: z.string().min(2, "Nama minimal 2 karakter"),
-  phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
-  level: z.enum(["Beginner", "Intermediate", "Advanced"], {
-    error: "Pilih level yang valid",
-  }),
-
-  additionalInfo: z.string().optional(),
-});
-
-type RegistrationFormData = z.infer<typeof competitionPaymentSchema>;
-
-interface MatchRegisterProps {
-  title: string;
-  date: string;
-  location: string;
-  price: string;
-  club: string;
-  times: string[];
-}
-
-const CompetitionPayment: React.FC<MatchRegisterProps> = ({
-  // title,
+const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
+  title,
   date,
+  time,
   location,
   price,
   club,
@@ -54,7 +39,7 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
     watch,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationFormData>({
-    resolver: zodResolver(competitionPaymentSchema),
+    resolver: zodResolver(CompetitionPaymentSchema),
   });
 
   // pantau field tertentu, misalnya "name"
@@ -76,7 +61,7 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
         <div className="space-y-6 mb-8">
           {/* Tombol Kembali untuk Mobile */}
           {isMobile && (
-            <div className=" flex gap-3 relative w-full ">
+            <div className=" flex gap-3 relative w-full">
               <span
                 onClick={() => router.back()}
                 className="flex items-center text-gray-600 hover:text-gray-800"
@@ -97,18 +82,9 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
           <div className="bg-white">
             {/* <h2 className="text-xl font-bold mb-4">{title}</h2> */}
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-600">
-                <Calendar className="w-5 h-5 text-green-600" />
-                <strong>Tanggal:</strong> {date}
-              </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <Calendar className="w-5 h-5 text-green-600" />
-                <strong>Lokasi:</strong> {location}
-              </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <Calendar className="w-5 h-5 text-green-600" />
-                <strong>Klub:</strong> {club}
-              </div>
+              {CompetitionsDetail(title, time, location).map((tag, idx) => (
+                <CompetitionTag key={idx} {...tag} />
+              ))}
             </div>
           </div>
         </div>
@@ -119,8 +95,9 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
             {/* Card Informasi Pendaftaran */}
             <div className="bg-white ">
               {/* Card Waktu Pertandingan */}
-              <div className="py-2">
-                <div className="relative bg-gray-200 py-[4px] px-6"></div>
+              {/* SEPARATOR */}
+              <div className="py-2 mb-8 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+                <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
               </div>
               <h3 className="text-lg font-semibold mb-4 mt-3">Informations</h3>
               <div className="space-y-4">
@@ -196,9 +173,10 @@ const CompetitionPayment: React.FC<MatchRegisterProps> = ({
             </div>
 
             {/* Card Detail Pembayaran */}
-            <div className="bg-white rounded-2xl shadow">
-              <div className="py-8">
-                <div className="relative bg-gray-200 py-[4px] px-6"></div>
+            <div className="bg-white rounded-2xl ">
+              {/* SEPARATOR */}
+              <div className="py-8 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+                <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
               </div>
               <h3 className="text-lg font-semibold mb-4">Payment detail</h3>
               <div className="flex justify-between mb-4">

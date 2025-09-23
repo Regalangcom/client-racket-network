@@ -30,7 +30,6 @@ type DetailItem = {
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   title,
   logo,
-  date,
   location,
   price,
   club,

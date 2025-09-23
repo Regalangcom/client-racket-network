@@ -8,19 +8,11 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { FaWhatsapp } from "react-icons/fa";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import Link from "next/link";
+import { ClubDetailCardProps } from "@/constant/types";
+import InfoTag from "./info-tag";
+import { clubTags } from "@/constant/club-tags";
 
-interface clubDetailCardProps {
-  title: string;
-  logo: string;
-  club: string;
-  genre: string;
-  name_contact: string;
-  member: string;
-  contact_avatar: string;
-  stars: string;
-}
-
-const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
+const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
   title,
   logo,
   club,
@@ -28,11 +20,11 @@ const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
   member,
   name_contact,
   contact_avatar,
-  stars,
+  stars_label,
 }) => {
   const { isMobile } = useWindowDimension();
   return (
-    <div className="w-full min-h-screen bg-white">
+    <div className="w-full min-h-screen  bg-white">
       {/* Header gray section - ONLY FOR MOBILE */}
       {isMobile && (
         <div className="bg-gray-100 h-36 relative">
@@ -63,7 +55,7 @@ const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
       )}
 
       <div
-        className={`container mx-auto md:px-4 ${
+        className={`container-lg p-4 mx-auto md:px-4 ${
           isMobile ? "pt-16 pb-8" : "py-4"
         }`}
       >
@@ -74,21 +66,10 @@ const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
             <h1 className="text-2xl font-semibold text-center mb-4">{club}</h1>
 
             {/* Info tags */}
-            <div className="flex gap-4 text-sm text-gray-700 w-full justify-center mb-6">
-              <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4 text-green-800" />
-                <span>{club}</span>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <Users className="w-4 h-4 text-green-800" />
-                <span>{member}</span>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-green-800" />
-                <span>{stars}</span>
-              </div>
+            <div className="flex gap-4 text-sm text-gray-700 w-full justify-center mb-12">
+              {clubTags(club, member, stars_label).map((tag, idx) => (
+                <InfoTag key={idx} {...tag} />
+              ))}
             </div>
 
             {/* Join button */}
@@ -232,7 +213,7 @@ const ClubProfileDetails: React.FC<clubDetailCardProps> = ({
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <Star className="w-5 h-5 text-green-rc" />
-                  <span>{stars}</span>
+                  <span>{stars_label}</span>
                 </div>
               </div>
 

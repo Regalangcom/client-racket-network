@@ -18,7 +18,7 @@ export default async function CompetitionDetails({
         title={club.title}
         genre={club.genre}
         member={club.member}
-        stars={club.stars}
+        stars_label={club.stars_label}
         logo={club.logo}
         club={club.club}
         name_contact={club.name_contact}
