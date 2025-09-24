@@ -17,26 +17,11 @@ import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { Button } from "../ui/button";
 import Image, { StaticImageData } from "next/image";
 import { reviews, maps, accounts, prices, times } from "@/public";
-
-// Skema validasi menggunakan Zod
-const registrationSchema = z.object({
-  email: z.string().email("Email tidak valid"),
-  name: z.string().min(2, "Nama minimal 2 karakter"),
-  phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
-  level: z.enum(["beginner", "expert"], {
-    error: "Pilih level yang valid",
-  }),
-  additionalInfo: z.string().optional(),
-});
-
-type RegistrationFormData = z.infer<typeof registrationSchema>;
-
-interface MatchRegisterProps {
-  location: string;
-  time: string;
-  price: string;
-  club: string;
-}
+import {
+  RegistrationMatchForm,
+  registrationMatchSchema,
+} from "@/constant/types/zodSchema";
+import { MatchRegisterProps } from "@/constant/types";
 
 type DetailItem = {
   icon: StaticImageData;
@@ -59,13 +44,13 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
+  } = useForm<RegistrationMatchForm>({
+    resolver: zodResolver(registrationMatchSchema),
   });
 
   const nameWatch = watch("name");
 
-  const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
+  const onSubmit: SubmitHandler<RegistrationMatchForm> = async (data) => {
     try {
       // Proses pendaftaran
       console.log(data);

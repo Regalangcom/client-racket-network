@@ -1,31 +1,15 @@
 "use client";
 
-import Image, { StaticImageData } from "next/image";
-import { Calendar, MapPin, Users, Tag, ArrowLeft } from "lucide-react";
-import { reviews, maps, accounts, prices } from "@/public";
+import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import TimeSelector from "./timeSelector";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import React from "react";
-
-interface MatchDetailCardProps {
-  title: string;
-  logo: string;
-  date: string;
-  location: string;
-  price: string;
-  club: string;
-  description: string;
-  times: string[];
-}
-
-type DetailItem = {
-  icon: StaticImageData;
-  label: string;
-  hasTimeSelector?: boolean;
-};
+import { MatchDetailCardProps } from "@/constant/types";
+import MatchTag from "./match-tags";
+import { matchDetailCard } from "@/constant/match";
 
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   title,
@@ -38,13 +22,14 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 }) => {
   const router = useRouter();
   const isMobile = useWindowDimension();
+  const details = matchDetailCard(location, price, club);
 
-  const details: DetailItem[] = [
-    { icon: accounts, label: "Women only", hasTimeSelector: true },
-    { icon: maps, label: location },
-    { icon: prices, label: price },
-    { icon: reviews, label: club },
-  ];
+  // const details: DetailItem[] = [
+  //   { icon: accounts, label: "Women only", hasTimeSelector: true },
+  //   { icon: maps, label: location },
+  //   { icon: prices, label: price },
+  //   { icon: reviews, label: club },
+  // ];
 
   return (
     <div className="flex flex-col sm:flex-row md:gap-6 sm:gap-10">
@@ -63,7 +48,7 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
       {isMobile && (
         <div className="p-3 absolute mt-2">
           <span
-            className=" text-white hover:text-gray-800"
+            className="text-white hover:text-gray-800"
             onClick={() => router.back()}
           >
             <ArrowLeft className="w-6 h-6" />
@@ -77,28 +62,13 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 
         <div className="space-y-2 mb-4">
           {details.map((detail, index) => (
-            <React.Fragment key={index}>
-              <div className="flex items-center gap-3 rounded-3xl mb-5 ">
-                <Image
-                  src={detail.icon}
-                  alt={detail.label}
-                  width={14}
-                  height={15}
-                  className="w-4 h-4"
-                />
-                <span className="text-black">{detail.label}</span>
-              </div>
-
-              {/* Tambahkan TimeSelector setelah "Women only" */}
-              {detail.hasTimeSelector && (
-                <>
-                  <p className="text-xl font-semibold mt-2">Select your time</p>
-                  <div className="flex items-center gap-3 text-gray-600 mb-2">
-                    <TimeSelector times={times} />
-                  </div>
-                </>
-              )}
-            </React.Fragment>
+            <MatchTag
+              key={index}
+              icon={detail.icon}
+              label={detail.label}
+              hasTimeSelector={detail.hasTimeSelector}
+              times={times}
+            />
           ))}
         </div>
 

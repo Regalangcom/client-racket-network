@@ -114,6 +114,24 @@ export const CompetitionPaymentSchema = z.object({
   additionalInfo: z.string().optional(),
 });
 
+export const registrationMatchSchema = z.object({
+  email: z
+    .string()
+    .toLowerCase()
+    .trim()
+    .regex(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Silakan masukkan email yang valid"
+    ),
+  name: z.string().min(2, "Nama minimal 2 karakter"),
+  phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
+  level: z.enum(["beginner", "expert"], {
+    error: "Pilih level yang valid",
+  }),
+  additionalInfo: z.string().optional(),
+});
+
+export type RegistrationMatchForm = z.infer<typeof registrationMatchSchema>;
 export type SignUpFormSchema = z.infer<typeof SignUpFormSchema>;
 export type SignInFormSchema = z.infer<typeof SignInFormSchema>;
 export type OtpInFormSchema = z.infer<typeof OtpInFormSchema>;
