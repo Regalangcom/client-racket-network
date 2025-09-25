@@ -27,6 +27,7 @@ const CompetitionsDetails: React.FC<CompetitionsDetailCardProps> = ({
 }) => {
   const router = useRouter();
   const isMobile = useWindowDimension();
+  const details = Competitions(date, location, price, club);
 
   return (
     <div className="flex flex-col max-w-full  sm:flex-row overflow-y-auto">
@@ -58,9 +59,9 @@ const CompetitionsDetails: React.FC<CompetitionsDetailCardProps> = ({
         <h2 className="text-2xl font-bold ">{title}</h2>
         <h2 className="text-sm font-bold mb-6">{organized}</h2>
 
-        {/* CREATE REUSABLE */}
+        {/* clean code */}
         <div className="space-y-1 mb-2">
-          {Competitions(date, location, price, club).map((tag, idx) => (
+          {details.map((tag, idx) => (
             <CompetitionTag key={idx} {...tag} containerClass="mb-6" />
           ))}
         </div>

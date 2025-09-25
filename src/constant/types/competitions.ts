@@ -23,7 +23,9 @@ export interface CompetitionsRegisterProps {
   times: string[];
 }
 
-export type IconEnvCompetitons = {
+export type IconsCompetitonsProps = {
   icon: StaticImageData;
-  label: string;
+  label: string | number;
+  textClass?: string;
+  containerClass?: string;
 };

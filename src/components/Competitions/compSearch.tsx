@@ -11,7 +11,7 @@ const CompetitionsSearch: React.FC = () => {
         <p className="text-black font-bold mb-4">Search Competitions</p>
         <div className="relative">
           <Input
-            className="border-2 w-full bg-white shadow pr-10"
+            className="border-1 w-full bg-white  pr-10"
             placeholder="Search"
           />
           <button

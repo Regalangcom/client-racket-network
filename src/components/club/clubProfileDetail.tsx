@@ -67,7 +67,7 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
 
             {/* Info tags */}
             <div className="flex gap-4 text-sm text-gray-700 w-full justify-center mb-12">
-              {clubTags(club, member, stars_label).map((tag, idx) => (
+              {clubTags(genre, member, stars_label).map((tag, idx) => (
                 <InfoTag key={idx} {...tag} />
               ))}
             </div>

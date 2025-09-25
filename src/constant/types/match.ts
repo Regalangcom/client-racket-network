@@ -32,4 +32,5 @@ export type DetailItem = {
   icon: StaticImageData;
   label: string;
   hasTimeSelector?: boolean;
+  times?: string[];
 };

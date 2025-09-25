@@ -1,12 +1,6 @@
 // /components/CompetitionTag.tsx
-import Image, { StaticImageData } from "next/image";
-
-type IconsCompetitonsProps = {
-  icon: StaticImageData;
-  label: string | number;
-  textClass?: string;
-  containerClass?: string;
-};
+import Image from "next/image";
+import { IconsCompetitonsProps } from "@/constant/types";
 
 const CompetitionTag: React.FC<IconsCompetitonsProps> = ({
   icon,

@@ -2,8 +2,6 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ArrowLeft } from "lucide-react";
-
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import {
@@ -15,29 +13,26 @@ import {
 } from "@/components/ui/select";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { Button } from "../ui/button";
-import Image, { StaticImageData } from "next/image";
-import { reviews, maps, accounts, prices, times } from "@/public";
+import Image from "next/image";
+// import { reviews, maps, accounts, prices, times } from "@/public";
 import {
   RegistrationMatchForm,
   registrationMatchSchema,
 } from "@/constant/types/zodSchema";
 import { MatchRegisterProps } from "@/constant/types";
-
-type DetailItem = {
-  icon: StaticImageData;
-  label: string;
-};
+import Link from "next/link";
+import { matchIconRegister } from "@/constant/match";
+import { MatchIconRegisters } from "./match-tags";
 
 const MatchRegister: React.FC<MatchRegisterProps> = ({
   location,
-  // title,
   time,
-  // times,
   price,
   club,
 }) => {
   const router = useRouter();
   const { isMobile } = useWindowDimension();
+  const details = matchIconRegister(location, time, price, club);
 
   const {
     register,
@@ -60,13 +55,13 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     }
   };
 
-  const details: DetailItem[] = [
-    { icon: accounts, label: "Women only" },
-    { icon: maps, label: location },
-    { icon: prices, label: price },
-    { icon: reviews, label: club },
-    { icon: times, label: time },
-  ];
+  // const details: DetailItem[] = [
+  //   { icon: accounts, label: "Women only" },
+  //   { icon: maps, label: location },
+  //   { icon: prices, label: price },
+  //   { icon: reviews, label: club },
+  //   { icon: times, label: time },
+  // ];
 
   return (
     <div className="container-lg mx-auto max-w-full px-4 py-8">
@@ -94,16 +89,21 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
           <div className="bg-white rounded-2xl">
             <div className="space-y-2 mb-4">
               {details.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 text-black">
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    width={14}
-                    height={15}
-                    className="w-4 h-4"
-                  />
-                  <p className="text-md font-bold">{item.label}</p>
-                </div>
+                <MatchIconRegisters
+                  key={index}
+                  icon={item.icon}
+                  label={item.label}
+                />
+                // <div key={index} className="flex items-center gap-4 text-black">
+                //   <Image
+                //     src={item.icon}
+                //     alt={item.label}
+                //     width={14}
+                //     height={15}
+                //     className="w-4 h-4"
+                //   />
+                //   <p className="text-md font-bold">{item.label}</p>
+                // </div>
               ))}
             </div>
           </div>
@@ -210,13 +210,15 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                 <span className="font-bold">{price}</span>
               </div>
               <div className="mt-[100px] grid min-h-[200px] items-start">
-                <Button
-                  type="submit"
-                  disabled={!nameWatch}
-                  className="w-full bg-background-button-rc text-white p-3 rounded hover:bg-green-700 transition-colors disabled:opacity-50"
-                >
-                  {isSubmitting ? "Prosesing..." : "Continue"}
-                </Button>
+                <Link href="/payment">
+                  <Button
+                    type="submit"
+                    disabled={!nameWatch}
+                    className="w-full bg-background-button-rc text-white p-3 rounded hover:bg-green-700 transition-colors disabled:opacity-50"
+                  >
+                    {isSubmitting ? "Prosesing..." : "Continue"}
+                  </Button>
+                </Link>
               </div>
             </div>
           </form>

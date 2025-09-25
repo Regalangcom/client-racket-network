@@ -20,17 +20,18 @@ import notification from "@/public/assets/icons/bell.svg";
 import language from "@/public/assets/icons/lang.svg";
 import filter from "@/public/assets/icons/mi_filter.svg";
 import tenis from "@/public/assets/icons/bola.svg";
+import bola_tennis from "@/public/assets/icons/tennis.svg";
 import padel from "@/public/assets/icons/tenis.svg";
 import badmindton from "@/public/assets/icons/bultang.svg";
 import accounts from "@/public/assets/icons/accounts.svg";
 import reviews from "@/public/assets/icons/reviews.svg";
-import prices from "@/public/assets/icons/prices.png";
+import prices from "@/public/assets/icons/ticket(2).svg";
 import maps from "@/public/assets/icons/maps.svg";
 import times from "@/public/assets/icons/times.svg";
 import members from "@/public/assets/icons/member.svg";
 import city from "@/public/assets/icons/kota.svg";
 import stars from "@/public/assets/icons/stars.svg";
-import calender from "@/public/assets/icons/calendar-.svg";
+import calender from "@/public/assets/icons/calendar-lines.svg";
 import Trophy from "@/public/assets/icons/tropi.svg";
 
 // ========================
@@ -46,6 +47,7 @@ import compeActive from "@/public/assets/icons/compe-active.svg";
 import accountActive from "@/public/assets/icons/account-active.svg";
 
 export {
+  bola_tennis,
   Trophy,
   calender,
   members,

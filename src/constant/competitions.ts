@@ -15,8 +15,8 @@ export const Competitions = (
 
 export const CompetitionsDetail = (
   title: string,
-  location: string,
-  time: string
+  time: string,
+  location: string
 ) => [
   { icon: Trophy, label: title },
   { icon: calender, label: time },

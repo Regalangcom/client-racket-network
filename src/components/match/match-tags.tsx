@@ -1,16 +1,17 @@
 // /components/CompetitionTag.tsx
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import React from "react";
 import TimeSelector from "./timeSelector";
+import { DetailItem } from "@/constant/types";
 
-type IconsMatchProps = {
-  icon: StaticImageData;
-  label: string | number;
-  hasTimeSelector?: boolean;
-  times?: string[];
-};
+// type IconsMatchProps = {
+//   icon: StaticImageData;
+//   label: string | number;
+//   hasTimeSelector?: boolean;
+//   times?: string[];
+// };
 
-const MatchTag: React.FC<IconsMatchProps> = ({
+export const MatchTag: React.FC<DetailItem> = ({
   icon,
   label,
   hasTimeSelector,
@@ -33,4 +34,17 @@ const MatchTag: React.FC<IconsMatchProps> = ({
   </React.Fragment>
 );
 
-export default MatchTag;
+export const MatchIconRegisters: React.FC<DetailItem> = ({ icon, label }) => (
+  <React.Fragment>
+    <div className="flex items-center gap-4 text-black">
+      <Image
+        src={icon}
+        alt={label}
+        width={14}
+        height={15}
+        className="w-4 h-4"
+      />
+      <p className="text-md font-bold">{label}</p>
+    </div>
+  </React.Fragment>
+);

@@ -83,8 +83,8 @@ export async function getMatchDataBeforePayment(id: string) {
     "1": {
       title: "Jaksel Cup - Women Single",
       time: "07 August - 20 August 2025",
-      location: "Smes Sport Bintaro",
       price: "Rp 100.000",
+      location: "Smes Sport Bintaro",
       genre: "Tennis",
       club: "Green Club",
     },

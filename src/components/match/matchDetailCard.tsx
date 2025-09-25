@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import React from "react";
 import { MatchDetailCardProps } from "@/constant/types";
-import MatchTag from "./match-tags";
+import { MatchTag } from "./match-tags";
 import { matchDetailCard } from "@/constant/match";
 
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
@@ -23,13 +23,6 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   const router = useRouter();
   const isMobile = useWindowDimension();
   const details = matchDetailCard(location, price, club);
-
-  // const details: DetailItem[] = [
-  //   { icon: accounts, label: "Women only", hasTimeSelector: true },
-  //   { icon: maps, label: location },
-  //   { icon: prices, label: price },
-  //   { icon: reviews, label: club },
-  // ];
 
   return (
     <div className="flex flex-col sm:flex-row md:gap-6 sm:gap-10">

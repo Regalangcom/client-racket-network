@@ -125,7 +125,7 @@ export const registrationMatchSchema = z.object({
     ),
   name: z.string().min(2, "Nama minimal 2 karakter"),
   phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
-  level: z.enum(["beginner", "expert"], {
+  level: z.enum(["Beginner", "Intermediate", "Advanced"], {
     error: "Pilih level yang valid",
   }),
   additionalInfo: z.string().optional(),
