@@ -4,7 +4,7 @@
 import React from "react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { navItems } from "@/constant/navItem";
-import NavItem from "./navItem";
+import NavItem from "./nav-Item";
 import { usePathname } from "next/navigation";
 import { Logo } from "./logo";
 

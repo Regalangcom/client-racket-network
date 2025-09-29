@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
-import { SettingMobileView } from "./settingsMobile";
-import { DesktopSettingsView } from "./settingsDekstop";
+import { SettingMobileView } from "./settings-mobile";
+import { DesktopSettingsView } from "./settings-dekstop";
 import { security, notification, language } from "@/public";
 
 export default function SettingsPage() {

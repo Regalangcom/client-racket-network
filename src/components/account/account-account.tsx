@@ -3,8 +3,8 @@
 import { useState } from "react";
 import React from "react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
-import { MobileAccountView } from "./mobileAccount";
-import { DesktopAccountView } from "./desktopAccountView";
+import { MobileAccountView } from "./mobile-account";
+import { DesktopAccountView } from "./desktop-account-view";
 import { settings, signout, inbox, pay, star } from "@/public";
 
 export default function AccountPage() {

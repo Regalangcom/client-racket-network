@@ -1,7 +1,7 @@
 // /components/CompetitionTag.tsx
 import Image from "next/image";
 import React from "react";
-import TimeSelector from "./timeSelector";
+import TimeSelector from "./time-selector";
 import { DetailItem } from "@/constant/types";
 
 // type IconsMatchProps = {

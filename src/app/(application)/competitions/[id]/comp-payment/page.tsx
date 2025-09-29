@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getMatchDataBeforePayment } from "@/constant/get-all-dummy-data";
-import CompetitionPayment from "@/components/Competitions/competitionsPayment";
+import CompetitionPayment from "@/components/Competitions/competitions-payment";
 
 export default async function CompetitonsPaymentPage({
   params,

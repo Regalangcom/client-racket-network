@@ -1,7 +1,7 @@
 import React from "react";
 import { AccountMenu } from "./accountMenu/accountMenu";
-import { UserProfileCard } from "./userProfileCard";
-import { AccountMenuItem, AccountMenuItemType } from "./accountMenuItem";
+import { UserProfileCard } from "./user-profile-card";
+import { AccountMenuItem, AccountMenuItemType } from "./account-menu-Item";
 import { useRouter } from "next/navigation";
 
 interface MobileAccountViewProps {

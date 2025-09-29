@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import InProgressBadge from "./inBadgeProsess";
+import InProgressBadge from "./in-badge-Prosess";
 import { Match } from "@/constant/types/match";
 
 interface HomeCardProps extends Match {}

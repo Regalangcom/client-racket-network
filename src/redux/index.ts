@@ -4,7 +4,7 @@ import { persistReducer } from "redux-persist";
 import { authReducer } from "@/redux/store/auth-slice";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
-import { inboxReducer } from "./store/inboxSlice";
+import { inboxReducer } from "./store/inbox-slice";
 
 /**
  * Creates a Redux Persist storage object that does nothing.

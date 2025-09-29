@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getMatchData } from "@/constant/get-all-dummy-data";
-import MatchDetailCard from "@/components/match/matchDetailCard";
+import MatchDetailCard from "@/components/match/match-detail-card";
 
 export default async function MatchDetail({
   params,

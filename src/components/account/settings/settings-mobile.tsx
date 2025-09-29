@@ -1,5 +1,5 @@
 import React from "react";
-import { AccountMenuItemType, AccountMenuItem } from "../accountMenuItem";
+import { AccountMenuItemType, AccountMenuItem } from "../account-menu-Item";
 import { AccountMenu } from "../accountMenu/accountMenu";
 
 interface MobileSettingsViewProps {

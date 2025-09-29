@@ -1,8 +1,8 @@
 "use client";
 
 import { useWindowDimension } from "@/hooks/useWindowdimension";
-import { InboxDesktopView } from "./inboxDesktop";
-import { InboxMobileView } from "./inboxMobile";
+import { InboxDesktopView } from "./inbox-desktop";
+import { InboxMobileView } from "./inbox-mobile";
 export default function InboxPage() {
   const { isMobile } = useWindowDimension();
 

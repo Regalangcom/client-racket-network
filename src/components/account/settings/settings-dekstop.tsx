@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import Link from "next/link";
 // import { AccountMenuItemType } from './AccountMenuItem';
-import { AccountMenuItemType } from "../accountMenuItem";
+import { AccountMenuItemType } from "../account-menu-Item";
 import Image from "next/image";
 
 interface DesktopSettingsViewProps {

@@ -1,7 +1,7 @@
 // page.tsx
 "use client";
 import { useState } from "react";
-import HomeCard from "../../components/home/cardHome";
+import HomeCard from "../../components/home/card-home";
 import Notification from "../../components/home/notification/notification";
 import { Match } from "@/constant/types/match";
 import { sampeImage } from "@/public";

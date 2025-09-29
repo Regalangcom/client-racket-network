@@ -1,6 +1,6 @@
 // src/hooks/useInbox.ts
 import { useAppDispatch, useAppSelector } from "@/redux";
-import { fetchInboxItems, markItemAsRead } from "@/redux/store/inboxSlice";
+import { fetchInboxItems, markItemAsRead } from "@/redux/store/inbox-slice";
 import { useCallback } from "react";
 
 export const useInbox = () => {
