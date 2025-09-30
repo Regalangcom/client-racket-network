@@ -11,6 +11,7 @@ import Link from "next/link";
 import { ClubDetailCardProps } from "@/constant/types";
 import InfoTag from "./info-tag";
 import { clubTags } from "@/constant/club-tags";
+import { times, maps } from "@/public";
 
 const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
   title,
@@ -24,7 +25,7 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
 }) => {
   const { isMobile } = useWindowDimension();
   return (
-    <div className="w-full min-h-screen  bg-white">
+    <div className="w-full min-h-screen bg-white">
       {/* Header gray section - ONLY FOR MOBILE */}
       {isMobile && (
         <div className="bg-gray-100 h-36 relative">
@@ -116,15 +117,16 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               <p className="mb-2">Match</p>
 
               {/* Activity card */}
-              <div className="bg-gray-100 rounded-xl py-8 p-4">
-                <h3 className="font-semibold text-lg ">
-                  Tennis Thursday Night
-                </h3>
-                <div className="flex items-center gap-2 mb-2 text-sm">
+              <div className="bg-gray-100 rounded-xl py-5 px-5">
+                <div className=" relative ">
+                  <h3 className="font-bold text-base">Tennis Thursday Night</h3>
+                </div>
+                <div className="flex items-center gap-2 mb-2 mt-4 text-sm">
+                  <Image src={times} alt="" className="" />
                   <span>30 April, 18:00 - 21:00</span>
                 </div>
                 <div className="flex items-center gap-2 mb-2 text-sm">
-                  <MapPin className="w-4 h-4" />
+                  <Image src={maps} alt="" className="" />
                   <span>Smes Sport Bintaro</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
@@ -139,15 +141,16 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               {/* <p className="mb-2">Match</p> */}
 
               {/* Activity card */}
-              <div className="bg-gray-100 rounded-lg py-8 p-4">
-                <h3 className="font-semibold text-lg mb-2">
+              <div className="bg-gray-100 rounded-lg py-6 px-5">
+                <h3 className="font-semibold text-base ">
                   Tennis Thursday Night
                 </h3>
-                <div className="flex items-center gap-2 mb-2 text-sm">
+                <div className="flex items-center gap-2 mb-2 mt-4 text-sm">
+                  <Image src={times} alt="" className="" />
                   <span>30 April, 18:00 - 21:00</span>
                 </div>
                 <div className="flex items-center gap-2 mb-2 text-sm">
-                  <MapPin className="w-4 h-4" />
+                  <Image src={maps} alt="" className="" />
                   <span>Smes Sport Bintaro</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
@@ -163,15 +166,16 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               <p className="mb-2">Competition</p>
 
               {/* Activity card */}
-              <div className="bg-gray-100 rounded-lg py-8 p-4">
-                <h3 className="font-semibold text-lg mb-2">
+              <div className="bg-gray-100 rounded-lg py-6 px-5">
+                <h3 className="font-semibold text-base mb-2">
                   Tennis Thursday Night
                 </h3>
-                <div className="flex items-center gap-2 mb-2 text-sm">
+                <div className="flex items-center gap-2 mb-2 mt-4 text-sm">
+                  <Image src={times} alt="" className="" />
                   <span>30 April, 18:00 - 21:00</span>
                 </div>
                 <div className="flex items-center gap-2 mb-2 text-sm">
-                  <MapPin className="w-4 h-4" />
+                  <Image src={maps} alt="" className="" />
                   <span>Smes Sport Bintaro</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">

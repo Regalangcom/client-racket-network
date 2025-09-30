@@ -41,7 +41,7 @@ import tenisActive from "@/public/assets/icons/tennis-green.svg";
 import padelActive from "@/public/assets/icons/padel-green.svg";
 import badmindtonActive from "@/public/assets/icons/badmindton-green.svg";
 import matchActive from "@/public/assets/icons/match-active.svg";
-import clubActive from "@/public/assets/icons/match-active.svg";
+import clubActive from "@/public/assets/icons/club-active.svg";
 import homeActive from "@/public/assets/icons/home-active.svg";
 import compeActive from "@/public/assets/icons/compe-active.svg";
 import accountActive from "@/public/assets/icons/account-active.svg";

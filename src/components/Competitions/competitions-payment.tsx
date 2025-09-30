@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Calendar } from "lucide-react";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -21,14 +22,15 @@ import {
 import { CompetitionsRegisterProps } from "@/constant/types";
 import { CompetitionsDetail } from "@/constant/competitions";
 import CompetitionTag from "./competitons-tags";
+import Link from "next/link";
 
 const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   title,
-  date,
+  // date,
   time,
   location,
   price,
-  club,
+  // club,
 }) => {
   const router = useRouter();
   const { isMobile } = useWindowDimension();
@@ -37,9 +39,11 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(CompetitionPaymentSchema),
+    mode: "onBlur",
   });
 
   // pantau field tertentu, misalnya "name"
@@ -48,6 +52,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
     try {
       // Proses pendaftaran
       console.log(data);
+      router.push("/payment");
       // Contoh: await submitRegistration(data)
     } catch (error) {
       console.error("Pendaftaran gagal", error);
@@ -142,22 +147,55 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
                 </div>
 
                 {/* Dropdown Level */}
+
                 <div className="relative">
-                  <Select {...register("level")}>
+                  <Controller
+                    name="level"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select skill level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="Beginner">Beginner</SelectItem>
+                            <SelectItem value="Intermediate">
+                              Intermediate
+                            </SelectItem>
+                            <SelectItem value="Advanced">Advanced</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.level && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.level.message}
+                    </p>
+                  )}
+                  {/* <Select {...register("level")}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select skill level" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Beginner">Beginner</SelectItem>
-                      <SelectItem value="Intermediate">Intermediate</SelectItem>
-                      <SelectItem value="Advanced">Advanced</SelectItem>
+                      <SelectGroup>
+                        <SelectItem value="Beginner">Beginner</SelectItem>
+                        <SelectItem value="Intermediate">
+                          Intermediate
+                        </SelectItem>
+                        <SelectItem value="Advanced">Advanced</SelectItem>
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                   {errors.level && (
                     <p className="text-red-500 text-sm mt-1">
                       {errors.level.message}
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
@@ -184,6 +222,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
                 <span className="font-bold">{price}</span>
               </div>
               <div className="mt-[100px] grid min-h-[200px] items-start">
+                {/* <Link href="/payment"> */}
                 <Button
                   type="submit"
                   disabled={!nameValue}
@@ -192,6 +231,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
                 >
                   {isSubmitting ? "Prosesing..." : "Continue"}
                 </Button>
+                {/* </Link> */}
               </div>
             </div>
           </form>

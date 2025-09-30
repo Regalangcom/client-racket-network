@@ -14,13 +14,18 @@ export interface CompetitionsDetailCardProps {
 }
 
 export interface CompetitionsRegisterProps {
+  // title: string;
+  // date: string;
+  // location: string;
+  // price: string;
+  // club: string;
+  // time: string;
+  // times: string[];
   title: string;
-  date: string;
   location: string;
+  time: string;
   price: string;
   club: string;
-  time: string;
-  times: string[];
 }
 
 export type IconsCompetitonsProps = {

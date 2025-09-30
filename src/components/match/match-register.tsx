@@ -1,20 +1,19 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { ArrowLeft } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { Button } from "../ui/button";
-import Image from "next/image";
-// import { reviews, maps, accounts, prices, times } from "@/public";
 import {
   RegistrationMatchForm,
   registrationMatchSchema,
@@ -38,6 +37,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationMatchForm>({
     resolver: zodResolver(registrationMatchSchema),
@@ -49,19 +49,13 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     try {
       // Proses pendaftaran
       console.log(data);
+
+      router.push("/payment");
       // Contoh: await submitRegistration(data)
     } catch (error) {
       console.error("Pendaftaran gagal", error);
     }
   };
-
-  // const details: DetailItem[] = [
-  //   { icon: accounts, label: "Women only" },
-  //   { icon: maps, label: location },
-  //   { icon: prices, label: price },
-  //   { icon: reviews, label: club },
-  //   { icon: times, label: time },
-  // ];
 
   return (
     <div className="container-lg mx-auto max-w-full px-4 py-8">
@@ -94,16 +88,6 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                   icon={item.icon}
                   label={item.label}
                 />
-                // <div key={index} className="flex items-center gap-4 text-black">
-                //   <Image
-                //     src={item.icon}
-                //     alt={item.label}
-                //     width={14}
-                //     height={15}
-                //     className="w-4 h-4"
-                //   />
-                //   <p className="text-md font-bold">{item.label}</p>
-                // </div>
               ))}
             </div>
           </div>
@@ -163,16 +147,29 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
 
                 {/* Dropdown Level */}
                 <div className="relative">
-                  <Select {...register("level")}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select skill level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Beginner">Beginner</SelectItem>
-                      <SelectItem value="Intermediate">Intermediate</SelectItem>
-                      <SelectItem value="Advanced">Advanced</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Controller
+                    name="level"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select skill level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="Beginner">Beginner</SelectItem>
+                            <SelectItem value="Intermediate">
+                              Intermediate
+                            </SelectItem>
+                            <SelectItem value="Advanced">Advanced</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
                   {errors.level && (
                     <p className="text-red-500 text-sm mt-1">
                       {errors.level.message}
@@ -210,15 +207,15 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                 <span className="font-bold">{price}</span>
               </div>
               <div className="mt-[100px] grid min-h-[200px] items-start">
-                <Link href="/payment">
-                  <Button
-                    type="submit"
-                    disabled={!nameWatch}
-                    className="w-full bg-background-button-rc text-white p-3 rounded hover:bg-green-700 transition-colors disabled:opacity-50"
-                  >
-                    {isSubmitting ? "Prosesing..." : "Continue"}
-                  </Button>
-                </Link>
+                {/* <Link href="/payment"> */}
+                <Button
+                  type="submit"
+                  disabled={!nameWatch}
+                  className="w-full bg-background-button-rc text-white p-3 rounded hover:bg-green-700 transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? "Prosesing..." : "Continue"}
+                </Button>
+                {/* </Link> */}
               </div>
             </div>
           </form>

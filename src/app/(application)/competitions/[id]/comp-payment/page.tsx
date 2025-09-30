@@ -21,8 +21,8 @@ export default async function CompetitonsPaymentPage({
       <CompetitionPayment
         title={match.title}
         time={match.time}
-        times={match.times}
-        date={match.date}
+        // times={match.times}
+        // date={match.date}
         location={match.location}
         price={match.price}
         club={match.club}

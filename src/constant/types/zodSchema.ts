@@ -104,13 +104,19 @@ export const profileFormSchema = z.object({
 
 // Skema validasi menggunakan Zod
 export const CompetitionPaymentSchema = z.object({
-  email: z.email("Email tidak valid"),
+  email: z
+    .string()
+    .toLowerCase()
+    .trim()
+    .regex(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Silakan masukkan email yang valid"
+    ),
   name: z.string().min(2, "Nama minimal 2 karakter"),
   phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
   level: z.enum(["Beginner", "Intermediate", "Advanced"], {
     error: "Pilih level yang valid",
   }),
-
   additionalInfo: z.string().optional(),
 });
 
