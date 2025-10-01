@@ -7,6 +7,7 @@ import Footer from "../components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";
 
 console.log("hhe");
+console.log("hhew");
 
 const manRope = localFont({
   src: [
