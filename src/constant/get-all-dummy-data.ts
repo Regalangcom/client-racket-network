@@ -92,3 +92,16 @@ export async function getMatchDataBeforePayment(id: string) {
 
   return dummyData[id] || null;
 }
+
+export async function getMatchViewData(id: string) {
+  const dummyData: Record<string, any> = {
+    "1": {
+      title: "Tennis Thursday Night",
+      logo: sampeImage,
+      time: "30 April, 19:15",
+      location: "Smes Sport Bintaro",
+    },
+  };
+
+  return dummyData[id] || null;
+}

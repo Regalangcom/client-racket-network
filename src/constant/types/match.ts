@@ -18,14 +18,27 @@ export interface MatchRegisterProps {
 }
 
 export interface MatchDetailCardProps {
-  title: string;
-  logo: string;
-  date: string;
-  location: string;
+  title?: string;
+  logo?: string;
+  date?: string;
+  location?: string;
   price: string;
   club: string;
   description: string;
   times: string[];
+}
+
+export interface MatchCardViewProps {
+  id: string;
+  title: string;
+  time: string;
+  location: string;
+  logo?: StaticImageData;
+  clubName: string;
+}
+
+export interface MatchCardProps {
+  match: MatchCardViewProps;
 }
 
 export type DetailItem = {

@@ -3,29 +3,39 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
-import { sampeImage } from "@/public";
 import Link from "next/link";
+import { MatchViewDisplay } from "./match-tags";
+import { MatchCardProps } from "@/constant/types";
 
-const MatchCard: React.FC = () => {
+const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
   return (
-    // w-full w-[350px] lg:w-[295px]
-    // <Card className=" sm:w-[290px] w-full md:[290px] h-[466px] rounded-2xl overflow-hidden shadow-sm border border-gray-200 flex flex-col p-0">
     <Card className="sm:w-[290px] w-full md:w-[290px] h-[466px] rounded-2xl overflow-hidden shadow-sm border border-gray-200 flex flex-col p-0 mb-5">
       {/* Header */}
       <div className="bg-gray-200 flex items-center px-6 py-3">
         <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
           {/* Gambar */}
+          {/* Logo jika ada */}
+          {/* {match.logo && (
+            <Image 
+              src={match.logo} 
+              alt={match.clubName || "Club"} 
+              width={48}
+              height={48}
+              className="object-cover" 
+            />
+          )} */}
         </div>
-        <span className="font-medium text-gray-800 px-7">Green Club</span>
+        <span className="font-medium text-gray-800 px-7">
+          {match.clubName || "Club"}
+        </span>
       </div>
 
       {/* Event image */}
       <div className="w-full h-[180px] relative">
         <Image
-          src={sampeImage}
-          alt="Tennis Thursday Night"
+          src={match.logo || "/default-image.jpg"}
+          alt={match.title}
           fill
           className="object-cover"
         />
@@ -33,19 +43,7 @@ const MatchCard: React.FC = () => {
 
       {/* Content */}
       <CardContent className="flex flex-col justify-between flex-1 p-4">
-        <div className="space-y-3">
-          <p className="font-bold text-base text-black">
-            Tennis Thursday Night
-          </p>
-          <div className="flex items-center text-sm text-gray-600 gap-2">
-            <Calendar size={16} />
-            <span className="font-semibold">30 April, 19:15</span>
-          </div>
-          <div className="flex items-center text-sm text-gray-600 gap-2">
-            <MapPin size={16} />
-            <span className="font-semibold">Smes Sport Bintaro</span>
-          </div>
-        </div>
+        <MatchViewDisplay match={match} />
         <Link href="/match/1">
           <Button className="mt-4 w-full py-5 bg-background-button-rc text-[#E1FFA0] rounded-lg">
             View

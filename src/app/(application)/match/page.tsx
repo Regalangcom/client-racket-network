@@ -1,20 +1,17 @@
-"use client";
+// "use client";
 
 import SearchForm from "../../components/search/search";
 import MatchCard from "@/components/match/match";
-import { useWindowDimension } from "@/hooks/useWindowdimension";
+import { getMatches } from "@/services/match-service";
 
-export default function MatchPage() {
-  const { isLaptop } = useWindowDimension();
-  console.log("laptop", isLaptop);
-  //
+export default async function MatchPage() {
+  const matches = await getMatches();
   return (
     <section className="p-4 container-lg max-w-screen-2xl mx-auto">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Sidebar w-1/4 */}
         {/* xl:w-[20%] */}
         <div className="w-full relative md:w-[34%] text-white mb-6">
-          {/* <div className=" w-full  md:w-[26%]  text-white"> */}
           <SearchForm />
         </div>
         {/* Main Content */}
@@ -28,12 +25,9 @@ export default function MatchPage() {
           <div
             className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-[18px]`}
           >
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
+            {matches.map((match) => (
+              <MatchCard key={match.id} match={match} />
+            ))}
           </div>
         </div>
       </div>

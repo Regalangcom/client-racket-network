@@ -111,6 +111,10 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               </div>
             </div>
 
+            {/* ==================================== */}
+            {/* COMPONENT ACTIVITIES MATCH */}
+            {/* ==================================== */}
+
             {/* Activities section */}
             <div className="mb-2">
               <h2 className="text-xl font-bold mb-4">Activities</h2>
@@ -160,6 +164,10 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               </div>
             </div>
 
+            {/* ==================================== */}
+            {/* COMPONENT COMPETITIONS */}
+            {/* ==================================== */}
+
             {/* Competitions */}
             <div className="mb-6">
               <h2 className="text-xl font-bold mb-4"></h2>
@@ -186,6 +194,9 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
             </div>
           </div>
         ) : (
+          // ===================================
+          // DEKSTOP MATCH
+          // ===================================
           /* Desktop Layout - match the image */
           <div className="flex flex-row gap-8">
             {/* LEFT SIDE - Club Image */}

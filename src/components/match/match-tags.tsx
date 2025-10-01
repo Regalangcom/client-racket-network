@@ -2,7 +2,12 @@
 import Image from "next/image";
 import React from "react";
 import TimeSelector from "./time-selector";
-import { DetailItem } from "@/constant/types";
+import {
+  DetailItem,
+  MatchCardProps,
+  MatchCardViewProps,
+} from "@/constant/types";
+import { calender, maps } from "@/public";
 
 // type IconsMatchProps = {
 //   icon: StaticImageData;
@@ -45,6 +50,22 @@ export const MatchIconRegisters: React.FC<DetailItem> = ({ icon, label }) => (
         className="w-4 h-4"
       />
       <p className="text-md font-bold">{label}</p>
+    </div>
+  </React.Fragment>
+);
+
+export const MatchViewDisplay: React.FC<MatchCardProps> = ({ match }) => (
+  <React.Fragment>
+    <div className="space-y-3">
+      <p className="font-bold text-base text-black">{match.title}</p>
+      <div className="flex items-center text-sm text-gray-600 gap-2">
+        <Image src={calender} alt="calender" priority />
+        <span className="font-semibold">{match.time}</span>
+      </div>
+      <div className="flex items-center text-sm text-gray-600 gap-2">
+        <Image src={maps} alt="maps" priority />
+        <span className="font-semibold">{match.location}</span>
+      </div>
     </div>
   </React.Fragment>
 );

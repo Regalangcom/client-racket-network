@@ -47,7 +47,7 @@ const CompetitionsCard: React.FC = () => {
           }`}
         >
           <MapPin size={16} className="shrink-0" />
-          <span>Jakartah</span>
+          <span>Jakarta</span>
         </div>
 
         {/* Arena */}

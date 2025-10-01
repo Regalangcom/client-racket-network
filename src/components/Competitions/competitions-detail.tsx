@@ -12,6 +12,7 @@ import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { CompetitionsDetailCardProps } from "@/constant/types";
 import CompetitionTag from "./competitons-tags";
 import { Competitions } from "@/constant/competitions";
+import Separator from "../ui/separator";
 
 const CompetitionsDetails: React.FC<CompetitionsDetailCardProps> = ({
   title,
@@ -54,6 +55,9 @@ const CompetitionsDetails: React.FC<CompetitionsDetailCardProps> = ({
         </div>
       )}
 
+      {/* ================================ */}
+      {/* REUSABLE COMPONENT */}
+      {/* ================================ */}
       {/* Right side content */}
       <div className="w-full sm:w-[60%] p-4 bg-white rounded-3xl shadow-md min-h-[820px] overflow-scroll ">
         <h2 className="text-2xl font-bold ">{title}</h2>
@@ -65,12 +69,9 @@ const CompetitionsDetails: React.FC<CompetitionsDetailCardProps> = ({
             <CompetitionTag key={idx} {...tag} containerClass="mb-6" />
           ))}
         </div>
-        {/* CREATE REUSABLE */}
 
         {/* SEPARATOR */}
-        <div className="py-8 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
-          <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
-        </div>
+        <Separator />
 
         <p className="text-[#292524] text-2xl mt-4 mb-2">Description</p>
         <p className="text-gray-700 mb-6">{description}</p>
@@ -79,7 +80,6 @@ const CompetitionsDetails: React.FC<CompetitionsDetailCardProps> = ({
           <p className="text-xl font-semibold text-gray-800">Contact</p>
           <div className="flex items-center py-6 px-5 rounded-lg gap-3  bg-[#F5F5F4]">
             {/* Avatar from Shadcn UI */}
-            {/* <div className=""> */}
             <Avatar>
               <AvatarImage src={contact_avatar} alt="Contact Avatar" />
               <AvatarFallback>DC</AvatarFallback>{" "}
