@@ -5,7 +5,7 @@ import TimeSelector from "./time-selector";
 import {
   DetailItem,
   MatchCardProps,
-  MatchCardViewProps,
+  // MatchCardViewProps,
 } from "@/constant/types";
 import { calender, maps } from "@/public";
 

@@ -19,9 +19,9 @@ export interface MatchRegisterProps {
 
 export interface MatchDetailCardProps {
   title?: string;
-  logo?: string;
+  logo: string;
   date?: string;
-  location?: string;
+  location: string;
   price: string;
   club: string;
   description: string;
