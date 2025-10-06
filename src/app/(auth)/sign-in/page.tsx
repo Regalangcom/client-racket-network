@@ -67,7 +67,7 @@ function SignInPage() {
   };
 
   const handleLoginGoogle = async () => {
-    window.open("http://localhost:8000/auth/google", "_self");
+    window.open("http://31.97.222.232:8000/auth/google", "_self");
   };
 
   // const resetPassword = async (data: SignInFormData) => {

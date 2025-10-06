@@ -84,22 +84,31 @@ pipeline {
         }
     }
 
-     post {
-        success {
-            sh """
-              curl -X POST https://api.fonnte.com/send \
-                -H "Authorization: $FOONTE_API_KEY" \
-                -F "target=$TARGET_NUMBER" \
-                -F "message=✅ Deploy Sukses!\\n\\n📌"
-            """
-        }
-        failure {
-            sh """
-              curl -X POST https://api.fonnte.com/send \
-                -H "Authorization: $FOONTE_API_KEY" \
-                -F "target=$TARGET_NUMBER" \
-                -F "message=❌ Deploy Gagal!\\n\\n📌"
-            """
-        }
+    //  post {
+    //     success {
+    //         sh """
+    //           curl -X POST https://api.fonnte.com/send \
+    //             -H "Authorization: $FOONTE_API_KEY" \
+    //             -F "target=$TARGET_NUMBER" \
+    //             -F "message=✅ Deploy Sukses!\\n\\n📌"
+    //         """
+    //     }
+    //     failure {
+    //         sh """
+    //           curl -X POST https://api.fonnte.com/send \
+    //             -H "Authorization: $FOONTE_API_KEY" \
+    //             -F "target=$TARGET_NUMBER" \
+    //             -F "message=❌ Deploy Gagal!\\n\\n📌"
+    //         """
+    //     }
+    // }
+    post {
+    success {
+        echo "✅ Deploy Sukses!"
     }
+    failure {
+        echo "❌ Deploy Gagal!"
+    }
+}
+
 }
