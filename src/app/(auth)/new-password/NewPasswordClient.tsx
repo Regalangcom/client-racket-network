@@ -40,7 +40,7 @@ export default function NewPasswordClient() {
       setIsPending(true);
 
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/users/requestPasswordReset`,
+        `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/requestPasswordReset`,
         {
           token: getToken,
           newPassword: data.password,

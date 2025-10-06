@@ -57,7 +57,7 @@ function InputOTPForm() {
       setIsPending(true);
       console.log(data);
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/users/verifyOTP`,
+        `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/verifyOTP`,
         {
           email,
           otp: data.otp,

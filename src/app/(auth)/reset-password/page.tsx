@@ -40,7 +40,7 @@ function ResetPasswordPage() {
     try {
       setIsPending(true);
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/users/requestLinkPasswordReset`,
+        `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/requestLinkPasswordReset`,
         { email: data.email }
       );
       toast.success(response.data.message); // Show success toast
