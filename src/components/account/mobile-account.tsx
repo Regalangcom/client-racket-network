@@ -3,19 +3,14 @@ import { AccountMenu } from "./accountMenu/accountMenu";
 import { UserProfileCard } from "./user-profile-card";
 import { AccountMenuItem, AccountMenuItemType } from "./account-menu-Item";
 import { useRouter } from "next/navigation";
+import { User } from "@/app/(application)/account/page";
 
 interface MobileAccountViewProps {
-  user: {
-    name: string;
-    phone: string;
-  };
+  user: User;
   menuItems: AccountMenuItemType[];
 }
 
-export const MobileAccountView: React.FC<MobileAccountViewProps> = ({
-  user,
-  menuItems,
-}) => {
+export const MobileAccountView: React.FC<MobileAccountViewProps> = ({ user, menuItems }) => {
   const router = useRouter();
 
   return (
@@ -25,8 +20,9 @@ export const MobileAccountView: React.FC<MobileAccountViewProps> = ({
 
         <div className="">
           <UserProfileCard
-            name={user.name}
-            phone={user.phone}
+            image={user.profile.picture}
+            name={user.username}
+            phone={user.email}
             onPress={() => {
               /* Handle profile press */
               router.push("/account/profile");
@@ -39,10 +35,7 @@ export const MobileAccountView: React.FC<MobileAccountViewProps> = ({
             {menuItems.map((item, index) => (
               <React.Fragment key={index}>
                 {index === 4 && <div className="h-[7px] bg-gray-100"></div>}
-                <AccountMenuItem
-                  {...item}
-                  isLastItem={index === menuItems.length - 1}
-                />
+                <AccountMenuItem {...item} isLastItem={index === menuItems.length - 1} />
               </React.Fragment>
             ))}
           </div>

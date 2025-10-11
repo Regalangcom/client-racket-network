@@ -3,26 +3,25 @@ import Link from "next/link";
 // import { AccountMenuItemType } from './AccountMenuItem';
 import { AccountMenuItemType } from "./account-menu-Item";
 import Image from "next/image";
+import { User } from "@/app/(application)/account/page";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface DesktopAccountViewProps {
-  user: {
-    name: string;
-    phone: string;
-  };
+  user: User;
   menuItems: AccountMenuItemType[];
 }
 
-export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({
-  user,
-  menuItems,
-}) => (
+export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({ user, menuItems }) => (
   <div className="flex w-full h-screen">
     {/* Sidebar Profile */}
     <div className="w-1/4 bg-white p-6 border-r">
       <div className="flex flex-col items-center">
-        <div className="w-24 h-24 bg-gray-200 rounded-full mb-4"></div>
-        <h2 className="text-xl font-semibold">{user.name}</h2>
-        <p className="text-gray-500">{user.phone}</p>
+        <Avatar>
+          <AvatarImage src={user.profile.picture} alt={user.username} />
+          <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <h2 className="text-xl font-semibold">{user.username}</h2>
+        <p className="text-gray-500">{user.email}</p>
       </div>
 
       {/* Desktop Menu */}
@@ -37,9 +36,7 @@ export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({
               <Image src={item.icon} width={23} height={23} alt="image" />
             </span>
             <span className="flex-grow text-base">{item.title}</span>
-            {item.hasNotification && (
-              <span className="w-3 h-3 bg-red-500 rounded-full ml-2"></span>
-            )}
+            {item.hasNotification && <span className="w-3 h-3 bg-red-500 rounded-full ml-2"></span>}
           </Link>
         ))}
       </nav>

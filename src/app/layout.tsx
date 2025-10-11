@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SessProvider } from "./_components/sess-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "../components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";
-
-console.log("hhe");
-console.log("hhew");
+import { NextAuthProvider } from "./_components/refactor/providers/next-auth-provider";
 
 const manRope = localFont({
   src: [
@@ -34,16 +31,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={`${manRope.variable} antialiased`}>
-        <SessProvider>
+      <body className={`${manRope.variable} antialiased`} suppressHydrationWarning>
+        <NextAuthProvider>
           <ReduxProvider>{children}</ReduxProvider>
-        </SessProvider>
+        </NextAuthProvider>
         <Toaster />
-        <Footer />
       </body>
     </html>
   );

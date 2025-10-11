@@ -6,13 +6,17 @@ import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { MobileAccountView } from "./mobile-account";
 import { DesktopAccountView } from "./desktop-account-view";
 import { settings, signout, inbox, pay, star } from "@/public";
+import { User } from "@/app/(application)/account/page";
 
-export default function AccountPage() {
+interface AccountPageProps {
+  user: User;
+}
+export default function AccountPage({ user }: AccountPageProps) {
   const { isMobile } = useWindowDimension();
-  const [user] = useState({
-    name: "Titin Suratin",
-    phone: "081234567890",
-  });
+  // const [user] = useState({
+  //   name: "Titin Suratin",
+  //   phone: "081234567890",
+  // });
 
   const accountMenuItems = [
     {

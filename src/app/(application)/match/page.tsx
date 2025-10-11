@@ -1,11 +1,14 @@
 // "use client";
 
-import Search from "@/app/_components/refactor/_mobile-comps/search";
+import Search from "@/app/_components/refactor/search";
 import MatchCard from "@/components/match/match";
+import { getAuthServerSession } from "@/lib/auth-options";
 import { getMatches } from "@/services/match-service";
 
 export default async function MatchPage() {
   const matches = await getMatches();
+  const { access_token } = await getAuthServerSession();
+
   return (
     <section className="p-4 container-lg max-w-screen-2xl mx-auto">
       <div className="flex flex-col md:flex-row gap-4">

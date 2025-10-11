@@ -2,14 +2,19 @@
 "use client";
 import Image from "next/image";
 import { logoRc } from "@/public";
+import { cn } from "@/lib/utils";
 
-export const Logo = () => (
+interface LogoProps {
+  className?: string;
+}
+
+export const Logo = ({ className }: LogoProps) => (
   <Image
     src={logoRc}
     alt="Racket Network Logo"
     priority
     width={144}
     height={144}
-    className="w-36 h-37 object-cover rounded"
+    className={cn("w-36 h-37 object-cover rounded", className)}
   />
 );

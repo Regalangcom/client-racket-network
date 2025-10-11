@@ -41,3 +41,22 @@ export const navItems: NavItemType[] = [
   },
   { label: "Log in", button: true },
 ];
+
+export const desktopNavItems: NavItemType[] = [
+  { label: "Home", href: "/", icon: home, activeIcon: homeActive },
+  { label: "Match", href: "/match", icon: match, activeIcon: matchActive },
+  { label: "Club", href: "/club", icon: club, activeIcon: clubActive },
+  {
+    label: "Competitions",
+    href: "/competitions",
+    icon: competition,
+    activeIcon: compeActive,
+  },
+];
+
+export const notLoggedInMobileNavItems: NavItemType[] = [
+  { label: "Home", href: "/", icon: home, activeIcon: homeActive },
+  { label: "Match", href: "/match", icon: match, activeIcon: matchActive },
+  { label: "Club", href: "/club", icon: club, activeIcon: clubActive },
+  { label: "Competitions", href: "/competitions", icon: competition, activeIcon: compeActive },
+];

@@ -16,7 +16,7 @@ function getNavbarVariant(pathname: string) {
   return "home";
 }
 
-const BottomNavbar = () => {
+const BottomNavbarMenu = () => {
   const { isMobile } = useWindowDimension();
   const pathname = usePathname();
   const variant: Variant = getNavbarVariant(pathname);
@@ -49,4 +49,4 @@ const BottomNavbar = () => {
   );
 };
 
-export default memo(BottomNavbar);
+export default memo(BottomNavbarMenu);

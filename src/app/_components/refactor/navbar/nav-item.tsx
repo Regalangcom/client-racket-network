@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
+import { cn } from "@/lib/utils";
 
 interface NavItemProps {
   label: string;
@@ -12,9 +13,21 @@ interface NavItemProps {
   activeIcon?: StaticImageData;
   button?: boolean;
   active?: boolean;
+  className?: string;
+  iconClassName?: string;
+  textClassName?: string;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ label, href = "#", icon, activeIcon, button }) => {
+const NavItem: React.FC<NavItemProps> = ({
+  label,
+  href = "#",
+  icon,
+  activeIcon,
+  button,
+  className,
+  iconClassName,
+  textClassName,
+}) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -29,12 +42,10 @@ const NavItem: React.FC<NavItemProps> = ({ label, href = "#", icon, activeIcon, 
 
   const displayIcons = isActive && activeIcon ? activeIcon : icon;
 
-  // console.log("Current Pathname:", pathname);
-  // console.log("Navigating to:", href);
-
   return (
     <div
-      className={`
+      className={cn(
+        `,
         md:relative 
         flex 
         flex-col 
@@ -46,32 +57,36 @@ const NavItem: React.FC<NavItemProps> = ({ label, href = "#", icon, activeIcon, 
         ease-in-out 
         ${isActive ? "" : "bg-transparent"}
         py-5
-      `}
+      `,
+        className
+      )}
       onClick={handleNavigation}
 
       // onClick={() => !button && router.push(href)}
     >
       {displayIcons && (
         <div
-          className={`
-            flex 
-            justify-center 
-            items-center 
-            mb-1 
-            sm:hidden
-            w-full
-            ${isActive ? "opacity-100" : "opacity-30"}
-          `}
+          className={cn(
+            `
+              flex 
+              justify-center 
+              items-center 
+              mb-1 
+              sm:hidden
+              w-full
+              ${isActive ? "opacity-100" : "opacity-30"}
+          `,
+            iconClassName
+          )}
         >
           <Image src={displayIcons} alt={label} width={23} height={23} className="object-contain" />
         </div>
       )}
       {!button && (
-        <div className="text-center">
+        <div className={cn("text-center", textClassName)}>
           <span
             className={`
               text-xs 
-              mt-10
               md:mt-0
               sm:text-base 
               text-center 

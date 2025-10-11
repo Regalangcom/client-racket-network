@@ -7,6 +7,6 @@ interface Props {
   children: ReactNode;
 }
 
-export function SessProvider(props: Props) {
+export function NextAuthProvider(props: Props) {
   return <SessionProvider>{props.children}</SessionProvider>;
 }
