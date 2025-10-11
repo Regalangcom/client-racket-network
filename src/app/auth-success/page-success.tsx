@@ -23,7 +23,7 @@ export default function SuccessPage() {
           });
           if (result?.ok) {
             const response = await axios.get(
-              `${process.env.NEXT_PUBLIC_URL_API}/api/v1/users/me`,
+              `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/me`,
               { withCredentials: true }
             );
             const userData = response.data.data;
