@@ -160,7 +160,7 @@ const ProfilePage = () => {
       const fetchProfile = async () => {
         try {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_URL_API}/api/v1/users/me`,
+            `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/me`,
             {
               headers: {
                 Authorization: `Bearer ${session.user.access_token}`,
