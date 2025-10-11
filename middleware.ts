@@ -16,3 +16,5 @@
 // export const config = {
 //   matcher: "/profile", // Tentukan halaman yang ingin diatur middleware-nya
 // };
+
+// console.log("data");
