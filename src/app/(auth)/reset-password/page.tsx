@@ -5,17 +5,10 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { reqPasswordFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputError from "@/app/components/input-errors";
+import InputError from "@/app/_components/input-errors";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -39,10 +32,9 @@ function ResetPasswordPage() {
     // logic for email submission
     try {
       setIsPending(true);
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/requestLinkPasswordReset`,
-        { email: data.email }
-      );
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/requestLinkPasswordReset`, {
+        email: data.email,
+      });
       toast.success(response.data.message); // Show success toast
       setIsPending(false); // Enable button again
       setShowResendLink(true);
@@ -79,21 +71,12 @@ function ResetPasswordPage() {
       <Card className="mx-auto w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">Input your email</CardTitle>
-          <CardDescription>
-            Welcome! Please fill in the details to get started.
-          </CardDescription>
+          <CardDescription>Welcome! Please fill in the details to get started.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4"
-            noValidate
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
             <div className="space-y-2">
-              <Label
-                htmlFor="email"
-                className={errors.email ? "text-destructive" : ""}
-              >
+              <Label htmlFor="email" className={errors.email ? "text-destructive" : ""}>
                 Email
               </Label>
               <Input
@@ -101,9 +84,7 @@ function ResetPasswordPage() {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                className={
-                  errors.email ? "border-destructive ring-destructive" : ""
-                }
+                className={errors.email ? "border-destructive ring-destructive" : ""}
                 aria-invalid={errors.email ? "true" : "false"}
               />
               <InputError error={errors.email?.message} />
@@ -114,11 +95,7 @@ function ResetPasswordPage() {
 
             {showResendLink && (
               <div className="mt-2">
-                <button
-                  type="button"
-                  disabled={isPending || isCounter === 0}
-                  className="text-blue-600 hover:underline"
-                >
+                <button type="button" disabled={isPending || isCounter === 0} className="text-blue-600 hover:underline">
                   {isPending ? "Resending ..." : "Resend OTP"}
                 </button>
               </div>
@@ -128,10 +105,7 @@ function ResetPasswordPage() {
         {showResendLink && (
           <CardFooter>
             <span className="font-normal">
-              Link will expire in{" "}
-              <span className="text-red-600">
-                {Math.floor(isCounter / 60)}:
-              </span>
+              Link will expire in <span className="text-red-600">{Math.floor(isCounter / 60)}:</span>
               <span className="text-red-600">
                 {isCounter % 60 < 10 ? "0" : ""}
                 {isCounter % 60} seconds

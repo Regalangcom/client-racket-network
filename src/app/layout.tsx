@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SessProvider } from "./components/sess-provider";
+import { SessProvider } from "./_components/sess-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "../components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";

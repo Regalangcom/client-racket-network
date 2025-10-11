@@ -5,15 +5,10 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardDescription } from "@/components/ui/card";
 import { SignInFormSchema, SignInFormData } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputError from "../../components/input-errors";
+import InputError from "../../_components/input-errors";
 import Link from "next/link";
 import { iconGoogle } from "../../../public";
 import Image from "next/image";
@@ -118,21 +113,10 @@ function SignInPage() {
                 onClick={handleLoginGoogle}
                 className="w-full sm:w-[360px] h-12 border border-gray-300 flex items-center justify-center py-3 bg-white text-black rounded-md hover:bg-background-button-rc hover:text-white mb-4"
               >
-                <Image
-                  src={iconGoogle.src}
-                  alt="Google Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                  priority
-                />
+                <Image src={iconGoogle.src} alt="Google Icon" width={24} height={24} className="mr-2" priority />
                 Daftar dengan Google
               </Button>
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="w-full sm:w-[360px]"
-                noValidate
-              >
+              <form onSubmit={handleSubmit(onSubmit)} className="w-full sm:w-[360px]" noValidate>
                 <div className="flex items-center mt-5 justify-center space-x-2">
                   <div className="flex-1 border-t border-gray-400"></div>
                   <span className="text-sm text-gray-500">atau</span>
@@ -179,10 +163,7 @@ function SignInPage() {
                 {/* Reset Password */}
                 {/* ======================= */}
                 <div className="w-full flex justify-end py-3">
-                  <Link
-                    href="/reset-password"
-                    className="text-blue-600 text-sm hover:underline "
-                  >
+                  <Link href="/reset-password" className="text-blue-600 text-sm hover:underline ">
                     Lupa password ?
                   </Link>
                 </div>
@@ -193,19 +174,14 @@ function SignInPage() {
                     className="bg-background-button-rc border border-gray-300 w-full sm:w-[360px] h-11 block"
                     type="submit"
                   >
-                    <span className=" text-[#E1FFA0]">
-                      {isPending ? "Masuk..." : "Masuk"}
-                    </span>
+                    <span className=" text-[#E1FFA0]">{isPending ? "Masuk..." : "Masuk"}</span>
                   </Button>
                 </div>
 
                 {/* Tautan ke Halaman Login */}
                 <p className="text-center text-sm text-zinc-600">
                   belum punya akun?{" "}
-                  <Link
-                    href="/sign-up"
-                    className="text-blue-600 hover:underline"
-                  >
+                  <Link href="/sign-up" className="text-blue-600 hover:underline">
                     Daftar
                   </Link>
                 </p>

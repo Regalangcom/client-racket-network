@@ -14,21 +14,12 @@ interface NavItemProps {
   active?: boolean;
 }
 
-const NavItem: React.FC<NavItemProps> = ({
-  label,
-  href = "#",
-  icon,
-  activeIcon,
-  button,
-}) => {
+const NavItem: React.FC<NavItemProps> = ({ label, href = "#", icon, activeIcon, button }) => {
   const router = useRouter();
   const pathname = usePathname();
 
   // Perbaiki logika active state
-  const isActive =
-    href !== "#"
-      ? pathname === href || (href !== "/" && pathname.startsWith(href))
-      : false;
+  const isActive = href !== "#" ? pathname === href || (href !== "/" && pathname.startsWith(href)) : false;
 
   const handleNavigation = () => {
     if (!button && href && href !== "#") {
@@ -72,13 +63,7 @@ const NavItem: React.FC<NavItemProps> = ({
             ${isActive ? "opacity-100" : "opacity-30"}
           `}
         >
-          <Image
-            src={displayIcons}
-            alt={label}
-            width={23}
-            height={23}
-            className="object-contain"
-          />
+          <Image src={displayIcons} alt={label} width={23} height={23} className="object-contain" />
         </div>
       )}
       {!button && (
@@ -98,11 +83,7 @@ const NavItem: React.FC<NavItemProps> = ({
         </div>
       )}
 
-      {button && (
-        <button className="py-2 px-8 bg-background-button-rc text-white rounded transition-all">
-          {label}
-        </button>
-      )}
+      {button && <button className="py-2 px-8 bg-background-button-rc text-white rounded transition-all">{label}</button>}
     </div>
     // </div>
   );

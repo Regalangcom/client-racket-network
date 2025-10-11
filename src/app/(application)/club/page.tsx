@@ -2,7 +2,7 @@
 
 import CreateClub from "../../../components/club/create-club";
 import ClubCard from "../../../components/club/club";
-import SearchForm from "../../components/search/search";
+import SearchForm from "../../_components/search/search";
 
 export default function ClubPage() {
   return (
@@ -20,9 +20,7 @@ export default function ClubPage() {
         <div className="w-full md:w-[26%]">
           <div className="mb-10 font-semibold">
             <p className="text-3xl">Club</p>
-            <p className="font-semibold mt-1">
-              Join a club, play together or create your own club
-            </p>
+            <p className="font-semibold mt-1">Join a club, play together or create your own club</p>
           </div>
           <SearchForm />
           <div className="mt-6 mb-5 md:ml-3 ml:0">

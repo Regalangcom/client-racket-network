@@ -5,16 +5,10 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { NewPasswordFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputError from "@/app/components/input-errors";
+import InputError from "@/app/_components/input-errors";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -39,13 +33,10 @@ export default function NewPasswordClient() {
     try {
       setIsPending(true);
 
-      const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/requestPasswordReset`,
-        {
-          token: getToken,
-          newPassword: data.password,
-        }
-      );
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/requestPasswordReset`, {
+        token: getToken,
+        newPassword: data.password,
+      });
 
       toast.success(response.data.message);
       router.push("/sign-in");
@@ -62,21 +53,12 @@ export default function NewPasswordClient() {
       <Card className="mx-auto w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">New Password</CardTitle>
-          <CardDescription>
-            Welcome! Please fill in the details to get started.
-          </CardDescription>
+          <CardDescription>Welcome! Please fill in the details to get started.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4"
-            noValidate
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
             <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className={errors.password ? "text-destructive" : ""}
-              >
+              <Label htmlFor="password" className={errors.password ? "text-destructive" : ""}>
                 Create New Password
               </Label>
               <Input
@@ -84,9 +66,7 @@ export default function NewPasswordClient() {
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                className={
-                  errors.password ? "border-destructive ring-destructive" : ""
-                }
+                className={errors.password ? "border-destructive ring-destructive" : ""}
                 aria-invalid={errors.password ? "true" : "false"}
               />
               <InputError error={errors.password?.message} />

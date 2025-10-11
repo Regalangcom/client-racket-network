@@ -1,10 +1,12 @@
 // page.tsx
 "use client";
 import { useState } from "react";
-import HomeCard from "../../components/home/card-home";
-import Notification from "../../components/home/notification/notification";
+// import HomeCard from "../../components/home/card-home";
+// import Notification from "../../components/home/notification/notification";
 import { Match } from "@/constant/types/match";
 import { sampeImage } from "@/public";
+import Notification from "@/components/home/notification/notification";
+import HomeCard from "@/components/home/card-home";
 
 export default function Home() {
   // Contoh data match (bisa diambil dari API)
@@ -34,11 +36,7 @@ export default function Home() {
       <div className="flex flex-col md:flex-row gap-4">
         {/* Sidebar */}
         <div className="w-full md:w-[27%] text-white">
-          <Notification
-            type="join"
-            username="Padel Cihuy"
-            message="just joined Racket Network"
-          />
+          <Notification type="join" username="Padel Cihuy" message="just joined Racket Network" />
         </div>
 
         {/* Main Content */}

@@ -19,15 +19,9 @@ export const SignUpFormSchema = z
       .string()
       .toLowerCase()
       .trim()
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Silakan masukkan email yang valid"
-      ),
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Silakan masukkan email yang valid"),
     // .email("Silakan masukkan email yang valid"),
-    username: z
-      .string()
-      .min(5, { message: "Username minimal 5 karakter" })
-      .max(10, { message: "Username maksimal 10 karakter" }),
+    username: z.string().min(5, { message: "Username minimal 5 karakter" }).max(10, { message: "Username maksimal 10 karakter" }),
     // .transform((val) => val.replace(/\s+/g, "")),
 
     phone_number: z
@@ -59,18 +53,15 @@ export const SignUpFormSchema = z
 
 export const SignInFormSchema = z.object({
   email: z.email("Please enter a valid email").toLowerCase().trim(),
-  password: z
-    .string()
-    .min(10, { message: "Be at least 10 character ling" })
-    .regex(/[a-zA-Z]/, { message: "Contain at least one letter" })
-    .regex(/[0-9]/, { message: "Contain at least one number" })
-    .regex(/[^a-zA-Z0-9]/, { message: "Contain at least special characters" }),
+  password: z.string(),
+  // .min(8, { message: "Be at least 8 character long" })
+  // .regex(/[a-zA-Z]/, { message: "Contain at least one letter" })
+  // .regex(/[0-9]/, { message: "Contain at least one number" })
+  // .regex(/[^a-zA-Z0-9]/, { message: "Contain at least special characters" }),
 });
 
 export const OtpInFormSchema = z.object({
-  otp: z
-    .string()
-    .min(6, { message: "your one-time pasword must be 6 characters" }),
+  otp: z.string().min(6, { message: "your one-time pasword must be 6 characters" }),
 });
 
 export const reqPasswordFormSchema = z.object({
@@ -92,10 +83,7 @@ export const profileFormSchema = z.object({
     .string()
     .toLowerCase()
     .trim()
-    .regex(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Silakan masukkan email yang valid"
-    ),
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Silakan masukkan email yang valid"),
   phone: z.string().min(10, { message: "Phone number is required" }),
   level: z.enum(["Beginner", "Intermediate", "Advanced"], {
     message: "Please select a level",
@@ -108,10 +96,7 @@ export const CompetitionPaymentSchema = z.object({
     .string()
     .toLowerCase()
     .trim()
-    .regex(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Silakan masukkan email yang valid"
-    ),
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Silakan masukkan email yang valid"),
   name: z.string().min(2, "Nama minimal 2 karakter"),
   phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
   level: z.enum(["Beginner", "Intermediate", "Advanced"], {
@@ -125,10 +110,7 @@ export const registrationMatchSchema = z.object({
     .string()
     .toLowerCase()
     .trim()
-    .regex(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Silakan masukkan email yang valid"
-    ),
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Silakan masukkan email yang valid"),
   name: z.string().min(2, "Nama minimal 2 karakter"),
   phoneNumber: z.string().min(10, "Nomor telepon tidak valid"),
   level: z.enum(["Beginner", "Intermediate", "Advanced"], {
