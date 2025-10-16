@@ -22,7 +22,10 @@ import {
 import { CompetitionsRegisterProps } from "@/constant/types";
 import { CompetitionsDetail } from "@/constant/competitions";
 import CompetitionTag from "./competitons-tags";
-import Link from "next/link";
+import { PromoCodeInput } from "../form/promo-code-input";
+import { useState } from "react";
+import Separator from "../ui/separator";
+// import Link from "next/link";
 
 const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   title,
@@ -41,6 +44,8 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
     watch,
     control,
     formState: { errors, isSubmitting },
+    setValue,
+    getValues,
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(CompetitionPaymentSchema),
     mode: "onBlur",
@@ -53,10 +58,17 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
       // Proses pendaftaran
       console.log(data);
       router.push("/payment");
-      // Contoh: await submitRegistration(data)
     } catch (error) {
       console.error("Pendaftaran gagal", error);
     }
+  };
+
+  const [discountAmount, setDiscountAmount] = useState<number>(30000);
+  const originalPrice = 100000; // This would be your actual price
+
+  const handlePromoApplied = (discount: number) => {
+    setDiscountAmount(discount);
+    // You can also perform any other actions needed when a promo is applied
   };
 
   return (
@@ -85,8 +97,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
           )}
           {/* Card Match Detail */}
           <div className="bg-white">
-            {/* <h2 className="text-xl font-bold mb-4">{title}</h2> */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               {CompetitionsDetail(title, time, location).map((tag, idx) => (
                 <CompetitionTag key={idx} {...tag} />
               ))}
@@ -177,61 +188,59 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
                       {errors.level.message}
                     </p>
                   )}
-                  {/* <Select {...register("level")}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select skill level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="Beginner">Beginner</SelectItem>
-                        <SelectItem value="Intermediate">
-                          Intermediate
-                        </SelectItem>
-                        <SelectItem value="Advanced">Advanced</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  {errors.level && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.level.message}
-                    </p>
-                  )} */}
                 </div>
               </div>
             </div>
 
-            {/* Card Promo */}
-            <div className="bg-white mb-2 mt-4">
-              <h3 className="text-lg font-semibold mb-4">Kode Promo</h3>
-              <input
-                type="text"
-                placeholder="Masukkan Kode Referral"
-                className="w-full p-2 border rounded"
-              />
-            </div>
+            {/* promo code */}
+            <PromoCodeInput
+              register={register}
+              setValue={setValue}
+              getValues={getValues}
+              onPromoApplied={handlePromoApplied}
+              className="mb-2 mt-4"
+              placeholder="TEN87"
+            />
 
             {/* Card Detail Pembayaran */}
             <div className="bg-white rounded-2xl ">
               {/* SEPARATOR */}
-              <div className="py-8 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
-                <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
+              <Separator />
+
+              <h3 className="text-xl font-semibold mb-4">Payment detail</h3>
+
+              {/* Price row */}
+              <div className="flex justify-between mb-2">
+                <span>Price</span>
+                <span>Rp {originalPrice.toLocaleString()}</span>
               </div>
-              <h3 className="text-lg font-semibold mb-4">Payment detail</h3>
-              <div className="flex justify-between mb-4">
-                <span>Total Biaya:</span>
-                <span className="font-bold">{price}</span>
+
+              {/* Promo discount row - only shown when discount is applied */}
+              {discountAmount > 0 && (
+                <div className="flex justify-between mb-2">
+                  <span>Promo</span>
+                  <span className="text-red-500">
+                    -Rp {discountAmount.toLocaleString()}
+                  </span>
+                </div>
+              )}
+
+              {/* Total row */}
+              <div className="flex justify-between text-[#174038] mb-4 font-bold">
+                <span>Total</span>
+                <span>
+                  Rp {(originalPrice - discountAmount).toLocaleString()}
+                </span>
               </div>
+
               <div className="mt-[100px] grid min-h-[200px] items-start">
-                {/* <Link href="/payment"> */}
                 <Button
                   type="submit"
-                  disabled={!nameValue}
-                  // disabled={isSubmitting}
+                  disabled={!nameValue || isSubmitting}
                   className="w-full bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2"
                 >
-                  {isSubmitting ? "Prosesing..." : "Continue"}
+                  {isSubmitting ? "Processing..." : "Continue"}
                 </Button>
-                {/* </Link> */}
               </div>
             </div>
           </form>

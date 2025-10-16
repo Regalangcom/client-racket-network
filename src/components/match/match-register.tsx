@@ -22,6 +22,9 @@ import { MatchRegisterProps } from "@/constant/types";
 import Link from "next/link";
 import { matchIconRegister } from "@/constant/match";
 import { MatchIconRegisters } from "./match-tags";
+import Separator from "../ui/separator";
+import { PromoCodeInput } from "../form/promo-code-input";
+import { useState } from "react";
 
 const MatchRegister: React.FC<MatchRegisterProps> = ({
   location,
@@ -39,6 +42,8 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     watch,
     control,
     formState: { errors, isSubmitting },
+    setValue,
+    getValues,
   } = useForm<RegistrationMatchForm>({
     resolver: zodResolver(registrationMatchSchema),
   });
@@ -55,6 +60,14 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
     } catch (error) {
       console.error("Pendaftaran gagal", error);
     }
+  };
+
+  const [discountAmount, setDiscountAmount] = useState<number>(30000);
+  const originalPrice = 100000; // This would be your actual price
+
+  const handlePromoApplied = (discount: number) => {
+    setDiscountAmount(discount);
+    // You can also perform any other actions needed when a promo is applied
   };
 
   return (
@@ -179,32 +192,47 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
               </div>
             </div>
 
-            {/* SEPARATOR */}
-            <div className="py-10 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
-              <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
-            </div>
+            <Separator />
 
-            {/* Card Promo */}
-            <div className="bg-white rounded-2xl  mb-6">
-              <h3 className="text-2xl font-semibold mb-4">Promo</h3>
-              <input
-                type="text"
-                placeholder="Referral code"
-                className="w-full p-2 border rounded"
-              />
-            </div>
+            {/* promo code */}
+            <PromoCodeInput
+              register={register}
+              setValue={setValue}
+              getValues={getValues}
+              onPromoApplied={handlePromoApplied}
+              className="mb-2 mt-4"
+              placeholder="TEN87"
+            />
 
             {/* SEPARATOR */}
-            <div className="py-10 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
-              <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
-            </div>
+            <Separator />
 
             {/* Card Detail Pembayaran */}
             <div className="bg-white rounded-2xl ">
               <h3 className="text-2xl font-semibold mb-4">Payment Detail</h3>
-              <div className="flex justify-between mb-4">
-                <span>Total Biaya:</span>
-                <span className="font-bold">{price}</span>
+
+              {/* Price row */}
+              <div className="flex justify-between mb-2">
+                <span>Price</span>
+                <span>Rp {originalPrice.toLocaleString()}</span>
+              </div>
+
+              {/* Promo discount row - only shown when discount is applied */}
+              {discountAmount > 0 && (
+                <div className="flex justify-between mb-2">
+                  <span>Promo</span>
+                  <span className="text-red-500">
+                    -Rp {discountAmount.toLocaleString()}
+                  </span>
+                </div>
+              )}
+
+              {/* Total row */}
+              <div className="flex justify-between text-[#174038] mb-4 font-bold">
+                <span>Total</span>
+                <span>
+                  Rp {(originalPrice - discountAmount).toLocaleString()}
+                </span>
               </div>
               <div className="mt-[100px] grid min-h-[200px] items-start">
                 {/* <Link href="/payment"> */}
