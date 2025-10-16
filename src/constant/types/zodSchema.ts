@@ -137,6 +137,37 @@ export const registrationMatchSchema = z.object({
   additionalInfo: z.string().optional(),
 });
 
+export const clubFormSchema = z.object({
+  sport: z.string().min(1, "Please select a sport"),
+
+  clubName: z
+    .string()
+    .min(3, "Club name must be at least 3 characters")
+    .max(50, "Club name must be less than 50 characters"),
+
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(500, "Description must be less than 500 characters")
+    .optional()
+    .or(z.literal("")),
+
+  privacy: z.enum(["public", "private"], {
+    error: "Please select privacy setting",
+  }),
+
+  location: z.string().min(1, "Please select a location"),
+
+  venue: z.string().min(1, "Please select a venue"),
+
+  gender: z.enum(["all", "men", "women"], {
+    error: "Please select gender preference",
+  }),
+
+  // Logo is optional, handled separately as File
+  logo: z.any().optional(),
+});
+
 export type RegistrationMatchForm = z.infer<typeof registrationMatchSchema>;
 export type SignUpFormSchema = z.infer<typeof SignUpFormSchema>;
 export type SignInFormSchema = z.infer<typeof SignInFormSchema>;
@@ -145,3 +176,8 @@ export type reqPasswordFormSchema = z.infer<typeof reqPasswordFormSchema>;
 export type NewPasswordFormSchema = z.infer<typeof NewPasswordFormSchema>;
 export type ProfileFormData = z.infer<typeof profileFormSchema>;
 export type RegistrationFormData = z.infer<typeof CompetitionPaymentSchema>;
+export type ClubFormValues = z.infer<typeof clubFormSchema>;
+// Extended type with logo preview for UI
+export type ClubFormData = ClubFormValues & {
+  logoPreview?: string;
+};

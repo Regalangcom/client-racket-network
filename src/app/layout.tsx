@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import Footer from "../components/footer/footer";
 import ReduxProvider from "@/redux/redux-provider";
 import { NextAuthProvider } from "./_components/refactor/providers/next-auth-provider";
 
@@ -35,7 +34,10 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={`${manRope.variable} antialiased`} suppressHydrationWarning>
+      <body
+        className={`${manRope.variable} antialiased`}
+        suppressHydrationWarning
+      >
         <NextAuthProvider>
           <ReduxProvider>{children}</ReduxProvider>
         </NextAuthProvider>

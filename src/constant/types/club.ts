@@ -16,3 +16,15 @@ export type IconEnvClub = {
   icon: StaticImageData;
   label: string;
 };
+
+export interface ClubFormData {
+  sport: string;
+  logo?: File | null;
+  logoPreview?: string;
+  clubName: string;
+  description: string;
+  privacy: "public" | "private";
+  location: string;
+  venue: string;
+  gender: "all" | "men" | "women";
+}
