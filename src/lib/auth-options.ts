@@ -1,7 +1,11 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { AuthOptions, getServerSession } from "next-auth";
-import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next";
+import {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -87,11 +91,14 @@ const authOptions: AuthOptions = {
 };
 
 async function getAuthServerSession(
-  ...args: [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]] | [NextApiRequest, NextApiResponse] | []
+  ...args:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | []
 ) {
   const session = await getServerSession(...args, authOptions);
   return {
-    access_token: session?.user?.access_token ?? null,
+    access_token: session?.access_token ?? null,
   };
 }
 
