@@ -134,7 +134,7 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
               </Label>
 
               <LogoUpload
-                logoPreview={logoPreview}
+                pictureUrl={logoPreview}
                 onLogoChange={handleLogoChange}
               />
 
