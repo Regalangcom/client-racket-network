@@ -20,7 +20,7 @@ export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({
     <div className="w-1/4 bg-white p-6 border-r">
       <div className="flex flex-col items-center">
         <Avatar>
-          <AvatarImage src={user.profile?.picture} alt={user.username} />
+          <AvatarImage src={user.profile?.pictureUrl} alt={user.username} />
           <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
         </Avatar>
         <h2 className="text-xl font-semibold">{user.username}</h2>
