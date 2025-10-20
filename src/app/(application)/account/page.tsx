@@ -1,6 +1,6 @@
 import { getAuthServerSession } from "@/lib/auth-options";
 import AccountPage from "../../../components/account/account-account";
-import { signOut } from "next-auth/react";
+// import { signOut } from "next-auth/react";
 
 export type User = {
   id: number;
@@ -8,7 +8,7 @@ export type User = {
   username: string;
   profile: {
     id: number;
-    picture: string;
+    pictureUrl: string;
     location: string;
     bio: string;
     userId: number;

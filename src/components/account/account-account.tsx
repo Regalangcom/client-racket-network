@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import React from "react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import { MobileAccountView } from "./mobile-account";
@@ -13,10 +12,6 @@ interface AccountPageProps {
 }
 export default function AccountPage({ user }: AccountPageProps) {
   const { isMobile } = useWindowDimension();
-  // const [user] = useState({
-  //   name: "Titin Suratin",
-  //   phone: "081234567890",
-  // });
 
   const accountMenuItems = [
     {
@@ -46,8 +41,9 @@ export default function AccountPage({ user }: AccountPageProps) {
     {
       icon: signout,
       title: "Log out",
-      path: "/logout",
+      path: "/sign-in",
       hasNotification: false,
+      // onclick: handleLogout,
     },
   ];
 

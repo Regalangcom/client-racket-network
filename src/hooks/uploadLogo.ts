@@ -7,8 +7,8 @@ interface UseLogoUploadReturn {
   resetLogo: () => void;
 }
 
-export const useLogoUpload = (): UseLogoUploadReturn => {
-  const [logoPreview, setLogoPreview] = useState<string>("");
+export const useLogoUpload = (initialPicture?: string): UseLogoUploadReturn => {
+  const [logoPreview, setLogoPreview] = useState<string>(initialPicture || "");
   const [logoFile, setLogoFile] = useState<File | null>(null);
 
   const handleLogoChange = useCallback((file: File) => {

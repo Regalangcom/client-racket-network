@@ -2,25 +2,29 @@
 
 import { useState } from "react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
-import { ProfileMobileView } from "./profileMobile";
-import { ProfileDesktopView } from "./profileDekstop";
+import { ProfileMobileView } from "./profile-mobile";
+import { ProfileDesktopView } from "./profile-dekstop";
 
 // Definisikan tipe profil
 export type UserProfile = {
-  name: string;
-  phone: string;
+  username: string;
+  phone_number: string;
   email: string;
   level: "Beginner" | "Intermediate" | "Advanced";
+  picture: string;
 };
 
-export default function ProfilePage() {
+interface ProfilePageClientProps {
+  initialUser: UserProfile;
+  access_token: string;
+}
+
+export default function ProfilePage({
+  initialUser,
+  access_token,
+}: ProfilePageClientProps) {
   const { isMobile } = useWindowDimension();
-  const [user, setUser] = useState<UserProfile>({
-    name: "Titin Suratin",
-    phone: "08123456789",
-    email: "titinsr@gmail.com",
-    level: "Beginner",
-  });
+  const [user, setUser] = useState<UserProfile>(initialUser);
 
   const handleUpdateProfile = (updatedData: Partial<UserProfile>) => {
     setUser((prevUser) => ({
@@ -32,7 +36,11 @@ export default function ProfilePage() {
   return (
     isMobile !== undefined &&
     (isMobile ? (
-      <ProfileMobileView user={user} onUpdateProfile={handleUpdateProfile} />
+      <ProfileMobileView
+        user={user}
+        access_token={access_token}
+        onUpdateProfile={handleUpdateProfile}
+      />
     ) : (
       <ProfileDesktopView user={user} onUpdateProfile={handleUpdateProfile} />
     ))

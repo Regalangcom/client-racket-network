@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useInbox } from "@/hooks/useInbox";
-import { AccountMenu } from "../accountMenu/accountMenu";
+import { AccountMenu } from "../accountMenu/title-menu";
 
 export const InboxMobileView: React.FC = () => {
   const { items, loading, error, loadInboxItems } = useInbox();

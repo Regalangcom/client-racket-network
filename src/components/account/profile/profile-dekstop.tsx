@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { UserProfile } from "./profilePage";
-import { AccountMenu } from "../accountMenu/accountMenu";
-import { ProfileEditForm } from "./profileForm";
+import { UserProfile } from "./profile-page";
+import { AccountMenu } from "../accountMenu/title-menu";
+import { ProfileEditForm } from "./profile-form";
 interface ProfileDesktopViewProps {
   user: UserProfile;
   onUpdateProfile: (data: Partial<UserProfile>) => void;
@@ -21,7 +21,7 @@ export const ProfileDesktopView: React.FC<ProfileDesktopViewProps> = ({
         {/* Sidebar atau informasi tambahan */}
         <div className="flex flex-col items-center">
           <div className="w-24 h-24 bg-gray-200 rounded-full mb-4"></div>
-          <h2 className="text-xl font-semibold">{user.name}</h2>
+          <h2 className="text-xl font-semibold">{user.username}</h2>
           <p className="text-gray-500">{user.email}</p>
         </div>
       </div>
@@ -43,6 +43,7 @@ export const ProfileDesktopView: React.FC<ProfileDesktopViewProps> = ({
           </div>
         ) : (
           <ProfileEditForm
+            access_token=""
             initialData={user}
             onSave={(updatedData) => {
               onUpdateProfile(updatedData);

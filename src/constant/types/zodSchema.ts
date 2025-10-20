@@ -86,7 +86,9 @@ export const NewPasswordFormSchema = z.object({
 });
 
 export const profileFormSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  username: z
+    .string()
+    .min(2, { message: "Name must be at least 2 characters." }),
   email: z
     .string()
     .toLowerCase()
@@ -95,10 +97,11 @@ export const profileFormSchema = z.object({
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       "Silakan masukkan email yang valid"
     ),
-  phone: z.string().min(10, { message: "Phone number is required" }),
+  phone_number: z.string().min(10, { message: "Phone number is required" }),
   level: z.enum(["Beginner", "Intermediate", "Advanced"], {
     message: "Please select a level",
   }),
+  picture: z.string().optional(),
 });
 
 // Skema validasi menggunakan Zod

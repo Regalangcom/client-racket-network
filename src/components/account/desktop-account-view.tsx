@@ -11,13 +11,16 @@ interface DesktopAccountViewProps {
   menuItems: AccountMenuItemType[];
 }
 
-export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({ user, menuItems }) => (
+export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({
+  user,
+  menuItems,
+}) => (
   <div className="flex w-full h-screen">
     {/* Sidebar Profile */}
     <div className="w-1/4 bg-white p-6 border-r">
       <div className="flex flex-col items-center">
         <Avatar>
-          <AvatarImage src={user.profile.picture} alt={user.username} />
+          <AvatarImage src={user.profile?.picture} alt={user.username} />
           <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
         </Avatar>
         <h2 className="text-xl font-semibold">{user.username}</h2>
@@ -36,7 +39,9 @@ export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({ user, me
               <Image src={item.icon} width={23} height={23} alt="image" />
             </span>
             <span className="flex-grow text-base">{item.title}</span>
-            {item.hasNotification && <span className="w-3 h-3 bg-red-500 rounded-full ml-2"></span>}
+            {item.hasNotification && (
+              <span className="w-3 h-3 bg-red-500 rounded-full ml-2"></span>
+            )}
           </Link>
         ))}
       </nav>
