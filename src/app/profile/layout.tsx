@@ -155,7 +155,7 @@ const ProfilePage = () => {
   }, [status, router]);
 
   useEffect(() => {
-    if (session?.user?.access_token) {
+    if (session?.access_token) {
       // console.log("Access Token 2:", session.user.access_token);
       const fetchProfile = async () => {
         try {
@@ -163,7 +163,7 @@ const ProfilePage = () => {
             `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/me`,
             {
               headers: {
-                Authorization: `Bearer ${session.user.access_token}`,
+                Authorization: `Bearer ${session.access_token}`,
               },
             }
           );
