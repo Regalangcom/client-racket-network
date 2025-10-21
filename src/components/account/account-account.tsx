@@ -41,9 +41,8 @@ export default function AccountPage({ user }: AccountPageProps) {
     {
       icon: signout,
       title: "Log out",
-      path: "/sign-in",
+      path: "/log-out",
       hasNotification: false,
-      // onclick: handleLogout,
     },
   ];
 
