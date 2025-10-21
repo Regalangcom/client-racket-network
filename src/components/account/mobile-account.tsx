@@ -4,7 +4,7 @@ import { UserProfileCard } from "./user-profile-card";
 import { AccountMenuItem, AccountMenuItemType } from "./account-menu-Item";
 import { useRouter } from "next/navigation";
 import { User } from "@/app/(application)/account/page";
-import { signOut } from "next-auth/react";
+// import { signOut } from "next-auth/react";
 
 interface MobileAccountViewProps {
   user: User;
