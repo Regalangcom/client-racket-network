@@ -10,12 +10,12 @@ type UserData = {
   picture: string;
 };
 
-async function getUserData(accessToken: string): Promise<UserData> {
+async function getUserData(access_token: string): Promise<UserData> {
   const apiUrl = process.env.URL_API || process.env.NEXT_PUBLIC_URL_API;
 
   const response = await fetch(`${apiUrl}/auth/api/v1/users/me`, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${access_token}`,
     },
     cache: "no-store",
   });

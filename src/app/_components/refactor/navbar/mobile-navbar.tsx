@@ -9,9 +9,12 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 
 interface MobileNavbarProps {
-  accessToken?: string;
+  access_token?: string;
 }
-const MobileNavbar = ({ accessToken }: MobileNavbarProps) => {
+const MobileNavbar = ({ access_token }: MobileNavbarProps) => {
+  console.log("MobileNavbar access_token:", access_token);
+  console.log("Type:", typeof access_token);
+  console.log("Is truthy?", !!access_token);
   // HOOKS
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -26,7 +29,10 @@ const MobileNavbar = ({ accessToken }: MobileNavbarProps) => {
 
   // RENDER
   // Dont show mobile navbar if user is logged in
-  if (accessToken) {
+  // if (access_token) {
+  //   return null;
+  // }
+  if (access_token && access_token.length > 0) {
     return null;
   }
 
@@ -40,7 +46,13 @@ const MobileNavbar = ({ accessToken }: MobileNavbarProps) => {
         </header>
 
         {/* Hamburger Menu Button */}
-        <Button variant="ghost" size="icon" onClick={toggleMenu} className="p-2" aria-label="Toggle menu">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleMenu}
+          className="p-2"
+          aria-label="Toggle menu"
+        >
           <Menu className="w-[60px] h-[60px] flex-shrink-0" />
         </Button>
       </section>
@@ -49,14 +61,23 @@ const MobileNavbar = ({ accessToken }: MobileNavbarProps) => {
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           {/* Backdrop */}
-          <div className="fixed inset-0 bg-black bg-opacity-50" onClick={closeMenu} />
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50"
+            onClick={closeMenu}
+          />
 
           {/* Menu Panel */}
           <div className="fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-xl transform transition-transform duration-300 ease-in-out">
             {/* Menu Header */}
             <div className="flex justify-between items-center p-4 border-b">
               <h2 className="text-lg font-semibold text-gray-800">Menu</h2>
-              <Button variant="ghost" size="icon" onClick={closeMenu} className="p-2" aria-label="Close menu">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={closeMenu}
+                className="p-2"
+                aria-label="Close menu"
+              >
                 {/* <HamburgerIcon isOpen={true} /> */}
                 <X className="w-[60px] h-[60px] flex-shrink-0" />
               </Button>
@@ -80,7 +101,9 @@ const MobileNavbar = ({ accessToken }: MobileNavbarProps) => {
               {/* Login Button */}
               <div className="mt-6 pt-4 border-t">
                 <Link href="/sign-in">
-                  <Button className="w-full">{navItems.find((item) => item.button)?.label || "Log in"}</Button>
+                  <Button className="w-full">
+                    {navItems.find((item) => item.button)?.label || "Log in"}
+                  </Button>
                 </Link>
               </div>
             </nav>

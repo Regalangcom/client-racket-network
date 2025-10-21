@@ -4,8 +4,9 @@ import ResponsiveNavbarHandler from "./responsive-navbar-handler";
 
 const Navbar = async () => {
   const { access_token } = await getAuthServerSession();
+  // console.log("acces token from index", access_token);
 
-  return <ResponsiveNavbarHandler accessToken={access_token ?? undefined} />;
+  return <ResponsiveNavbarHandler access_token={access_token ?? undefined} />;
 };
 
 export default Navbar;

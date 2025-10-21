@@ -57,7 +57,7 @@ function SignInPage() {
       if (result?.error) console.log("login failed", result?.error);
       if (!result?.error) {
         router.refresh();
-        router.push("/match");
+        router.push("/profile");
       }
 
       setIsPending(false);

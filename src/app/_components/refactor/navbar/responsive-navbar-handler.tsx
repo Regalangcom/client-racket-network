@@ -5,15 +5,17 @@ import DesktopNavbar from "./desktop-navbar";
 import MobileNavbar from "./mobile-navbar";
 
 interface ResponsiveNavbarHandlerProps {
-  accessToken?: string;
+  access_token?: string;
 }
-const ResponsiveNavbarHandler = ({ accessToken }: ResponsiveNavbarHandlerProps) => {
+const ResponsiveNavbarHandler = ({
+  access_token,
+}: ResponsiveNavbarHandlerProps) => {
   const { isMobile } = useWindowDimension();
 
   if (isMobile) {
-    return <MobileNavbar accessToken={accessToken} />;
+    return <MobileNavbar access_token={access_token} />;
   } else {
-    return <DesktopNavbar accessToken={accessToken} />;
+    return <DesktopNavbar access_token={access_token} />;
   }
 };
 

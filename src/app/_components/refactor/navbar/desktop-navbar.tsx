@@ -22,16 +22,18 @@ function getNavbarVariant(pathname: string) {
 }
 
 interface DesktopNavbarProps {
-  accessToken?: string;
+  access_token?: string;
 }
-const DesktopNavbar = ({ accessToken }: DesktopNavbarProps) => {
+const DesktopNavbar = ({ access_token }: DesktopNavbarProps) => {
   // HOOKS
   const { isMobile } = useWindowDimension();
   const pathname = usePathname();
   const variant: Variant = getNavbarVariant(pathname);
 
   // HELPER
-  const navItems = accessToken ? desktopNavItems.filter((item) => !item.button) : desktopNavItems;
+  const navItems = access_token
+    ? desktopNavItems.filter((item) => !item.button)
+    : desktopNavItems;
 
   // RENDER
   if (isMobile) {
@@ -40,7 +42,9 @@ const DesktopNavbar = ({ accessToken }: DesktopNavbarProps) => {
 
   return (
     <header className="sticky top-0 z-50">
-      <section className={`flex justify-between items-center bg-white py-8 px-5 mx-auto max-w-screen-2xl`}>
+      <section
+        className={`flex justify-between items-center bg-white py-8 px-5 mx-auto max-w-screen-2xl`}
+      >
         {/* Logo */}
         <header className="pl-2 flex items-center">{<Logo />}</header>
 
@@ -56,16 +60,19 @@ const DesktopNavbar = ({ accessToken }: DesktopNavbarProps) => {
                 <NavItem key={item.label} {...item} />
               ))}
 
-              {accessToken && (
+              {access_token && (
                 <Avatar>
                   <AvatarImage src={""} />
                   <AvatarFallback>{"A"}</AvatarFallback>
                 </Avatar>
               )}
 
-              {!accessToken && (
+              {!access_token && (
                 <Link href="/sign-in">
-                  <Button variant="outline" className="py-2 px-8 bg-background-button-rc text-white rounded transition-all">
+                  <Button
+                    variant="outline"
+                    className="py-2 px-8 bg-background-button-rc text-white rounded transition-all"
+                  >
                     <LogInIcon className="w-4 h-4" />
                     Log in
                   </Button>

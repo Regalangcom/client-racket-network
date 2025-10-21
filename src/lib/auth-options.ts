@@ -59,32 +59,21 @@ const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.access_token = user.access_token ?? undefined; // Use undefined if access_token is null
+        token.access_token = user.access_token ?? undefined;
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
-        // token.picture = user.picture;
       }
       return token;
     },
     async session({ session, token }) {
-      session.user = token; // Add the user data from token to session
+      session.user = token;
       return session;
     },
   },
 
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     return { ...token, ...user };
-  //   },
-  //   async session({ session, token }) {
-  //     session.user = token;
-  //     return session;
-  //   },
-  // },
-
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development", // Enable debugging in development
+  debug: process.env.NODE_ENV === "development",
   pages: {
     signIn: "/sign-in", // Custom sign-in page
   },
@@ -98,7 +87,7 @@ async function getAuthServerSession(
 ) {
   const session = await getServerSession(...args, authOptions);
   return {
-    access_token: session?.access_token ?? null,
+    access_token: session?.user?.access_token ?? null,
   };
 }
 
