@@ -3,34 +3,40 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import CreateClubDialog from "./create-club-dialog";
 import { toast } from "sonner";
-// import { clubService } from "@/services/clubService";
 import { ClubFormValues } from "@/constant/types/zodSchema";
+import { ClubService } from "@/services/club-services";
+// import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const CreateClub: React.FC = () => {
+interface CreateClubProps {
+  access_token: string | null;
+}
+const CreateClub: React.FC<CreateClubProps> = ({ access_token }) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const router = useRouter();
   const handleSubmit = async (
     data: ClubFormValues & { logo?: File | null }
   ) => {
     setIsLoading(true);
 
     try {
-      // Prepare data for API
-      const clubData = {
-        sport: data.sport,
+      const payload = {
+        sport_category: data.sport_category,
         clubName: data.clubName,
         description: data.description || "",
         privacy: data.privacy,
         location: data.location,
-        HomeCourt: data.HomeCourt,
+        home_court: data.home_court,
         gender: data.gender,
         logo: data.logo || null,
-        logoPreview: "", // Not needed for API
       };
 
-      // Call API using service layer
-      // const result = await clubService.createClub(clubData);
+      const result = await ClubService.createClubs(
+        payload,
+        access_token as string
+      );
 
       // Success handling
       toast.success("Club created successfully! 🎉");
@@ -39,11 +45,7 @@ const CreateClub: React.FC = () => {
       setIsDialogOpen(false);
 
       // Optional: Redirect or refresh data
-      // router.push(`/clubs/${result.data.id}`);
-      // or
-      // window.location.reload();
-
-      console.log("Club created:", "");
+      router.push(`/club/${result?.id}`);
     } catch (error) {
       console.error("Error creating club:", error);
       toast.error(

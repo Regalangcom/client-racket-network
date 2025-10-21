@@ -37,7 +37,7 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
     },
     { icon: accounts, label: club.gender_rule },
     { icon: city, label: club.location },
-    { icon: maps, label: club.sport_category },
+    { icon: maps, label: club.home_court },
   ];
 
   // Handler untuk tombol join
@@ -62,16 +62,16 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
             )}
           </div>
         </Link>
-        <div className="flex flex-col px-4">
+        <div className="flex flex-row justify-between items-center px-4 w-full">
           <span className="font-semibold text-gray-800">{club.name_club}</span>
           {club.privacy === "PRIVATE" && (
-            <span className="text-xs font-bold w-full text-red-900 mt-1 ml-44">
+            <span className="text-xs font-bold text-green-900">
               Private Club
             </span>
           )}
         </div>
       </div>
-      <CardContent className="flex flex-col flex-grow space-y-3 px-5">
+      <CardContent className="flex flex-col flex-grow space-y-1 px-5">
         {clubIconData.map((item, idx) => (
           <div
             key={idx}
@@ -86,7 +86,7 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
               height={16}
               className="shrink-0"
             />
-            <span>{item.label}</span>
+            <span className="font-semibold">{item.label}</span>
           </div>
         ))}
         <div className="py-2"></div>

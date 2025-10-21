@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { MapPin, Users, ArrowLeft, Star } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -11,19 +11,21 @@ import Link from "next/link";
 import { ClubDetailCardProps } from "@/constant/types";
 import InfoTag from "./info-tag";
 import { clubTags } from "@/constant/club-tags";
-import { times, maps } from "@/public";
+import { times, maps, DEFAULT } from "@/public";
 
 const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
   title,
-  logo,
+  logoUrl,
   club,
   genre,
   member,
+  privacy,
   name_contact,
   contact_avatar,
   stars_label,
 }) => {
   const { isMobile } = useWindowDimension();
+  const [imageError, setImageError] = useState(false);
   return (
     <div className="w-full min-h-screen bg-white">
       {/* Header gray section - ONLY FOR MOBILE */}
@@ -39,8 +41,17 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
           {/* Avatar that overlaps gray and white sections - only mobile */}
           <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-12">
             <Avatar className="w-24 h-24 border-4 border-white bg-gray-200">
-              {logo && <AvatarImage src={logo} alt={title} />}
-              <AvatarFallback>{club.charAt(0)}</AvatarFallback>
+              {!imageError && logoUrl ? (
+                <AvatarImage
+                  src={logoUrl || "https://ibb.co/svcTCgss"}
+                  alt={title || club || "Club"}
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <AvatarFallback className="text-2xl">
+                  {club?.charAt(0) || "C"}
+                </AvatarFallback>
+              )}
             </Avatar>
           </div>
         </div>
@@ -71,12 +82,13 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               {clubTags(genre, member, stars_label).map((tag, idx) => (
                 <InfoTag key={idx} {...tag} />
               ))}
+              <span className="text-red-700">{privacy}</span>
             </div>
 
             {/* Join button */}
             <div className="mb-8 w-full flex justify-center ">
               <Button className="py-3 w-[50%] bg-green-900 border-[#174038]  border  text-[#E1FFA0] font-semibold rounded-md hover:bg-green-800">
-                Join
+                {privacy === "PRIVATE" ? "Request to Join" : "Join"}
               </Button>
             </div>
 
@@ -84,8 +96,8 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
             <h2 className="text-xl font-bold mb-4">Contact</h2>
             <div className="bg-gray-100 rounded-lg p-4 flex items-center mb-6">
               <Avatar className="mr-3">
-                <AvatarImage src={contact_avatar} alt={name_contact} />
-                <AvatarFallback>{name_contact.charAt(0)}</AvatarFallback>
+                <AvatarImage src={contact_avatar || ""} alt={name_contact} />
+                <AvatarFallback>{name_contact?.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="flex-grow">
                 <p className="font-medium">
@@ -126,11 +138,11 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
                   <h3 className="font-bold text-base">Tennis Thursday Night</h3>
                 </div>
                 <div className="flex items-center gap-2 mb-2 mt-4 text-sm">
-                  <Image src={times} alt="" className="" />
+                  <Image src={times || DEFAULT} alt="" className="" />
                   <span>30 April, 18:00 - 21:00</span>
                 </div>
                 <div className="flex items-center gap-2 mb-2 text-sm">
-                  <Image src={maps} alt="" className="" />
+                  <Image src={maps || DEFAULT} alt="" className="" />
                   <span>Smes Sport Bintaro</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
@@ -203,8 +215,8 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
             <div className="w-1/2">
               <div className="h-96 relative overflow-hidden rounded-lg">
                 <Image
-                  src={logo}
-                  alt={title}
+                  src={logoUrl || DEFAULT}
+                  alt={title || ""}
                   fill
                   className="object-cover"
                   priority
@@ -236,8 +248,8 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               <h2 className="text-xl font-bold mb-4">Contact</h2>
               <div className="bg-gray-100 rounded-lg p-4 flex items-center mb-6">
                 <Avatar className="mr-3">
-                  <AvatarImage src={contact_avatar} alt={name_contact} />
-                  <AvatarFallback>{name_contact.charAt(0)}</AvatarFallback>
+                  <AvatarImage src={contact_avatar || ""} alt={name_contact} />
+                  <AvatarFallback>{name_contact?.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-grow">
                   <p className="font-medium">{name_contact}</p>

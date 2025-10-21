@@ -33,6 +33,7 @@ import city from "@/public/assets/icons/kota.svg";
 import stars from "@/public/assets/icons/stars.svg";
 import calender from "@/public/assets/icons/calendar-lines.svg";
 import Trophy from "@/public/assets/icons/tropi.svg";
+import DEFAULT from "@/public/default.png";
 
 // ========================
 // ICON ACTIVE
@@ -47,6 +48,7 @@ import compeActive from "@/public/assets/icons/compe-active.svg";
 import accountActive from "@/public/assets/icons/account-active.svg";
 
 export {
+  DEFAULT,
   bola_tennis,
   Trophy,
   calender,

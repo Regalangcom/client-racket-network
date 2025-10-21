@@ -75,6 +75,9 @@ pipeline {
                                 git pull origin main
                                 npm ci
                                 npm run build
+                                echo "Copying static files for standalone deployment..."
+                                cp -r .next/static .next/standalone/.next/static
+                                cp -r src/public .next/standalone/public
                                 pm2 restart rn || pm2 start node --name rn -- .next/standalone/server.js
                             '
                         """

@@ -1,5 +1,5 @@
 // services/club-service.ts
-import { ClubData, ClubResponse } from "@/constant/types";
+import { ClubData, ClubFilter, ClubResponse } from "@/constant/types";
 
 import { ClubFormValues } from "@/constant/types/zodSchema";
 
@@ -15,27 +15,37 @@ export interface ClubResponses {
 
 // Class ClubService
 export class ClubService {
-  // Method untuk mendapatkan daftar klub
-  static async getClubs(token?: string): Promise<ClubData[]> {
+  static async getClubs(
+    filters: ClubFilter = {},
+    accessToken: string | null = null
+  ) {
     try {
-      // Opsi header jika ada token
-      const headers: HeadersInit = {};
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+      // Buat query params dari filter
+      const queryParams = new URLSearchParams();
+
+      for (const [key, value] of Object.entries(filters)) {
+        if (value) queryParams.append(key, value);
       }
 
-      // Panggil API
-      const response = await fetch(`${API_URL}/api/v1/club`, {
+      const queryString = queryParams.toString()
+        ? `?${queryParams.toString()}`
+        : "";
+      const url = `${process.env.NEXT_PUBLIC_URL_API}/api/v1/club${queryString}`;
+
+      const headers: HeadersInit = {};
+      if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
+      }
+
+      const response = await fetch(url, {
         headers,
         cache: "no-store",
       });
 
-      // Cek respons
       if (!response.ok) {
         throw new Error(`Failed to fetch clubs: ${response.statusText}`);
       }
 
-      // Parse data
       const data: ClubResponse = await response.json();
       return data.data || [];
     } catch (error) {
@@ -43,26 +53,23 @@ export class ClubService {
       return [];
     }
   }
-
   // Method untuk mendapatkan detail klub
   static async getClubById(
     id: string | number,
-    token?: string
+    access_token?: string
   ): Promise<ClubData | null> {
     try {
       // Opsi header jika ada token
       const headers: HeadersInit = {};
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+      if (access_token) {
+        headers["Authorization"] = `Bearer ${access_token}`;
       }
 
-      // Panggil API
       const response = await fetch(`${API_URL}/api/v1/club/${id}`, {
         headers,
         cache: "no-store",
       });
 
-      // Cek respons
       if (!response.ok) {
         throw new Error(`Failed to fetch club: ${response.statusText}`);
       }
@@ -76,26 +83,23 @@ export class ClubService {
     }
   }
 
-  // Method untuk membuat klub baru
-  static async createClub(
+  static async createClubs(
     data: ClubFormValues & { logo?: File | null },
-    token: string
+    access_token: string
   ): Promise<ClubData | null> {
     try {
       // Validasi token
-      if (!token) {
+      if (!access_token) {
         throw new Error("Authentication token is required");
       }
 
-      // Prepare FormData untuk upload file
       const formData = new FormData();
 
-      // Tambahkan field teks ke FormData
-      formData.append("sport", data.sport);
+      formData.append("sport_category", data.sport_category);
       formData.append("name_club", data.clubName); // Sesuaikan dengan API Anda
       formData.append("privacy", data.privacy);
       formData.append("location", data.location);
-      formData.append("HomeCourt", data.HomeCourt);
+      formData.append("home_court", data.home_court);
       formData.append("gender_rule", data.gender);
 
       if (data.description) {
@@ -111,12 +115,10 @@ export class ClubService {
       const response = await fetch(`${API_URL}/api/v1/club`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${access_token}`,
         },
         body: formData,
       });
-
-      // Cek respons
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
@@ -124,7 +126,6 @@ export class ClubService {
         );
       }
 
-      // Parse data
       const responseData: ClubResponses = await response.json();
       return responseData.data;
     } catch (error) {

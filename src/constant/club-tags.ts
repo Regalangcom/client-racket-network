@@ -1,23 +1,32 @@
 // /constant/clubTags.ts
-import { stars, members, bola_tennis } from "@/public";
+import { stars, members, bola_tennis, padel, badmindton } from "@/public";
+
+export const SPORT_ICONS = {
+  Tennis: bola_tennis,
+  Padel: padel,
+  PingPong: padel,
+  Badminton: badmindton,
+} as const;
 
 export const clubTags = (
   genre: string,
   member: string,
   stars_label: string
 ) => [
-  { icon: bola_tennis, label: genre },
+  {
+    icon: SPORT_ICONS[genre as keyof typeof SPORT_ICONS] || bola_tennis,
+    label: genre,
+  },
   { icon: members, label: member },
   { icon: stars, label: stars_label },
 ];
 
 // Sport Options
 export const SPORT_OPTIONS = [
-  { value: "tennis", label: "Tennis" },
-  { value: "football", label: "Football" },
-  { value: "basketball", label: "Basketball" },
-  { value: "volleyball", label: "Volleyball" },
-  { value: "badminton", label: "Badminton" },
+  { value: "Tennis", label: "Tennis" },
+  { value: "Padel", label: "Padel" },
+  { value: "PingPong", label: "PingPong" },
+  { value: "Badminton", label: "Badminton" },
 ] as const;
 
 // Location Options

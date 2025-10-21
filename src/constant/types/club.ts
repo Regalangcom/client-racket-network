@@ -3,7 +3,8 @@ import { StaticImageData } from "next/image";
 
 export interface ClubDetailCardProps {
   title: string;
-  logo: string;
+  logoUrl: string;
+  privacy: string;
   club: string;
   genre: string;
   name_contact: string;
@@ -39,6 +40,7 @@ export interface ClubData {
   gender_rule: string;
   privacy: string;
   owner_id: number;
+  home_court: string;
   rating: number;
   owner: {
     id: number;
@@ -63,4 +65,10 @@ export interface ClubResponse {
     hasNextPage: boolean;
     hasPrevPage: boolean;
   };
+}
+
+export interface ClubFilter {
+  sport_category?: string;
+  location?: string;
+  gender_rule?: string;
 }

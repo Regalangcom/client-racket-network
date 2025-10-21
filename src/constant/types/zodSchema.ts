@@ -141,7 +141,7 @@ export const registrationMatchSchema = z.object({
 });
 
 export const clubFormSchema = z.object({
-  sport: z.string().min(1, "Please select a sport"),
+  sport_category: z.string().min(1, "Please select a sport"),
 
   clubName: z
     .string()
@@ -161,7 +161,7 @@ export const clubFormSchema = z.object({
 
   location: z.string().min(1, "Please select a location"),
 
-  HomeCourt: z.string().min(1, "Please select a HomeCourt"),
+  home_court: z.string().min(1, "Please select a HomeCourt"),
 
   gender: z.enum(["all", "men", "women"], {
     error: "Please select gender preference",

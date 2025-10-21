@@ -62,12 +62,12 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
   const form = useForm<ClubFormValues>({
     resolver: zodResolver(clubFormSchema),
     defaultValues: {
-      sport: "",
+      sport_category: "",
       clubName: "",
       description: "",
       privacy: "PUBLIC",
       location: "",
-      HomeCourt: "",
+      home_court: "",
       gender: "all",
     },
   });
@@ -102,7 +102,7 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
             {/* 1. Sport Selection */}
             <FormField
               control={form.control}
-              name="sport"
+              name="sport_category"
               render={({ field }) => (
                 <FormItem className="space-y-2">
                   <FormLabel className="text-lg font-normal">
@@ -234,7 +234,7 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
 
               <FormField
                 control={form.control}
-                name="HomeCourt"
+                name="home_court"
                 render={({ field }) => (
                   <FormItem>
                     <Select onValueChange={field.onChange} value={field.value}>
