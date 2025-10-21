@@ -95,7 +95,7 @@ export class ClubService {
       formData.append("name_club", data.clubName); // Sesuaikan dengan API Anda
       formData.append("privacy", data.privacy);
       formData.append("location", data.location);
-      formData.append("venue", data.venue);
+      formData.append("HomeCourt", data.HomeCourt);
       formData.append("gender_rule", data.gender);
 
       if (data.description) {
