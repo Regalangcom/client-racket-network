@@ -161,7 +161,7 @@ export const clubFormSchema = z.object({
 
   location: z.string().min(1, "Please select a location"),
 
-  venue: z.string().min(1, "Please select a venue"),
+  HomeCourt: z.string().min(1, "Please select a HomeCourt"),
 
   gender: z.enum(["all", "men", "women"], {
     error: "Please select gender preference",

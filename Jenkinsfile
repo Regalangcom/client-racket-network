@@ -75,7 +75,7 @@ pipeline {
                                 git pull origin main
                                 npm ci
                                 npm run build
-                                pm2 restart rn || pm2 start npm --name rn -- start
+                                pm2 restart rn || pm2 start node --name rn -- .next/standalone/server.js
                             '
                         """
                     }

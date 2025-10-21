@@ -6,6 +6,7 @@ import ClubCard from "../../../components/club/club";
 import SearchForm from "../../_components/search/search";
 import LoginButton from "@/components/club/login-button";
 import { ClubResponse } from "@/constant/types";
+import ClubCardSkeleton from "@/components/club/club-card-skeleton";
 
 async function getClubs(accessToken: string | null) {
   try {
@@ -77,9 +78,9 @@ export default async function ClubPage() {
             ) : (
               // Tampilkan placeholder jika belum ada klub atau masih loading
               <>
-                <ClubCard />
-                <ClubCard />
-                <ClubCard />
+                <ClubCardSkeleton />
+                <ClubCardSkeleton />
+                <ClubCardSkeleton />
               </>
             )}
           </div>

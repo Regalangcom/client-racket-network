@@ -23,7 +23,7 @@ const CreateClub: React.FC = () => {
         description: data.description || "",
         privacy: data.privacy,
         location: data.location,
-        venue: data.venue,
+        HomeCourt: data.HomeCourt,
         gender: data.gender,
         logo: data.logo || null,
         logoPreview: "", // Not needed for API

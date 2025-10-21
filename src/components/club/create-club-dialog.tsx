@@ -67,7 +67,7 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
       description: "",
       privacy: "PUBLIC",
       location: "",
-      venue: "",
+      HomeCourt: "",
       gender: "all",
     },
   });
@@ -234,7 +234,7 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
 
               <FormField
                 control={form.control}
-                name="venue"
+                name="HomeCourt"
                 render={({ field }) => (
                   <FormItem>
                     <Select onValueChange={field.onChange} value={field.value}>
