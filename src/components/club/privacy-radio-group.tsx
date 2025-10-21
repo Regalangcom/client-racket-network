@@ -3,24 +3,24 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface PrivacyOption {
-  value: "public" | "private";
+  value: "PUBLIC" | "PRIVATE";
   label: string;
   description: string;
 }
 
 interface PrivacyRadioGroupProps {
-  value: "public" | "private";
-  onValueChange: (value: "public" | "private") => void;
+  value: "PUBLIC" | "PRIVATE";
+  onValueChange: (value: "PUBLIC" | "PRIVATE") => void;
 }
 
 const PRIVACY_OPTIONS: PrivacyOption[] = [
   {
-    value: "public",
+    value: "PUBLIC",
     label: "Public",
     description: "Anyone can join",
   },
   {
-    value: "private",
+    value: "PRIVATE",
     label: "Private",
     description: "People must request permission to join",
   },

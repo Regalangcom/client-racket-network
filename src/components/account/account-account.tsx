@@ -6,12 +6,17 @@ import { MobileAccountView } from "./mobile-account";
 import { DesktopAccountView } from "./desktop-account-view";
 import { settings, signout, inbox, pay, star } from "@/public";
 import { User } from "@/app/(application)/account/page";
+import { signOut } from "next-auth/react";
 
 interface AccountPageProps {
   user: User;
 }
 export default function AccountPage({ user }: AccountPageProps) {
   const { isMobile } = useWindowDimension();
+
+  const handleLogout = async () => {
+    await signOut({ redirect: true, callbackUrl: "/sign-in" });
+  };
 
   const accountMenuItems = [
     {
@@ -41,8 +46,9 @@ export default function AccountPage({ user }: AccountPageProps) {
     {
       icon: signout,
       title: "Log out",
-      path: "/log-out",
+      path: "/sign-in",
       hasNotification: false,
+      onClick: handleLogout,
     },
   ];
 

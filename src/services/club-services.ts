@@ -1,217 +1,204 @@
-import { ClubFormData } from "@/constant/types";
+// services/club-service.ts
+import { ClubData, ClubResponse } from "@/constant/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://your-api.com/api";
+import { ClubFormValues } from "@/constant/types/zodSchema";
 
-// Helper function to get auth token
-const getAuthToken = (): string | null => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("token") || sessionStorage.getItem("token");
-  }
-  return null;
-};
+// Base URL untuk API
+const API_URL = process.env.NEXT_PUBLIC_URL_API || "http://localhost:8080";
 
-// Generic fetch wrapper with auth
-async function fetchWithAuth(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<Response> {
-  const token = getAuthToken();
-
-  const headers: HeadersInit = {
-    ...options.headers,
-  };
-
-  // Add Authorization header if token exists
-  if (token) {
-    // headers["Authorization"] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
-
-  // Handle unauthorized
-  if (response.status === 401) {
-    // Clear token and redirect to login
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
-      window.location.href = "/login";
-    }
-  }
-
-  return response;
+// Interface untuk respons klub
+export interface ClubResponses {
+  success: boolean;
+  data: ClubData;
+  message?: string;
 }
 
-// Club Service
-export const clubService = {
-  // Create new club
-  async createClub(data: ClubFormData) {
-    const formData = new FormData();
+// Class ClubService
+export class ClubService {
+  // Method untuk mendapatkan daftar klub
+  static async getClubs(token?: string): Promise<ClubData[]> {
+    try {
+      // Opsi header jika ada token
+      const headers: HeadersInit = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
 
-    formData.append("sport", data.sport);
-    formData.append("name", data.clubName); // adjust key based on your API
-    formData.append("description", data.description);
-    formData.append("privacy", data.privacy);
-    formData.append("location", data.location);
-    formData.append("venue", data.venue);
-    formData.append("gender", data.gender);
+      // Panggil API
+      const response = await fetch(`${API_URL}/api/v1/club`, {
+        headers,
+        cache: "no-store",
+      });
 
-    if (data.logo) {
-      formData.append("logo", data.logo);
+      // Cek respons
+      if (!response.ok) {
+        throw new Error(`Failed to fetch clubs: ${response.statusText}`);
+      }
+
+      // Parse data
+      const data: ClubResponse = await response.json();
+      return data.data || [];
+    } catch (error) {
+      console.error("Error fetching clubs:", error);
+      return [];
     }
+  }
 
-    const response = await fetchWithAuth("/clubs", {
-      method: "POST",
-      body: formData,
-      // Don't set Content-Type for FormData, browser will set it with boundary
-    });
+  // Method untuk mendapatkan detail klub
+  static async getClubById(
+    id: string | number,
+    token?: string
+  ): Promise<ClubData | null> {
+    try {
+      // Opsi header jika ada token
+      const headers: HeadersInit = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
 
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Failed to create club" }));
-      throw new Error(
-        error.message || `HTTP error! status: ${response.status}`
+      // Panggil API
+      const response = await fetch(`${API_URL}/api/v1/club/${id}`, {
+        headers,
+        cache: "no-store",
+      });
+
+      // Cek respons
+      if (!response.ok) {
+        throw new Error(`Failed to fetch club: ${response.statusText}`);
+      }
+
+      // Parse data
+      const data: ClubResponses = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error(`Error fetching club with id ${id}:`, error);
+      return null;
+    }
+  }
+
+  // Method untuk membuat klub baru
+  static async createClub(
+    data: ClubFormValues & { logo?: File | null },
+    token: string
+  ): Promise<ClubData | null> {
+    try {
+      // Validasi token
+      if (!token) {
+        throw new Error("Authentication token is required");
+      }
+
+      // Prepare FormData untuk upload file
+      const formData = new FormData();
+
+      // Tambahkan field teks ke FormData
+      formData.append("sport", data.sport);
+      formData.append("name_club", data.clubName); // Sesuaikan dengan API Anda
+      formData.append("privacy", data.privacy);
+      formData.append("location", data.location);
+      formData.append("venue", data.venue);
+      formData.append("gender_rule", data.gender);
+
+      if (data.description) {
+        formData.append("description", data.description);
+      }
+
+      // Tambahkan file logo jika ada
+      if (data.logo instanceof File) {
+        formData.append("logo", data.logo);
+      }
+
+      // Panggil API
+      const response = await fetch(`${API_URL}/api/v1/club`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      // Cek respons
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || `Failed to create club: ${response.statusText}`
+        );
+      }
+
+      // Parse data
+      const responseData: ClubResponses = await response.json();
+      return responseData.data;
+    } catch (error) {
+      console.error("Error creating club:", error);
+      throw error; // Re-throw untuk handling di UI layer
+    }
+  }
+
+  // Method untuk bergabung ke klub
+  static async joinClub(
+    clubId: string | number,
+    token: string
+  ): Promise<boolean> {
+    try {
+      // Validasi token
+      if (!token) {
+        throw new Error("Authentication token is required");
+      }
+
+      // Panggil API
+      const response = await fetch(`${API_URL}/api/v1/club/${clubId}/join`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      // Cek respons
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || `Failed to join club: ${response.statusText}`
+        );
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`Error joining club with id ${clubId}:`, error);
+      throw error; // Re-throw untuk handling di UI layer
+    }
+  }
+
+  // Method untuk memeriksa keanggotaan klub
+  static async checkMembership(
+    clubId: string | number,
+    token: string
+  ): Promise<boolean> {
+    try {
+      // Validasi token
+      if (!token) {
+        throw new Error("Authentication token is required");
+      }
+
+      // Panggil API
+      const response = await fetch(
+        `${API_URL}/api/v1/club/${clubId}/members/check`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+
+      // Cek respons
+      if (!response.ok) {
+        throw new Error(`Failed to check membership: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.isMember || false;
+    } catch (error) {
+      console.error(`Error checking membership for club ${clubId}:`, error);
+      return false;
     }
-
-    return response.json();
-  },
-
-  // Get all clubs
-  async getClubs(params?: {
-    page?: number;
-    limit?: number;
-    sport?: string;
-    location?: string;
-  }) {
-    const queryParams = new URLSearchParams();
-
-    if (params?.page) queryParams.append("page", params.page.toString());
-    if (params?.limit) queryParams.append("limit", params.limit.toString());
-    if (params?.sport) queryParams.append("sport", params.sport);
-    if (params?.location) queryParams.append("location", params.location);
-
-    const queryString = queryParams.toString();
-    const endpoint = `/clubs${queryString ? `?${queryString}` : ""}`;
-
-    const response = await fetchWithAuth(endpoint, {
-      method: "GET",
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Failed to fetch clubs" }));
-      throw new Error(
-        error.message || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    return response.json();
-  },
-
-  // Get single club by ID
-  async getClubById(id: string) {
-    const response = await fetchWithAuth(`/clubs/${id}`, {
-      method: "GET",
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Failed to fetch club" }));
-      throw new Error(
-        error.message || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    return response.json();
-  },
-
-  // Update club
-  async updateClub(id: string, data: Partial<ClubFormData>) {
-    const formData = new FormData();
-
-    if (data.sport) formData.append("sport", data.sport);
-    if (data.clubName) formData.append("name", data.clubName);
-    if (data.description) formData.append("description", data.description);
-    if (data.privacy) formData.append("privacy", data.privacy);
-    if (data.location) formData.append("location", data.location);
-    if (data.venue) formData.append("venue", data.venue);
-    if (data.gender) formData.append("gender", data.gender);
-    if (data.logo) formData.append("logo", data.logo);
-
-    const response = await fetchWithAuth(`/clubs/${id}`, {
-      method: "PATCH", // or PUT depending on your API
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Failed to update club" }));
-      throw new Error(
-        error.message || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    return response.json();
-  },
-
-  // Delete club
-  async deleteClub(id: string) {
-    const response = await fetchWithAuth(`/clubs/${id}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Failed to delete club" }));
-      throw new Error(
-        error.message || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    return response.json();
-  },
-
-  // Join club
-  async joinClub(clubId: string) {
-    const response = await fetchWithAuth(`/clubs/${clubId}/join`, {
-      method: "POST",
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Failed to join club" }));
-      throw new Error(
-        error.message || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    return response.json();
-  },
-
-  // Leave club
-  async leaveClub(clubId: string) {
-    const response = await fetchWithAuth(`/clubs/${clubId}/leave`, {
-      method: "POST",
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Failed to leave club" }));
-      throw new Error(
-        error.message || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    return response.json();
-  },
-};
+  }
+}

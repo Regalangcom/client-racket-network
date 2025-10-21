@@ -8,7 +8,7 @@ export interface AccountMenuItemType {
   title: string;
   path: string;
   hasNotification?: boolean;
-  // onClick?: () => void; // opsional
+  onClick?: () => void;
 }
 
 export const AccountMenuItem: React.FC<
@@ -19,19 +19,19 @@ export const AccountMenuItem: React.FC<
   path,
   hasNotification = false,
   isLastItem = false,
-  // onClick,
+  onClick,
 }) => {
-  // const handleClick = (e: React.MouseEvent) => {
-  //   if (onClick) {
-  //     e.preventDefault(); // ❗ stop navigasi default
-  //     onClick(); // jalanin event klik custom (misal logout)
-  //   }
-  // };
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      e.preventDefault(); // ❗ stop navigasi default
+      onClick(); // jalanin event klik custom (misal logout)
+    }
+  };
 
   return (
     <Link
       href={path}
-      // onClick={handleClick}
+      onClick={handleClick}
       className={`block ${!isLastItem ? "border-b border-gray-200" : ""}`}
     >
       <div className="flex items-center justify-between w-full p-4 hover:bg-gray-50 transition-colors">

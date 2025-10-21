@@ -65,7 +65,7 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
       sport: "",
       clubName: "",
       description: "",
-      privacy: "public",
+      privacy: "PUBLIC",
       location: "",
       venue: "",
       gender: "all",

@@ -155,7 +155,7 @@ export const clubFormSchema = z.object({
     .optional()
     .or(z.literal("")),
 
-  privacy: z.enum(["public", "private"], {
+  privacy: z.enum(["PUBLIC", "PRIVATE"], {
     error: "Please select privacy setting",
   }),
 

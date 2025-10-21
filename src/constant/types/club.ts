@@ -28,3 +28,39 @@ export interface ClubFormData {
   venue: string;
   gender: "all" | "men" | "women";
 }
+
+export interface ClubData {
+  id: number;
+  name_club: string;
+  logo: string | null;
+  description: string;
+  sport_category: string;
+  location: string;
+  gender_rule: string;
+  privacy: string;
+  owner_id: number;
+  rating: number;
+  owner: {
+    id: number;
+    username: string;
+    email: string;
+  };
+  _count: {
+    members: number;
+    matches: number;
+  };
+  logoUrl: string;
+}
+
+export interface ClubResponse {
+  success: boolean;
+  data: ClubData[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
