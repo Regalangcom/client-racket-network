@@ -5,32 +5,7 @@ import SearchForm from "@/app/_components/search/search";
 import LoginButton from "@/components/club/login-button";
 import ClubCardSkeleton from "@/components/club/club-card-skeleton";
 import { ClubService } from "@/services/club-services";
-import { ClubData, ClubFilter } from "@/constant/types";
-
-// async function getClubs(accessToken: string | null) {
-//   try {
-//     // Opsi header jika ada token
-//     const headers: HeadersInit = {};
-//     if (accessToken) {
-//       headers["Authorization"] = `Bearer ${accessToken}`;
-//     }
-
-//     const response = await fetch(
-//       `${process.env.NEXT_PUBLIC_URL_API}/api/v1/club`,
-//       { headers, cache: "no-store" } // Tambahkan cache: 'no-store' untuk selalu mendapatkan data terbaru
-//     );
-
-//     if (!response.ok) {
-//       throw new Error(`Failed to fetch clubs: ${response.statusText}`);
-//     }
-
-//     const data: ClubResponse = await response.json();
-//     return data.data || [];
-//   } catch (error) {
-//     console.error("Error fetching clubs:", error);
-//     return [];
-//   }
-// }
+import { ClubData } from "@/constant/types";
 
 export default async function ClubPage({
   searchParams,
