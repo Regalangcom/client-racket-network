@@ -2,16 +2,25 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import axios from "axios";
 
 interface User {
   id: number;
   email: string;
+  profile: {
+    id: number;
+    pictureUrl: string;
+    location: string;
+    picture: string;
+    // bio: string;
+    userId: number;
+  };
 }
 
 const ProfilePage = () => {
   const { data: session, status } = useSession();
-  const [profile, setProfile] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -29,7 +38,7 @@ const ProfilePage = () => {
     }
   }, [status, router]);
 
-  // Fetch profile data
+  // Fetch user data
   useEffect(() => {
     const fetchProfile = async () => {
       // Check for access token in user object OR at session level
@@ -47,14 +56,12 @@ const ProfilePage = () => {
               },
             }
           );
-          setProfile(response?.data.data);
+          setUser(response?.data.data);
           setError(null);
         } catch (error) {
-          console.error("Error fetching profile:", error);
+          console.error("Error fetching user:", error);
           if (axios.isAxiosError(error)) {
-            setError(
-              error.response?.data?.message || "Failed to fetch profile"
-            );
+            setError(error.response?.data?.message || "Failed to fetch user");
           } else {
             setError("An unknown error occurred");
           }
@@ -93,10 +100,29 @@ const ProfilePage = () => {
 
       <div className="bg-white shadow rounded-lg p-6 mb-4">
         <p className="mb-2">
-          <strong>Email:</strong> {profile?.email || "Loading..."}
+          <strong>Email:</strong> {user?.email || "Loading..."}
         </p>
         <p>
-          <strong>ID:</strong> {profile?.id || "Loading..."}
+          <strong>ID:</strong> {user?.id || "Loading..."}
+          <Image
+            width={96}
+            height={96}
+            src={
+              user?.profile?.pictureUrl
+                ? user.profile.pictureUrl
+                : user?.profile?.picture &&
+                  user.profile.picture.startsWith("http")
+                ? user.profile.picture
+                : user?.profile?.picture
+                ? `/${user.profile.picture}`
+                : "/default-avatar.png"
+            }
+            alt="Profile Picture"
+            onError={(e) => {
+              // Fallback jika gambar gagal dimuat
+              e.currentTarget.src = "/default-avatar.png";
+            }}
+          />
         </p>
       </div>
 
@@ -113,7 +139,7 @@ const ProfilePage = () => {
           <div className="bg-gray-100 p-4 rounded mt-4">
             <h3 className="font-semibold">Profile:</h3>
             <pre className="text-xs overflow-auto">
-              {JSON.stringify(profile, null, 2)}
+              {JSON.stringify(user, null, 2)}
             </pre>
           </div>
         </div>

@@ -10,7 +10,7 @@ export type User = {
     id: number;
     pictureUrl: string;
     location: string;
-    bio: string;
+    picture: string;
     userId: number;
   };
   level_skills: string;
@@ -32,6 +32,11 @@ const getUserLoggedIn = async (access_token: string) => {
       }
     );
     const userData = await user.json();
+    console.log("API Response:", userData);
+    console.log("Picture URL:", userData.data?.profile?.picture);
+    console.log("Picture URL S3:", userData.data?.profile?.pictureUrl);
+    // console.log("data", userData);
+
     return userData.data;
   } catch (error) {
     console.error("Error fetching user data:", error);

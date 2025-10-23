@@ -36,8 +36,8 @@ async function getUserData(access_token: string): Promise<UserData> {
       | "Intermediate"
       | "Advanced",
     picture: userData.profile?.pictureUrl
-      ? `${process.env.NEXT_PUBLIC_URL_API}/${userData.profile.picture}`
-      : "",
+      ? userData.profile?.pictureUrl
+      : userData.profile?.picture,
   };
 }
 

@@ -49,17 +49,6 @@ export default async function ClubPage({
     );
   }
 
-  // const filters: ClubFilter = {};
-  // if (sport_category) filters.sport_category = sport_category;
-  // if (location) filters.location = location;
-  // if (gender_rule) filters.gender_rule = gender_rule;
-
-  // const clubs: ClubData[] = await ClubService.getClubs(
-  //   // { sport_category, location, gender_rule },
-  //   filters,
-  //   session?.access_token || null
-  // );
-
   return (
     <section className="p-4 container-lg max-w-screen-2xl mx-auto">
       <div className="flex flex-col sm:flex-row gap-4">

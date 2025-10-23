@@ -1,9 +1,10 @@
-import React from "react";
+import React, { use } from "react";
 import { AccountMenu } from "./accountMenu/title-menu";
 import { UserProfileCard } from "./user-profile-card";
 import { AccountMenuItem, AccountMenuItemType } from "./account-menu-Item";
 import { useRouter } from "next/navigation";
 import { User } from "@/app/(application)/account/page";
+import { DEFAULT } from "@/public";
 // import { signOut } from "next-auth/react";
 
 interface MobileAccountViewProps {
@@ -24,7 +25,7 @@ export const MobileAccountView: React.FC<MobileAccountViewProps> = ({
 
         <div className="">
           <UserProfileCard
-            picture={user.profile.pictureUrl}
+            picture={user.profile.pictureUrl || user.profile.picture}
             username={user.username}
             phone={user.email}
             onPress={() => {

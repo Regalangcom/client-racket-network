@@ -111,8 +111,8 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       const updatedData = {
         ...data,
         picture: result.data?.profile?.pictureUrl
-          ? `${process.env.NEXT_PUBLIC_URL_API}/${result.data.profile.pictureUrl}`
-          : data.picture,
+          ? result.data?.profile?.pictureUrl
+          : result.data?.profile?.picture,
       };
 
       // Panggil onSave untuk update parent state
@@ -190,7 +190,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
                   <Input
                     className="w-full h-11"
                     type="tel"
-                    placeholder="Enter phone_number number"
+                    placeholder="Enter  number"
                     {...field}
                   />
                 </FormControl>

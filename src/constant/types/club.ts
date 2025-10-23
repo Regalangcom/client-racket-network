@@ -11,6 +11,8 @@ export interface ClubDetailCardProps {
   member: string;
   contact_avatar: string;
   stars_label: string;
+  id: string | number;
+  owner_id?: number | string;
 }
 
 export type IconEnvClub = {
