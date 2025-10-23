@@ -44,7 +44,7 @@ const authOptions: AuthOptions = {
           return res.data.data; // Return data including access_token
         } catch (error) {
           if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data.message || "Login failed");
+            throw new Error(error.response?.data.errors || "Login failed");
           } else {
             throw new Error("An unknown error occurred");
           }

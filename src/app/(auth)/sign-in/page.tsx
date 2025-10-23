@@ -20,6 +20,7 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 
 // interface SignUpFromProps {
 //   action: (formdata: FormData) => Promise<void>;
@@ -48,21 +49,29 @@ function SignInPage() {
   const onSubmit = async (data: SignInFormData) => {
     try {
       setIsPending(true);
+
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
         redirect: false,
       });
 
-      if (result?.error) console.log("login failed", result?.error);
-      if (!result?.error) {
+      // Cek apakah ada error
+      if (result?.error) {
+        toast.error(result.error);
+        setIsPending(false);
+        return; // Stop execution kalau error
+      }
+
+      if (result?.ok) {
+        toast.success("Login berhasil!");
         router.refresh();
         router.push("/profile");
       }
-
-      setIsPending(false);
     } catch (error) {
-      setIsPending(false);
+      console.error("Unexpected error:", error);
+    } finally {
+      setIsPending(false); // Selalu set false, error atau tidak
     }
   };
 
