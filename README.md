@@ -39,36 +39,129 @@ MacBook Pro 14" → 3024 x 1964 (viewport default sekitar 1512px)
 MacBook Pro 16" → 3456 x 2234 (viewport default sekitar 1728px)
 
 ```
+pipeline {
+    agent any
 
-            {/* Card Promo */}
-            <div className="bg-white mb-2 mt-4">
-              <h3 className="text-lg font-semibold mb-4">Kode Promo</h3>
-              <div className="flex gap-4">
-                <input
-                  {...register("promoCode")}
-                  type="text"
-                  placeholder="TEN87"
-                  className="w-full p-1 border rounded"
-                />
-                <Button
-                  type="button"
-                  // onClick={""}
-                  className="bg-white text-black border border-[#174038] p-0 w-32 h-auto hover:bg-gray-100"
-                  // disabled={""}
-                >
-                  Use
-                  {/* {isApplyingPromo ? "Applying..." : "Use"} */}
-                </Button>
-              </div>
-              {/* {promoApplied && (
-                <p className="text-green-500 text-sm mt-1">
-                  Promo code applied successfully!
-                </p>
-              )}
-              {promoError && (
-                <p className="text-red-500 text-sm mt-1">{promoError}</p>
-              )} */}
-            </div>
+    triggers {
+        githubPush()
+    }
+
+    tools {
+        git 'Default'
+        nodejs 'dc_node'
+    }
+
+    environment {
+        NEXT_PUBLIC_SENTRY_DSN = credentials('sentry-dsn')
+        SENTRY_AUTH_TOKEN = credentials('sentry-auth-token')
+        SENTRY_ORG = 'galangdotjs'
+        SENTRY_PROJECT = 'rn-racket-network'
+        DEPLOY_PATH = '/var/www/html/client-racket-network'
+        FOONTE_API_KEY = credentials('FONNTE_TOKEN') // simpan token di Jenkins Credentials
+        TARGET_NUMBER  = "6282111648584" // lebih dari 1, pisahkan pakai koma
+        REPO_URL = 'https://github.com/Regalangcom/client-racket-network.git'
+        VPS_HOST = '31.97.222.232'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'token_github',
+                                                  usernameVariable: 'GITHUB_USER',
+                                                  passwordVariable: 'GITHUB_TOKEN'
+                                                  )]) {
+                    script {
+                        // GITHUB_USER dan GITHUB_TOKEN sudah terisi secara otomatis cok !
+                        sh """
+                            git remote set-url origin https://\$GITHUB_USER:\$GITHUB_TOKEN@github.com/Regalangcom/client-racket-network.git
+                            git fetch origin
+                            git reset --hard origin/main
+                        """
+                    }
+                                                  }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    try {
+                        sh 'npm ci'
+                    } catch (err) {
+                        error "Dependency installation failed: ${err}"
+                    }
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    try {
+                        sh 'npm run build'
+                    } catch (err) {
+                        error "Build failed: ${err}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to VPS') {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'vps-ssh-key',
+                                                   keyFileVariable: 'SSH_KEY',
+                                                   usernameVariable: 'SSH_USER'
+                                                   )]) {
+                    script {
+                        sh """
+                          ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \$SSH_USER@\${VPS_HOST} '
+                                echo "Deploying to VPS..."
+                                cd ${DEPLOY_PATH}
+                                git pull origin main
+                                npm ci
+                                npm run build
+                                echo "Copying static files for standalone deployment..."
+                                cp -r .next/static .next/standalone/.next/static
+                                cp -r src/public .next/standalone/public
+                                pm2 restart rn || pm2 start node --name rn -- .next/standalone/server.js
+                            '
+                        """
+                    }
+                                                   }
+            }
+        }
+    }
+
+    //  post {
+    //     success {
+    //         sh """
+    //           curl -X POST https://api.fonnte.com/send \
+    //             -H "Authorization: $FOONTE_API_KEY" \
+    //             -F "target=$TARGET_NUMBER" \
+    //             -F "message=✅ Deploy Sukses!\\n\\n📌"
+    //         """
+    //     }
+    //     failure {
+    //         sh """
+    //           curl -X POST https://api.fonnte.com/send \
+    //             -H "Authorization: $FOONTE_API_KEY" \
+    //             -F "target=$TARGET_NUMBER" \
+    //             -F "message=❌ Deploy Gagal!\\n\\n📌"
+    //         """
+    //     }
+    // }
+    post {
+    success {
+        echo "✅ Deploy Sukses!"
+    }
+    failure {
+        echo "❌ Deploy Gagal!"
+    }
+}
+
+}
+
+
 ```
 
 ```
