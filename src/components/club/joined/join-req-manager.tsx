@@ -96,7 +96,7 @@ export default function JoinRequestsManager({
 
   return (
     <div className="mt-8">
-      <h2 className="text-xl left-3 font-bold mb-4">Join Requests</h2>
+      <h2 className="text-lg left-3 font-semibold mb-4">Join Requests</h2>
 
       {requests.length === 0 ? (
         <div className="max-w-full">

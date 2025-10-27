@@ -1,19 +1,44 @@
 // /src/types/club.d.ts
 import { StaticImageData } from "next/image";
+import { JoinRequestItem } from "@/services/club-services";
 
-export interface ClubDetailCardProps {
+// export interface ClubDetailCardProps {
+//   title: string;
+//   logoUrl: string;
+//   privacy: string;
+//   club: string;
+//   genre: string;
+//   name_contact: string;
+//   member: string;
+//   contact_avatar: string;
+//   stars_label: string;
+//   id: string | number;
+//   owner_id?: number | string;
+// }
+
+export type ClubDetailCardProps = {
+  id: string | number;
   title: string;
   logoUrl: string;
-  privacy: string;
   club: string;
   genre: string;
-  name_contact: string;
   member: string;
+  location: string;
+  home_court: string;
+  privacy: string;
+  name_contact: string;
   contact_avatar: string;
   stars_label: string;
-  id: string | number;
-  owner_id?: number | string;
-}
+  owner_id: number;
+  accessToken?: string;
+  isOwner: boolean;
+  userId?: number;
+  joinRequests: JoinRequestItem[];
+  userJoinStatus?: {
+    isMember: boolean;
+    requestStatus: "PENDING" | "APPROVED" | "REJECTED" | null;
+  };
+};
 
 export type IconEnvClub = {
   icon: StaticImageData;

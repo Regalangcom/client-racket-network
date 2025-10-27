@@ -5,6 +5,7 @@ import JoinButton from "./join-button";
 import JoinRequestsManager from "./join-req-manager";
 import { JoinRequestItem } from "@/services/club-services";
 import MenuJoined from "./menu-joined/menu-joined";
+import { ClubFormValues } from "@/constant/types/zodSchema";
 
 interface ClubActionsProps {
   clubId: string | number;
@@ -17,14 +18,9 @@ interface ClubActionsProps {
     isMember: boolean;
     requestStatus: "PENDING" | "APPROVED" | "REJECTED" | null;
   };
+  clubData?: ClubFormValues & { logoUrl?: string };
 }
 
-/**
- * ClubActions Component
- * Conditional wrapper that renders:
- * - JoinButton (if user is NOT owner)
- * - JoinRequestsManager (if user IS owner)
- */
 export default function ClubActions({
   clubId,
   accessToken,
@@ -32,26 +28,8 @@ export default function ClubActions({
   isOwner,
   joinRequests,
   userJoinStatus,
+  clubData,
 }: ClubActionsProps) {
-  const handleCreateEvent = () => {
-    console.log("Navigate to create event");
-    // TODO: Implement navigation
-  };
-
-  const handleEditClub = () => {
-    console.log("Navigate to edit club");
-    // TODO: Implement navigation
-  };
-
-  const handleActivities = () => {
-    console.log("Navigate to activities");
-    // TODO: Implement navigation
-  };
-
-  const handleStats = () => {
-    console.log("Navigate to stats");
-    // TODO: Implement navigation
-  };
   return (
     <div>
       {/* User Actions - Join Button */}
@@ -67,11 +45,9 @@ export default function ClubActions({
       {isOwner && accessToken && (
         <MenuJoined
           clubId={clubId}
-          // accessToken={accessToken}
-          onCreateEvent={handleCreateEvent}
-          onEditClub={handleEditClub}
-          onActivities={handleActivities}
-          onStats={handleStats}
+          isOwner={isOwner}
+          access_token={accessToken}
+          clubData={clubData}
         />
       )}
 

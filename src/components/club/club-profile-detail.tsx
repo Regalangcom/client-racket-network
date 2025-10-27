@@ -12,29 +12,8 @@ import InfoTag from "./info-tag";
 import { clubTags } from "@/constant/club-tags";
 import { times, maps, DEFAULT } from "@/public";
 import ClubActions from "./joined/club-action";
-import { JoinRequestItem } from "@/services/club-services";
-
-interface ClubDetailCardProps {
-  id: string | number;
-  title: string;
-  logoUrl: string;
-  club: string;
-  genre: string;
-  member: string;
-  privacy: string;
-  name_contact: string;
-  contact_avatar: string;
-  stars_label: string;
-  owner_id: number;
-  accessToken?: string;
-  isOwner: boolean;
-  userId?: number;
-  joinRequests: JoinRequestItem[];
-  userJoinStatus?: {
-    isMember: boolean;
-    requestStatus: "PENDING" | "APPROVED" | "REJECTED" | null;
-  };
-}
+import { ClubDetailCardProps } from "@/constant/types";
+import { ClubFormValues } from "@/constant/types/zodSchema";
 
 /**
  * ClubProfileDetails Component
@@ -52,6 +31,8 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
   name_contact,
   contact_avatar,
   stars_label,
+  location,
+  home_court,
   owner_id,
   userJoinStatus,
   accessToken,
@@ -61,6 +42,17 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
 }) => {
   const { isMobile } = useWindowDimension();
   const [imageError, setImageError] = useState(false);
+
+  const clubData: ClubFormValues & { logoUrl?: string } = {
+    sport_category: genre,
+    clubName: club,
+    description: title || "",
+    privacy: privacy as "PUBLIC" | "PRIVATE", // ✅ Type assertion
+    location: location,
+    home_court: home_court,
+    gender: "all",
+    logoUrl: logoUrl,
+  };
 
   return (
     <div className="w-full min-h-screen bg-white">
@@ -119,7 +111,7 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
 
             {/* ✅ UPDATED: Pass userJoinStatus to ClubActions */}
             <div className="mb-8 w-full flex justify-center">
-              <div className="w-[80%]">
+              <div className="w-[96%]">
                 <ClubActions
                   clubId={id}
                   accessToken={accessToken}
@@ -127,6 +119,7 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
                   isOwner={isOwner}
                   joinRequests={joinRequests}
                   userJoinStatus={userJoinStatus}
+                  clubData={clubData}
                 />
               </div>
             </div>

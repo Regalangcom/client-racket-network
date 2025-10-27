@@ -365,6 +365,61 @@ export class ClubService {
     }
   }
 
+  static async updateClubs(
+    id: string | number,
+    data: ClubFormValues & { logo?: File | null },
+    access_token: string
+  ): Promise<ClubData | null> {
+    try {
+      // Validasi token
+      if (!access_token) {
+        throw new Error("Authentication token is required");
+      }
+
+      const formData = new FormData();
+
+      formData.append("sport_category", data.sport_category);
+      formData.append("name_club", data.clubName);
+      formData.append("privacy", data.privacy);
+      formData.append("location", data.location);
+      formData.append("home_court", data.home_court);
+      formData.append("gender_rule", data.gender);
+
+      if (data.description) {
+        formData.append("description", data.description);
+      }
+
+      // Tambahkan file logo jika ada
+      if (data.logo instanceof File) {
+        formData.append("logo", data.logo);
+      }
+
+      console.log("id", id);
+
+      // Panggil API
+      const response = await fetch(`${API_URL}/api/v1/club/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || `Failed to create club: ${response.statusText}`
+        );
+      }
+
+      const responseData: ClubResponses = await response.json();
+      return responseData.data;
+    } catch (error) {
+      console.error("Error creating club:", error);
+      throw error;
+    }
+  }
+
   // Method untuk memeriksa keanggotaan klub
   static async checkMembership(
     clubId: string | number,

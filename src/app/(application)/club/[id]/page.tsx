@@ -86,6 +86,8 @@ export default async function ClubDetailPage({
         club={clubData.name_club}
         genre={clubData.sport_category}
         member={memberText}
+        location={clubData.location}
+        home_court={clubData.home_court}
         stars_label={ratingText}
         privacy={clubData.privacy}
         name_contact={clubData.owner.username}

@@ -3,6 +3,7 @@
 
 import { revalidatePath } from "next/cache";
 import { ClubService } from "@/services/club-services";
+import { ClubFormData } from "@/constant/types/zodSchema";
 
 /**
  * Server Action: Join Club
@@ -83,4 +84,16 @@ export async function rejectJoinRequestAction(
       message: error.message || "Failed to reject request",
     };
   }
+}
+
+export async function editClub(
+  id: number,
+  clubId: string,
+  accessToken: string,
+  data: []
+) {
+  try {
+    const result = await ClubService.editClubs(id, data, accessToken);
+    revalidatePath(`/club/${clubId}`);
+  } catch (error) {}
 }
