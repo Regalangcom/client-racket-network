@@ -96,11 +96,13 @@ export default function JoinRequestsManager({
 
   return (
     <div className="mt-8">
-      <h2 className="text-xl font-bold mb-4">Join Requests</h2>
+      <h2 className="text-xl left-3 font-bold mb-4">Join Requests</h2>
 
       {requests.length === 0 ? (
-        <div className="bg-gray-50 rounded-lg p-8 text-center">
-          <p className="text-gray-500">No pending join requests</p>
+        <div className="max-w-full">
+          <div className="bg-gray-50 rounded-lg p-8 text-center">
+            <p className="text-gray-500">No pending join requests</p>
+          </div>
         </div>
       ) : (
         <div className="space-y-4">

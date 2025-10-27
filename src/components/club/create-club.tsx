@@ -44,7 +44,6 @@ const CreateClub: React.FC<CreateClubProps> = ({ access_token }) => {
       // Close dialog
       setIsDialogOpen(false);
 
-      // Optional: Redirect or refresh data
       router.push(`/club/${result?.id}`);
     } catch (error) {
       console.error("Error creating club:", error);

@@ -4,6 +4,7 @@
 import JoinButton from "./join-button";
 import JoinRequestsManager from "./join-req-manager";
 import { JoinRequestItem } from "@/services/club-services";
+import MenuJoined from "./menu-joined/menu-joined";
 
 interface ClubActionsProps {
   clubId: string | number;
@@ -32,6 +33,25 @@ export default function ClubActions({
   joinRequests,
   userJoinStatus,
 }: ClubActionsProps) {
+  const handleCreateEvent = () => {
+    console.log("Navigate to create event");
+    // TODO: Implement navigation
+  };
+
+  const handleEditClub = () => {
+    console.log("Navigate to edit club");
+    // TODO: Implement navigation
+  };
+
+  const handleActivities = () => {
+    console.log("Navigate to activities");
+    // TODO: Implement navigation
+  };
+
+  const handleStats = () => {
+    console.log("Navigate to stats");
+    // TODO: Implement navigation
+  };
   return (
     <div>
       {/* User Actions - Join Button */}
@@ -42,6 +62,16 @@ export default function ClubActions({
           privacy={privacy}
           isOwner={isOwner}
           initialStatus={userJoinStatus} // ✅ Pass initial status
+        />
+      )}
+      {isOwner && accessToken && (
+        <MenuJoined
+          clubId={clubId}
+          // accessToken={accessToken}
+          onCreateEvent={handleCreateEvent}
+          onEditClub={handleEditClub}
+          onActivities={handleActivities}
+          onStats={handleStats}
         />
       )}
 
