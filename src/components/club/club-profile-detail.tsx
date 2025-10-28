@@ -14,13 +14,15 @@ import { times, maps, DEFAULT } from "@/public";
 import ClubActions from "./joined/club-action";
 import { ClubDetailCardProps } from "@/constant/types";
 import { ClubFormValues } from "@/constant/types/zodSchema";
+import { useRouter } from "next/navigation";
+import EditContactModal from "./joined/menu-joined/edit-menu-contact";
 
 /**
- * ClubProfileDetails Component
+ * ClubProfileDetail Component
  * Main wrapper for club detail page
  * Handles display logic, delegates actions to ClubActions
  */
-const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
+const ClubProfileDetail: React.FC<ClubDetailCardProps> = ({
   id,
   title,
   logoUrl,
@@ -31,6 +33,7 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
   name_contact,
   contact_avatar,
   stars_label,
+  phone_number,
   location,
   home_court,
   owner_id,
@@ -42,6 +45,13 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
 }) => {
   const { isMobile } = useWindowDimension();
   const [imageError, setImageError] = useState(false);
+  const [isEditContactOpen, setIsEditContactOpen] = useState(false);
+
+  const router = useRouter();
+
+  const handleContactUpdateSuccess = () => {
+    router.refresh();
+  };
 
   const clubData: ClubFormValues & { logoUrl?: string } = {
     sport_category: genre,
@@ -109,7 +119,6 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
               <span className="text-red-700">{privacy}</span>
             </div>
 
-            {/* ✅ UPDATED: Pass userJoinStatus to ClubActions */}
             <div className="mb-8 w-full flex justify-center">
               <div className="w-[96%]">
                 <ClubActions
@@ -126,12 +135,16 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
 
             {/* Contact section */}
             <div className="flex flex-row items-center mt-4 space-x-4 justify-between">
-              <div className="flex flex-col ">
-                <h2 className="text-lg font-bold mb-4">Contact</h2>
-              </div>
-              <Link href="" className="text-lg text-blue-600 font-bold mb-4">
-                Edit
-              </Link>
+              <h2 className="text-lg font-bold mb-4">Contact</h2>
+              {/* ✅ Show Edit button only for owner */}
+              {isOwner && accessToken && (
+                <button
+                  onClick={() => setIsEditContactOpen(true)}
+                  className="text-lg text-blue-600 font-bold mb-4 hover:text-blue-700"
+                >
+                  Edit
+                </button>
+              )}
             </div>
 
             <div className="bg-gray-100 rounded-lg p-4 flex items-center mb-6">
@@ -162,9 +175,6 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
                 </Button>
               </div>
             </div>
-
-            {/* Activities section - keeping existing code */}
-            {/* ... rest of mobile layout ... */}
 
             {/* Activities section */}
             <div className="mb-2">
@@ -291,9 +301,21 @@ const ClubProfileDetails: React.FC<ClubDetailCardProps> = ({
             </div>
           </div>
         )}
+
+        {/* using dialog edit contact owner */}
+        {isOwner && accessToken && (
+          <EditContactModal
+            isOpen={isEditContactOpen}
+            onClose={() => setIsEditContactOpen(false)}
+            currentUsername={name_contact || ""}
+            currentPhone={phone_number || ""}
+            accessToken={accessToken}
+            onSuccess={handleContactUpdateSuccess}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-export default ClubProfileDetails;
+export default ClubProfileDetail;

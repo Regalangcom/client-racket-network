@@ -57,7 +57,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
     formValues.email !== initialData.email ||
     formValues.phone_number !== initialData.phone_number ||
     formValues.level !== initialData.level ||
-    logoFile !== null; // Ada file baru yang diupload
+    logoFile !== null;
 
   useEffect(() => {
     if (initialData.username || initialData.email) {

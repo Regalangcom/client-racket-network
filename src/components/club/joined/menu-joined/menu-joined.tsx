@@ -5,15 +5,17 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { comp_1, pencil, podium, racquet } from "@/public";
 import EditClubDialog from "./edit-club-dialog";
-import { ClubFormValues } from "@/constant/types/zodSchema";
+import { ClubFormValues, MatchFormValues } from "@/constant/types/zodSchema";
 import { ClubService } from "@/services/club-services";
 import { toast } from "sonner";
+import { MatchService } from "@/services/match-service";
+import CreateEventDialog from "./create-event-dialog";
 
 interface MenuJoinedProps {
   clubId: string | number;
   access_token: string;
   isOwner: boolean;
-  clubData?: ClubFormValues & { logoUrl?: string }; // Initial club data for editing
+  clubData?: ClubFormValues & { logoUrl?: string };
 }
 
 export default function MenuJoined({
@@ -24,11 +26,44 @@ export default function MenuJoined({
 }: MenuJoinedProps) {
   const router = useRouter();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isCreateEventDialogOpen, setIsCreateEventDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Handle Create Event
-  const handleCreateEvent = () => {
-    router.push(`/club/${clubId}/create-event`);
+  const handleCreateEventSubmit = async (
+    data: MatchFormValues & { banner_match?: File | null }
+  ) => {
+    setIsLoading(true);
+    try {
+      const payload = {
+        club_id: clubId,
+        name_match: data.event_title,
+        match_date: data.date ?? "",
+        match_time: data.time,
+        location: data.location,
+        description: data.description ?? "",
+        price: "0",
+        gender_restriction: data.gender,
+        skill_level: data.level,
+        quota: 10,
+        banner_match: data.banner_match || null,
+      };
+
+      await MatchService.createMatch(payload, access_token);
+
+      toast.success("Event created successfully! 🎉");
+      setIsCreateEventDialogOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Error creating event:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to create event. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle Edit Club - with submit logic (similar to create-club.tsx)
@@ -81,7 +116,7 @@ export default function MenuJoined({
       id: "create-event",
       label: "Create Event",
       icon: racquet,
-      onClick: handleCreateEvent,
+      onClick: () => setIsCreateEventDialogOpen(true),
     },
     {
       id: "edit-club",
@@ -89,42 +124,37 @@ export default function MenuJoined({
       icon: pencil,
       onClick: () => setIsEditDialogOpen(true),
     },
-    {
-      id: "activities",
-      label: "Activities",
-      icon: comp_1,
-      onClick: handleActivities,
-    },
-    {
-      id: "stats",
-      label: "Stats",
-      icon: podium,
-      onClick: handleStats,
-    },
   ];
 
   return (
     <>
-      <div className="w-full grid grid-cols-4 gap-3">
+      <div className="w-full grid grid-cols-2">
         {menuItems.map((item) => (
           <button
             key={item.id}
             className="flex flex-col items-center gap-2 group"
             onClick={item.onClick}
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-background-button-rc hover:bg-green-700 rounded-xl transition-colors">
+            <div className="w-40 h-9 gap-4 flex items-center justify-center bg-background-button-rc  rounded-lg transition-colors">
               <Image
                 src={item.icon}
                 alt={item.label}
                 className="w-5 h-5 text-white"
               />
+              <span className="text-xs font-semibold text-white text-center leading-tight">
+                {item.label}
+              </span>
             </div>
-            <span className="text-xs font-semibold text-gray-700 text-center leading-tight">
-              {item.label}
-            </span>
           </button>
         ))}
       </div>
+
+      <CreateEventDialog
+        open={isCreateEventDialogOpen}
+        onOpenChange={setIsCreateEventDialogOpen}
+        onSubmit={handleCreateEventSubmit}
+        isLoading={isLoading}
+      />
 
       {/* Edit Club Dialog */}
       <EditClubDialog

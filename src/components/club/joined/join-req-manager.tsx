@@ -97,7 +97,6 @@ export default function JoinRequestsManager({
   return (
     <div className="mt-8">
       <h2 className="text-lg left-3 font-semibold mb-4">Join Requests</h2>
-
       {requests.length === 0 ? (
         <div className="max-w-full">
           <div className="bg-gray-50 rounded-lg p-8 text-center">
@@ -108,14 +107,14 @@ export default function JoinRequestsManager({
         <div className="space-y-4">
           {requests.map((request) => {
             const isProcessing = processingIds.has(request.id);
-
             return (
               <div
                 key={request.id}
-                className="bg-white shadow rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow"
+                className="bg-white shadow rounded-lg p-4 hover:shadow-md transition-shadow"
               >
-                <div className="flex items-center flex-1">
-                  <Avatar className="mr-4 h-12 w-12">
+                {/* User Info Section */}
+                <div className="flex items-center mb-3">
+                  <Avatar className="mr-4 h-7 w-7">
                     <AvatarImage
                       src={request.user.profile?.picture || ""}
                       alt={request.user.username}
@@ -124,7 +123,6 @@ export default function JoinRequestsManager({
                       {request.user.username[0].toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-
                   <div className="flex-grow">
                     <p className="font-semibold text-base">
                       {request.user.username}
@@ -153,10 +151,11 @@ export default function JoinRequestsManager({
                   </div>
                 </div>
 
-                <div className="flex space-x-2">
+                {/* Buttons Section - Now Below */}
+                <div className="flex space-x-2 pt-3 border-t">
                   <Button
                     size="sm"
-                    className="bg-green-600 hover:bg-green-700 text-white"
+                    className="bg-background-button-rc hover:bg-green-800 text-white flex-1"
                     onClick={() => handleApprove(request.id)}
                     disabled={isProcessing}
                   >
@@ -171,7 +170,7 @@ export default function JoinRequestsManager({
                   <Button
                     size="sm"
                     variant="outline"
-                    className="border-red-300 text-red-600 hover:bg-red-50"
+                    className="border-red-300 text-red-600 hover:bg-red-50 flex-1"
                     onClick={() => handleReject(request.id)}
                     disabled={isProcessing}
                   >

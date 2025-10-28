@@ -131,13 +131,17 @@ export default function JoinButton({
   const buttonConfig = getButtonConfig();
 
   return (
-    <Button
-      onClick={handleJoin}
-      disabled={buttonConfig.disabled}
-      className="w-full py-4 bg-green-900 border-[#174038] border text-[#E1FFA0] font-semibold rounded-md hover:bg-green-800 disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      {buttonConfig.icon}
-      {buttonConfig.text}
-    </Button>
+    <>
+      <div className="justify-center items-center flex ">
+        <Button
+          onClick={handleJoin}
+          disabled={buttonConfig.disabled}
+          className="w-48 py-4 bg-green-900 border-[#174038] border text-[#E1FFA0] font-semibold rounded-md hover:bg-green-800 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {buttonConfig.icon}
+          {buttonConfig.text}
+        </Button>
+      </div>
+    </>
   );
 }

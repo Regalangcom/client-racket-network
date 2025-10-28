@@ -62,6 +62,15 @@ export interface JoinStatusResponse extends ApiResponse {
   };
 }
 
+export interface ResponseUpdateContactOwner extends ApiResponse {
+  data: {
+    id: number;
+    username: string;
+    phone_number: string;
+    email: string;
+  };
+}
+
 // Class ClubService
 export class ClubService {
   static async getClubs(
@@ -452,5 +461,31 @@ export class ClubService {
       console.error(`Error checking membership for club ${clubId}:`, error);
       return false;
     }
+  }
+
+  static async updateOwnerContact(
+    contactData: {
+      username?: string;
+      phone_number?: string;
+    },
+    access_token: string
+  ): Promise<ResponseUpdateContactOwner | null> {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_API}/api/v1/club/user/contact`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+        body: JSON.stringify(contactData),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Failed to update contact");
+    }
+    return response.json();
   }
 }

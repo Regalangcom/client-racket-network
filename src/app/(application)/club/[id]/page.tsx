@@ -1,6 +1,6 @@
 // app/club/[id]/page.tsx
 import { notFound } from "next/navigation";
-import ClubProfileDetails from "@/components/club/club-profile-detail";
+import ClubProfileDetail from "@/components/club/club-profile-detail";
 import { getAuthServerSession } from "@/lib/auth-options";
 import { ClubService, JoinRequestItem } from "@/services/club-services";
 
@@ -79,7 +79,7 @@ export default async function ClubDetailPage({
   // Pass all data to client component
   return (
     <section className="sm:p-8 mx-auto">
-      <ClubProfileDetails
+      <ClubProfileDetail
         id={id}
         title={clubData.name_club}
         logoUrl={clubData.logoUrl}
@@ -94,6 +94,7 @@ export default async function ClubDetailPage({
         contact_avatar={clubData.logoUrl}
         owner_id={clubData.owner_id}
         accessToken={accessToken}
+        phone_number={clubData.owner?.phone_number}
         isOwner={isOwner}
         userId={userId}
         userJoinStatus={userJoinStatus}

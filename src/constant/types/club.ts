@@ -26,6 +26,7 @@ export type ClubDetailCardProps = {
   location: string;
   home_court: string;
   privacy: string;
+  phone_number: string;
   name_contact: string;
   contact_avatar: string;
   stars_label: string;
@@ -57,7 +58,7 @@ export interface ClubFormData {
   gender: "all" | "men" | "women";
 }
 
-export interface ClubData {
+export type ClubData = {
   id: number;
   name_club: string;
   logo: string | null;
@@ -73,13 +74,14 @@ export interface ClubData {
     id: number;
     username: string;
     email: string;
+    phone_number: string;
   };
   _count: {
     members: number;
     matches: number;
   };
   logoUrl: string;
-}
+};
 
 export interface ClubResponse {
   success: boolean;
@@ -94,8 +96,8 @@ export interface ClubResponse {
   };
 }
 
-export interface ClubFilter {
+export type ClubFilter = {
   sport_category?: string;
   location?: string;
   gender_rule?: string;
-}
+};

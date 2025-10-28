@@ -6,36 +6,53 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
-import React from "react";
+import React, { useState } from "react";
 import { MatchDetailCardProps } from "@/constant/types";
 import { MatchTag } from "./match-tags";
 import { matchDetailCard } from "@/constant/match";
+import { formatLongDate } from "@/lib/dns-date.options";
 
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
-  title,
-  logo,
+  id,
+  name_match,
+  matchUrl,
+  match_date,
+  match_time,
   location,
   price,
-  club,
+  name_club,
+  gender_restriction,
   description,
-  times,
 }) => {
   const router = useRouter();
   const isMobile = useWindowDimension();
-  const details = matchDetailCard(location, price, club);
+  const [selectedTime, setSelectedTime] = useState<string>("");
+
+  const formattedDate = formatLongDate(match_date, "en");
+
+  const details = matchDetailCard(
+    location,
+    price,
+    name_club,
+    gender_restriction
+  );
 
   return (
     <div className="flex flex-col sm:flex-row md:gap-6 sm:gap-10">
       {/* Left side image */}
       <div className="w-full sm:w-[40%] flex justify-center items-center">
-        <Image
-          src={logo}
-          alt={`${title} logo`}
-          width={600}
-          height={400}
-          className=" object-cover w-full h-[190px] md:h-auto"
-          priority
-        />
+        {matchUrl ? (
+          <Image
+            src={matchUrl}
+            alt={`${name_match} logo`}
+            width={600}
+            height={400}
+            className=" object-cover w-full h-[190px] md:h-auto"
+            priority
+          />
+        ) : (
+          <p>not found</p>
+        )}
       </div>
 
       {isMobile && (
@@ -51,18 +68,26 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 
       {/* Right side content */}
       <div className="w-full sm:w-[60%] bg-white p-4 md:p-6 rounded-3xl">
-        <h2 className="text-3xl font-bold mb-2">{title}</h2>
+        <h2 className="text-3xl font-bold mb-2">{name_match}</h2>
 
-        <div className="space-y-2 mb-4">
+        <div className="space-y-2">
           {details.map((detail, index) => (
             <MatchTag
               key={index}
               icon={detail.icon}
               label={detail.label}
               hasTimeSelector={detail.hasTimeSelector}
-              times={times}
+              times={match_time}
+              selectedTime={selectedTime}
+              onTimeSelect={setSelectedTime}
             />
           ))}
+        </div>
+
+        {/* Date Display */}
+        <div className="flex items-center gap-3 rounded-3xl mb-5 mt-2">
+          <span className="text-gray-600">📅</span>
+          <span className="text-gray-700">{formattedDate}</span>
         </div>
 
         {/* SEPARATOR */}

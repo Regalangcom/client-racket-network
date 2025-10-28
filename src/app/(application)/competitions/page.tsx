@@ -1,8 +1,8 @@
 "use client";
 
-import CompetitionsCard from "../../../components/Competitions/competitions-card";
-import CompetitionFilter from "../../../components/Competitions/competitions-filter";
-import CompetitionsSearch from "../../../components/Competitions/compSearch";
+import CompetitionsCard from "../../../components/competitions/competitions-card";
+import CompetitionFilter from "../../../components/competitions/competitions-filter";
+import CompetitionsSearch from "../../../components/competitions/compSearch";
 
 export default function CompetitionsPage() {
   return (

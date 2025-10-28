@@ -13,7 +13,6 @@ interface ClubActionsProps {
   privacy: string;
   isOwner: boolean;
   joinRequests: JoinRequestItem[];
-  // ✅ NEW: User join status from server
   userJoinStatus?: {
     isMember: boolean;
     requestStatus: "PENDING" | "APPROVED" | "REJECTED" | null;
@@ -39,7 +38,7 @@ export default function ClubActions({
           accessToken={accessToken}
           privacy={privacy}
           isOwner={isOwner}
-          initialStatus={userJoinStatus} // ✅ Pass initial status
+          initialStatus={userJoinStatus}
         />
       )}
       {isOwner && accessToken && (
