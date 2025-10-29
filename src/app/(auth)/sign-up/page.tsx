@@ -52,7 +52,7 @@ function SignUpPage() {
     mode: "onChange",
   });
 
-  console.log("register", register);
+  // console.log("register", register);
   console.log("register", register);
   const onSubmit = async (data: SignUpFormData) => {
     try {
