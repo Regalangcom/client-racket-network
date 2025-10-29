@@ -53,6 +53,7 @@ function SignUpPage() {
   });
 
   console.log("register", register);
+  console.log("register", register);
   const onSubmit = async (data: SignUpFormData) => {
     try {
       setIsPending(true);
