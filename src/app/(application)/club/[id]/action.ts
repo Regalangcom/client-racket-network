@@ -85,15 +85,3 @@ export async function rejectJoinRequestAction(
     };
   }
 }
-
-export async function editClub(
-  id: number,
-  clubId: string,
-  accessToken: string,
-  data: []
-) {
-  try {
-    const result = await ClubService.editClubs(id, data, accessToken);
-    revalidatePath(`/club/${clubId}`);
-  } catch (error) {}
-}
