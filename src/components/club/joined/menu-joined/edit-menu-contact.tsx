@@ -107,10 +107,10 @@ export default function EditContactModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] rounded-xl">
         <DialogHeader>
-          <DialogTitle>Edit Contact Information</DialogTitle>
+          <DialogTitle className="text-left">Edit Contact Host</DialogTitle>
           <DialogDescription>
-            Update your name and WhatsApp number. This will be visible to club
-            members.
+            {/* Update your name and WhatsApp number. This will be visible to club
+            members. */}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>

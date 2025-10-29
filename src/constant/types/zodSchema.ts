@@ -177,8 +177,31 @@ export const matchFormSchema = z.object({
   event_title: z.string().min(2, "This field title is required"),
   // date: z.string(),
   date: z.string().optional(),
-  time: z.string().min(4, "This field time is required"),
   location: z.string().min(1, "This field location is required"),
+
+  TimeSlot: z
+    .array(
+      z.object({
+        start_time: z.string().min(1, "Start time is required"),
+        end_time: z.string().min(1, "End time is required"),
+      })
+    )
+    .min(1, "At least one time slot is required")
+    .max(5, "Maximum 5 time slots allowed")
+    .refine(
+      (slots) => {
+        // Validate semua slots punya start_time dan end_time
+        return slots.every((slot) => slot.start_time && slot.end_time);
+      },
+      { message: "All time slots must have start and end time" }
+    )
+    .refine(
+      (slots) => {
+        // Validate start_time < end_time
+        return slots.every((slot) => slot.start_time < slot.end_time);
+      },
+      { message: "Start time must be before end time" }
+    ),
 
   dateRange: z
     .object({

@@ -39,7 +39,8 @@ export default function MenuJoined({
         club_id: clubId,
         name_match: data.event_title,
         match_date: data.date ?? "",
-        match_time: data.time,
+        // : data.TimeSlot ?? "",
+
         location: data.location,
         description: data.description ?? "",
         price: "0",
@@ -47,9 +48,15 @@ export default function MenuJoined({
         skill_level: data.level,
         quota: 10,
         banner_match: data.banner_match || null,
+        TimeSlot: data.TimeSlot.map((slot) => ({
+          start_time: slot.start_time,
+          end_time: slot.end_time,
+        })),
       };
 
       await MatchService.createMatch(payload, access_token);
+
+      // console.log("payload", payload);
 
       toast.success("Event created successfully! 🎉");
       setIsCreateEventDialogOpen(false);
@@ -135,7 +142,7 @@ export default function MenuJoined({
             className="flex flex-col items-center gap-2 group"
             onClick={item.onClick}
           >
-            <div className="w-40 h-9 gap-4 flex items-center justify-center bg-background-button-rc  rounded-lg transition-colors">
+            <div className="w-40 h-9 gap-2 flex items-center justify-center bg-background-button-rc  rounded-lg transition-colors">
               <Image
                 src={item.icon}
                 alt={item.label}

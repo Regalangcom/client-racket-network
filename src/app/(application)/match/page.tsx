@@ -1,7 +1,7 @@
 // "use client";
 
 import Search from "@/app/_components/refactor/search";
-import ClubCardSkeleton from "@/components/club/club-card-skeleton";
+// import ClubCardSkeleton from "@/components/club/club-card-skeleton";
 import MatchCard from "@/components/match/match";
 import { MatchData } from "@/constant/types";
 import { getAuthServerSession } from "@/lib/auth-options";

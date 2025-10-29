@@ -1,43 +1,42 @@
-// components/match/time-selector.tsx
-
+// components/time-selector.tsx
 "use client";
-
 import React from "react";
 import { cn } from "@/lib/utils";
+import { TimeSlot } from "@/constant/types";
 
 interface TimeSelectorProps {
-  match_time: string;
-  selectedTime?: string;
-  onTimeSelect: (time: string) => void;
+  TimeSlot: TimeSlot[];
+  selectedTimeSlotId?: number | null;
+  onTimeSelect: (slotId: number) => void;
 }
 
 const TimeSelector: React.FC<TimeSelectorProps> = ({
-  match_time,
-  selectedTime,
+  TimeSlot,
+  selectedTimeSlotId,
   onTimeSelect,
 }) => {
-  // ✅ Parse time from API
-  // Example: "19:00 - 20:00 am" or "18:00 - 19:00, 20:00 - 21:00"
-  const timeSlots = match_time.includes(",")
-    ? match_time.split(",").map((t) => t.trim())
-    : [match_time];
-
   return (
     <div className="flex flex-wrap gap-2">
-      {timeSlots.map((timeSlot, index) => (
-        <button
-          key={index}
-          onClick={() => onTimeSelect(timeSlot)}
-          className={cn(
-            "px-4 py-2 rounded-full text-sm font-medium transition-all border-2",
-            selectedTime === timeSlot
-              ? "bg-green-600 text-white border-green-600"
-              : "bg-gray-100 text-gray-700 border-transparent hover:border-green-600"
-          )}
-        >
-          {timeSlot}
-        </button>
-      ))}
+      {TimeSlot.map((slot) => {
+        const slotId = slot.id || TimeSlot.indexOf(slot);
+        const isSelected = selectedTimeSlotId === slotId;
+
+        return (
+          <button
+            key={slotId}
+            type="button"
+            onClick={() => onTimeSelect(slotId)}
+            className={cn(
+              "px-4  rounded-full text-sm font-medium transition-all border-2",
+              isSelected
+                ? "bg-[#B5D9D2] border-[#4A918E] text-black"
+                : "bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200"
+            )}
+          >
+            {slot.start_time} - {slot.end_time}
+          </button>
+        );
+      })}
     </div>
   );
 };

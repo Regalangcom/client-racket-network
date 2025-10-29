@@ -16,11 +16,6 @@ export default async function MatchDetail({
     id,
     access_token || undefined
   );
-
-  console.log("✅ club name:", matchData.club?.name_club);
-
-  console.log("match data", matchData);
-
   if (!matchData) return notFound();
 
   return (
@@ -28,9 +23,9 @@ export default async function MatchDetail({
       <MatchDetailCard
         id={matchData.id}
         name_match={matchData.name_match}
-        matchUrl={matchData.matchUrl}
+        bannerUrl={matchData.bannerUrl}
         match_date={matchData.match_date}
-        match_time={matchData.match_time}
+        TimeSlot={matchData.TimeSlot || []}
         location={matchData.location}
         price={matchData.price}
         name_club={matchData.club?.name_club}

@@ -81,6 +81,7 @@ export type ClubData = {
     matches: number;
   };
   logoUrl: string;
+  isOwner?: boolean;
 };
 
 export interface ClubResponse {

@@ -6,9 +6,8 @@ import {
   CreateMatchPayload,
   UpdateMatchPayload,
   MatchFilter,
+  MatchResponses,
 } from "@/constant/types";
-
-
 
 // services/match-services.ts
 
@@ -56,7 +55,7 @@ export class MatchService {
 
   static async getMatches(
     filters: MatchFilter = {},
-    accessToken: string | null = null
+    access_token: string | null = null
   ) {
     try {
       const queryParams = new URLSearchParams();
@@ -71,8 +70,8 @@ export class MatchService {
       const url = `${process.env.NEXT_PUBLIC_URL_API}/api/v1/match${queryString}`;
 
       const headers: HeadersInit = {};
-      if (accessToken) {
-        headers["Authorization"] = `Bearer ${accessToken}`;
+      if (access_token) {
+        headers["Authorization"] = `Bearer ${access_token}`;
       }
 
       const response = await fetch(url, {
@@ -84,11 +83,11 @@ export class MatchService {
         throw new Error(`Failed to fetch matches: ${response.statusText}`);
       }
 
-      const data: MatchResponse = await response.json();
+      const data = await response.json();
       return data.data || [];
     } catch (error) {
       console.error("Error fetching matches:", error);
-      return [];
+      // return [];
     }
   }
 
@@ -185,11 +184,11 @@ export class MatchService {
     try {
       const formData = new FormData();
 
-      // Append all fields to FormData
       formData.append("club_id", String(payload.club_id));
       formData.append("name_match", payload.name_match);
       formData.append("match_date", payload.match_date);
-      formData.append("match_time", payload.match_time);
+      formData.append("TimeSlot", JSON.stringify(payload.TimeSlot));
+      // formData.append("match_time", payload.match_time);
       formData.append("location", payload.location);
       formData.append("gender_restriction", payload.gender_restriction);
       formData.append("skill_level", payload.skill_level);
@@ -210,6 +209,8 @@ export class MatchService {
       if (payload.banner_match) {
         formData.append("banner_match", payload.banner_match);
       }
+
+      console.log("form data", formData);
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/api/v1/match`,

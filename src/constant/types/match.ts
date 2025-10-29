@@ -36,12 +36,48 @@ export type DetailItem = {
   times?: string[];
 };
 
+export type TimeSlot = {
+  id?: number;
+  start_time: string;
+  end_time: string;
+  match_id?: number;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 // Types based on API response
+// export type MatchData = {
+//   id: number;
+//   banner_match: string;
+//   match_date: string;
+//   // match_time: string;
+//   location: string;
+//   name_match: string;
+//   club_id: number;
+//   description: string;
+//   price: string;
+//   gender_restriction: string;
+//   name_club: string;
+//   skill_level: string;
+//   quota: number;
+//   cratedAt: string;
+//   updatedAt: string;
+//   club: {
+//     id: number;
+//     name_club: string;
+//     logo: string;
+//     logoUrl: string;
+//   };
+//   _count: {
+//     UsersOnMatches: number;
+//   };
+//   bannerUrl: string;
+// };
+
 export type MatchData = {
   id: number;
   banner_match: string;
   match_date: string;
-  match_time: string;
   location: string;
   name_match: string;
   club_id: number;
@@ -57,12 +93,18 @@ export type MatchData = {
     id: number;
     name_club: string;
     logo: string;
-    logoUrl: string;
+    logoUrl?: string;
+    owner_id: number;
   };
   _count: {
     UsersOnMatches: number;
   };
-  matchUrl: string;
+  // TimeSlot: TimeSlot[];
+  TimeSlot: Array<{
+    start_time: string;
+    end_time: string;
+  }>;
+  bannerUrl: string;
 };
 
 export type MatchResponse = {
@@ -79,15 +121,15 @@ export type MatchResponse = {
 };
 
 export type MatchResponses = {
-  success: boolean;
+  // success: boolean;
   data: MatchData;
-  message?: string;
+  // message?: string;
 };
 export type MatchDetail = {
   id: number;
   banner_match: string;
   match_date: string; // ISO string
-  match_time: string;
+  // match_time: string;
   location: string;
   name_match: string;
   club_id: number;
@@ -108,14 +150,19 @@ export type MatchDetail = {
     UsersOnMatches: number;
   };
   bannerUrl: string;
+  TimeSlot: Array<{
+    start_time: string;
+    end_time: string;
+  }>;
 };
 
 export type MatchDetailCardProps = {
   id: number;
   name_match: string;
-  matchUrl: string;
+  bannerUrl: string;
   match_date: string;
-  match_time: string;
+  // match_time: string;
+  TimeSlot: TimeSlot[];
   location: string;
   price: string;
   name_club: string;
@@ -131,7 +178,7 @@ export type CreateMatchPayload = {
   club_id: string | number;
   name_match: string;
   match_date: string;
-  match_time: string;
+  // match_time: string;
   location: string;
   description?: string;
   price?: string;
@@ -139,6 +186,10 @@ export type CreateMatchPayload = {
   skill_level: string;
   quota?: number;
   banner_match?: File | null;
+  TimeSlot: Array<{
+    start_time: string;
+    end_time: string;
+  }>;
 };
 
 export type UpdateMatchPayload = {

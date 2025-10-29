@@ -31,13 +31,9 @@ import { MatchFormValues, matchFormSchema } from "@/constant/types/zodSchema";
 import { LogoUpload } from "../../logo-upload";
 import { GenderRadioGroup } from "../../gender-radio-group";
 import { useLogoUpload } from "@/hooks/uploadLogo";
-import {
-  TYPE_EVENT,
-  TIME_OPTIONS,
-  FORM_SECTIONS,
-  LEVEL_OPTION,
-} from "@/constant/match";
+import { TYPE_EVENT, FORM_SECTIONS, LEVEL_OPTION } from "@/constant/match";
 import { DatePickerField } from "../../date-picker/date-picker-field";
+import { TimeSlotInput } from "../time-slot-input";
 
 interface CreateEventDialogProps {
   open: boolean;
@@ -64,7 +60,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       event_title: "",
       date: "",
       dateRange: { from: "", to: "" },
-      time: "PUBLIC",
+      TimeSlot: [],
       location: "",
       gender: "all",
       level: "Beginner",
@@ -73,6 +69,8 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
     },
   });
 
+  console.log(form);
+
   useEffect(() => {
     if (open && initialData) {
       form.reset(initialData);
@@ -80,13 +78,24 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   }, [open, initialData, form]);
 
   const handleFormSubmit = (data: MatchFormValues) => {
-    console.log("Form submitted:", data);
+    console.log("Submitted Data:", data);
     onSubmit({ ...data, banner_match: logoFile });
   };
 
   useEffect(() => {
     if (!open) {
-      form.reset();
+      form.reset({
+        type_event: "",
+        event_title: "",
+        date: "",
+        dateRange: { from: "", to: "" },
+        TimeSlot: [],
+        location: "",
+        gender: "all",
+        level: "Beginner",
+        banner_match: "",
+        description: "",
+      });
       resetLogo();
     }
   }, [open, form, resetLogo]);
@@ -168,31 +177,25 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 )}
               />
 
-              {/* ✅ DATE PICKER - CLEAN & SIMPLE! */}
+              {/* Date Picker */}
               <DatePickerField form={form} />
 
+              {/* ✅ NEW TIME SLOT INPUT - DROPDOWN STYLE */}
               <FormField
                 control={form.control}
-                name="time"
+                name="TimeSlot"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm font-normal text-gray-700">
                       Time
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select time" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {TIME_OPTIONS.map((time) => (
-                          <SelectItem key={time.value} value={time.value}>
-                            {time.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <TimeSlotInput
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={form.formState.errors.TimeSlot?.message}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -8,7 +8,7 @@ import { MatchViewDisplay } from "./match-tags";
 import { MatchData } from "@/constant/types";
 
 export interface MatchCardProps {
-  match: MatchData; // Remove optional
+  match: MatchData;
 }
 
 const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
@@ -19,7 +19,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
         <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
           {match.club && (
             <Image
-              src={match.club.logoUrl}
+              src={match.club.logoUrl || ""}
               alt={match.club.name_club || "Club"}
               width={88}
               height={88}
@@ -43,6 +43,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
       </div>
 
       {/* Content */}
+
       <CardContent className="flex flex-col justify-between flex-1 p-4">
         <MatchViewDisplay match={match} />
         <Link href={`/match/${match.id}`}>

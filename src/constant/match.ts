@@ -3,6 +3,7 @@
 
 import { accounts, maps, prices, reviews, times } from "@/public";
 import { DetailItem } from "./types";
+import displayIDRCurrency from "@/utils/currency";
 
 export const matchDetailCard = (
   location: string,
@@ -19,7 +20,8 @@ export const matchDetailCard = (
       : "All genders";
 
   // ✅ Format price label
-  const priceLabel = price === "0" || !price ? "Free" : `Rp ${price}`;
+  const priceLabel =
+    price === "0" || !price ? "Free" : displayIDRCurrency(price);
 
   return [
     {

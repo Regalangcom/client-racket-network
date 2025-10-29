@@ -15,6 +15,8 @@ export default async function ClubPage({
   const session = await getAuthServerSession();
   const isAuthenticated = !!session?.access_token;
 
+  console.log("is", isAuthenticated);
+
   const sport_category = searchParams.sport_category as string | undefined;
   const location = searchParams.location as string | undefined;
   const gender_rule = searchParams.gender_rule as string | undefined;
@@ -23,6 +25,12 @@ export default async function ClubPage({
     {},
     session?.access_token || null
   );
+
+  const user = session?.userId
+    ? Number(session.userId) // ✅ Convert to number
+    : null;
+
+  console.log("uawe", user);
 
   // Filter di client sesuai parameter yang ada
   let clubs = allClubs;

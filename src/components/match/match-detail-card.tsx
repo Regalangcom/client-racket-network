@@ -15,9 +15,9 @@ import { formatLongDate } from "@/lib/dns-date.options";
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   id,
   name_match,
-  matchUrl,
+  bannerUrl,
   match_date,
-  match_time,
+  TimeSlot,
   location,
   price,
   name_club,
@@ -26,9 +26,11 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 }) => {
   const router = useRouter();
   const isMobile = useWindowDimension();
-  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [selectedTimeSlotId, setSelectedTimeSlotId] = useState<number | null>(
+    TimeSlot.length > 0 ? TimeSlot[0].id || 0 : null
+  );
 
-  const formattedDate = formatLongDate(match_date, "en");
+  // const formattedDate = formatLongDate(match_date, "en");
 
   const details = matchDetailCard(
     location,
@@ -41,9 +43,9 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
     <div className="flex flex-col sm:flex-row md:gap-6 sm:gap-10">
       {/* Left side image */}
       <div className="w-full sm:w-[40%] flex justify-center items-center">
-        {matchUrl ? (
+        {bannerUrl ? (
           <Image
-            src={matchUrl}
+            src={bannerUrl}
             alt={`${name_match} logo`}
             width={600}
             height={400}
@@ -77,18 +79,18 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
               icon={detail.icon}
               label={detail.label}
               hasTimeSelector={detail.hasTimeSelector}
-              times={match_time}
-              selectedTime={selectedTime}
-              onTimeSelect={setSelectedTime}
+              TimeSlot={detail.hasTimeSelector ? TimeSlot : undefined}
+              selectedTimeSlotId={selectedTimeSlotId}
+              onTimeSelect={setSelectedTimeSlotId}
             />
           ))}
         </div>
 
         {/* Date Display */}
-        <div className="flex items-center gap-3 rounded-3xl mb-5 mt-2">
+        {/* <div className="flex items-center gap-3 rounded-3xl mb-5 mt-2">
           <span className="text-gray-600">📅</span>
           <span className="text-gray-700">{formattedDate}</span>
-        </div>
+        </div> */}
 
         {/* SEPARATOR */}
         <div className="py-3 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">

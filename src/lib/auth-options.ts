@@ -88,6 +88,7 @@ async function getAuthServerSession(
   const session = await getServerSession(...args, authOptions);
   return {
     access_token: session?.user?.access_token ?? null,
+    userId: session?.user?.id ?? null,
   };
 }
 
