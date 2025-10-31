@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { pencil, racquet } from "@/public";
 import EditClubDialog from "./edit-club-dialog";
-import { ClubFormValues, MatchFormValues } from "@/constant/types/zodSchema";
+import { ClubFormValues, CompetitionFormValues, MatchFormValues } from "@/constant/types/zodSchema";
 import { ClubService } from "@/services/club-services";
 import { toast } from "sonner";
 import { MatchService } from "@/services/match-service";
 import UnifiedEventDialog from "./create-event-dialog";
+import { CompetitionCore } from "@/constant/types";
+import { CompetitionsService } from "@/services/comp-services";
 
 interface MenuJoinedProps {
   clubId: string | number;
@@ -71,29 +73,29 @@ export default function MenuJoined({
 
   // Handle Create Competition
   const handleCreateCompSubmit = async (
-    data: any & { banner?: File | null }
+    data: CompetitionFormValues & { banner?: File | null }
   ) => {
     setIsLoading(true);
     try {
-      // TODO: Implement competition service call
-      console.log("Competition data:", data);
+      const payload = {
+        club_id: clubId,
+        name_comp: data.event_title,
+        competitions_date: data.date,
+        organizer_name : data.,
+        location: data.location,
+        description: data.description,
+        price: data.price || "0",
+        gender_restriction: data.gender_restriction,
+        skill_level: data.skill_level,
+        quota: Number(data.quota) || 10,
+        banner: data.banner || null,
+      };
 
-      // Uncomment when CompetitionService is ready
-      // const payload = {
-      //   club_id: clubId,
-      //   name: data.event_title,
-      //   date: data.date ?? "",
-      //   location: data.location,
-      //   description: data.description ?? "",
-      //   price: data.price || "0",
-      //   gender_restriction: data.gender,
-      //   skill_level: data.level,
-      //   quota: Number(data.quota) || 10,
-      //   banner: data.banner || null,
-      // };
-
-      // await CompetitionService.createCompetition(payload, access_token);
-
+      console.log("Competition Payload:", payload);
+      
+      await CompetitionsService.createCompetition(payload, access_token);
+      
+      
       toast.success("Competition created successfully! 🎉");
       setIsEventDialogOpen(false);
       router.refresh();
@@ -108,6 +110,7 @@ export default function MenuJoined({
       setIsLoading(false);
     }
   };
+
 
   // Handle Edit Club
   const handleEditClubSubmit = async (
