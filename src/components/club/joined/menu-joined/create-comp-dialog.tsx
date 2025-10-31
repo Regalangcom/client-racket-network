@@ -1,4 +1,4 @@
-// components/club/joined/create-event-dialog.tsx
+// components/club/joined/create-comp-dialog.tsx
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,23 +27,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { MatchFormValues, matchFormSchema } from "@/constant/types/zodSchema";
+import {
+  CompetitionFormValues,
+  competitionsFormSchema,
+} from "@/constant/types/zodSchema";
 import { LogoUpload } from "../../logo-upload";
 import { GenderRadioGroup } from "../../gender-radio-group";
 import { useLogoUpload } from "@/hooks/uploadLogo";
-import { TYPE_EVENT, FORM_SECTIONS, LEVEL_OPTION } from "@/constant/match";
+import { FORM_SECTIONS, LEVEL_OPTION } from "@/constant/match";
 import { DatePickerField } from "../../date-picker/date-picker-field";
-import { TimeSlotInput } from "../time-slot-input";
 
-interface CreateCompetitionDialogProps {
+interface CreateCompDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: MatchFormValues & { banner_match?: File | null }) => void;
+  onSubmit: (data: CompetitionFormValues & { banner?: File | null }) => void;
   isLoading?: boolean;
-  initialData?: MatchFormValues & { banner_match?: string };
+  initialData?: CompetitionFormValues & { banner?: string };
 }
 
-const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
+const CreateCompDialog: React.FC<CreateCompDialogProps> = ({
   open,
   onOpenChange,
   onSubmit,
@@ -53,23 +55,22 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
   const { logoPreview, logoFile, handleLogoChange, resetLogo } =
     useLogoUpload();
 
-  const form = useForm<MatchFormValues>({
-    resolver: zodResolver(matchFormSchema),
+  const form = useForm<CompetitionFormValues>({
+    resolver: zodResolver(competitionsFormSchema),
     defaultValues: initialData || {
-      type_event: "",
+      type_event: "Competition",
       event_title: "",
       date: "",
-      dateRange: { from: "", to: "" },
-      TimeSlot: [],
+      // dateRange: { from: "", to: "" },
       location: "",
       gender: "all",
       level: "Beginner",
-      banner_match: "",
+      banner: "",
       description: "",
+      quota: "",
+      price: "",
     },
   });
-
-  console.log(form);
 
   useEffect(() => {
     if (open && initialData) {
@@ -77,24 +78,25 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
     }
   }, [open, initialData, form]);
 
-  const handleFormSubmit = (data: MatchFormValues) => {
-    console.log("Submitted Data:", data);
-    onSubmit({ ...data, banner_match: logoFile });
+  const handleFormSubmit = (data: CompetitionFormValues) => {
+    console.log("Competition Submitted Data:", data);
+    onSubmit({ ...data, banner: logoFile });
   };
 
   useEffect(() => {
     if (!open) {
       form.reset({
-        type_event: "",
+        type_event: "Competition",
         event_title: "",
         date: "",
-        dateRange: { from: "", to: "" },
-        TimeSlot: [],
+        // dateRange: { from: "", to: "" },
         location: "",
         gender: "all",
         level: "Beginner",
-        banner_match: "",
+        // banner: "",
         description: "",
+        quota: "",
+        price: "",
       });
       resetLogo();
     }
@@ -105,10 +107,10 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
       <DialogContent className="max-w-screen-xl max-h-[95vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-start">
-            Create Event
+            Create Competition
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-600 text-start">
-            Create a new match or competition event for your club
+            Create a new competition or tournament event for your club
           </DialogDescription>
         </DialogHeader>
 
@@ -117,32 +119,11 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
             onSubmit={form.handleSubmit(handleFormSubmit)}
             className="space-y-10 mt-4"
           >
-            {/* Sport Selection */}
-            <FormField
-              control={form.control}
-              name="type_event"
-              render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-lg font-normal">
-                    {FORM_SECTIONS.TYPE}
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a sport" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {TYPE_EVENT.map((sport) => (
-                        <SelectItem key={sport.value} value={sport.value}>
-                          {sport.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+            {/* Hidden type_event field - always Competition */}
+            <input
+              type="hidden"
+              {...form.register("type_event")}
+              value="Competition"
             />
 
             {/* Basic Info */}
@@ -163,11 +144,11 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-sm font-normal text-gray-700">
-                      Event title
+                      Competition title
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter event title"
+                        placeholder="Enter competition title"
                         className="w-full"
                         {...field}
                       />
@@ -178,28 +159,9 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
               />
 
               {/* Date Picker */}
-              <DatePickerField form={form} />
+              {/* <DatePickerField form={form} /> */}
 
-              {/* ✅ NEW TIME SLOT INPUT - DROPDOWN STYLE */}
-              <FormField
-                control={form.control}
-                name="TimeSlot"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-normal text-gray-700">
-                      Time
-                    </FormLabel>
-                    <FormControl>
-                      <TimeSlotInput
-                        value={field.value}
-                        onChange={field.onChange}
-                        error={form.formState.errors.TimeSlot?.message}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/* NO TIME SLOT FOR COMPETITION */}
 
               <FormField
                 control={form.control}
@@ -211,7 +173,7 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter event description"
+                        placeholder="Enter competition description"
                         className="w-full"
                         {...field}
                       />
@@ -290,6 +252,8 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
                 </FormItem>
               )}
             />
+
+            {/* Participant */}
             <div className="space-y-3">
               <Label className="text-lg font-normal">
                 {FORM_SECTIONS.PARTICIPANT}
@@ -299,13 +263,11 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
                 name="quota"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    {/* <FormLabel className="text-sm font-normal text-gray-700">
-                      Event title
-                    </FormLabel> */}
                     <FormControl>
                       <Input
                         placeholder="Enter amount participant"
                         className="w-full"
+                        type="number"
                         {...field}
                       />
                     </FormControl>
@@ -314,6 +276,8 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
                 )}
               />
             </div>
+
+            {/* Price */}
             <div className="space-y-3">
               <Label className="text-lg font-normal">
                 {FORM_SECTIONS.PRICE}
@@ -323,13 +287,11 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
                 name="price"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    {/* <FormLabel className="text-sm font-normal text-gray-700">
-                      Event title
-                    </FormLabel> */}
                     <FormControl>
                       <Input
                         placeholder="Enter price"
                         className="w-full"
+                        type="number"
                         {...field}
                       />
                     </FormControl>
@@ -345,7 +307,7 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
               disabled={isLoading}
               className="w-full bg-[#174038] hover:bg-[#083d30] text-[#E1FFA0] py-3"
             >
-              {isLoading ? "Creating..." : "Create Match"}
+              {isLoading ? "Creating..." : "Create Competition"}
             </Button>
           </form>
         </Form>
@@ -354,4 +316,4 @@ const CreateCompetitionDialog: React.FC<CreateCompetitionDialogProps> = ({
   );
 };
 
-export default CreateCompetitionDialog;
+export default CreateCompDialog;

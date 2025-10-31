@@ -31,7 +31,7 @@ import { MatchFormValues, matchFormSchema } from "@/constant/types/zodSchema";
 import { LogoUpload } from "../../logo-upload";
 import { GenderRadioGroup } from "../../gender-radio-group";
 import { useLogoUpload } from "@/hooks/uploadLogo";
-import { TYPE_EVENT, FORM_SECTIONS, LEVEL_OPTION } from "@/constant/match";
+import { FORM_SECTIONS, LEVEL_OPTION } from "@/constant/match";
 import { DatePickerField } from "../../date-picker/date-picker-field";
 import { TimeSlotInput } from "../time-slot-input";
 
@@ -56,7 +56,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   const form = useForm<MatchFormValues>({
     resolver: zodResolver(matchFormSchema),
     defaultValues: initialData || {
-      type_event: "",
+      type_event: "Match",
       event_title: "",
       date: "",
       dateRange: { from: "", to: "" },
@@ -66,10 +66,10 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       level: "Beginner",
       banner_match: "",
       description: "",
+      quota: "",
+      price: "",
     },
   });
-
-  console.log(form);
 
   useEffect(() => {
     if (open && initialData) {
@@ -78,14 +78,14 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   }, [open, initialData, form]);
 
   const handleFormSubmit = (data: MatchFormValues) => {
-    console.log("Submitted Data:", data);
+    console.log("Match Submitted Data:", data);
     onSubmit({ ...data, banner_match: logoFile });
   };
 
   useEffect(() => {
     if (!open) {
       form.reset({
-        type_event: "",
+        type_event: "Match",
         event_title: "",
         date: "",
         dateRange: { from: "", to: "" },
@@ -95,6 +95,8 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
         level: "Beginner",
         banner_match: "",
         description: "",
+        quota: "",
+        price: "",
       });
       resetLogo();
     }
@@ -105,10 +107,10 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       <DialogContent className="max-w-screen-xl max-h-[95vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-start">
-            Create Event
+            Create Match
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-600 text-start">
-            Create a new match or competition event for your club
+            Create a new match event for your club
           </DialogDescription>
         </DialogHeader>
 
@@ -117,32 +119,11 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
             onSubmit={form.handleSubmit(handleFormSubmit)}
             className="space-y-10 mt-4"
           >
-            {/* Sport Selection */}
-            <FormField
-              control={form.control}
-              name="type_event"
-              render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-lg font-normal">
-                    {FORM_SECTIONS.TYPE}
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a sport" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {TYPE_EVENT.map((sport) => (
-                        <SelectItem key={sport.value} value={sport.value}>
-                          {sport.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+            {/* Hidden type_event field - always Match */}
+            <input
+              type="hidden"
+              {...form.register("type_event")}
+              value="Match"
             />
 
             {/* Basic Info */}
@@ -180,14 +161,14 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
               {/* Date Picker */}
               <DatePickerField form={form} />
 
-              {/* ✅ NEW TIME SLOT INPUT - DROPDOWN STYLE */}
+              {/* TIME SLOT - ONLY FOR MATCH */}
               <FormField
                 control={form.control}
                 name="TimeSlot"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm font-normal text-gray-700">
-                      Time
+                      Time Slots
                     </FormLabel>
                     <FormControl>
                       <TimeSlotInput
@@ -290,6 +271,8 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 </FormItem>
               )}
             />
+
+            {/* Participant */}
             <div className="space-y-3">
               <Label className="text-lg font-normal">
                 {FORM_SECTIONS.PARTICIPANT}
@@ -299,13 +282,11 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 name="quota"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    {/* <FormLabel className="text-sm font-normal text-gray-700">
-                      Event title
-                    </FormLabel> */}
                     <FormControl>
                       <Input
                         placeholder="Enter amount participant"
                         className="w-full"
+                        type="number"
                         {...field}
                       />
                     </FormControl>
@@ -314,6 +295,8 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 )}
               />
             </div>
+
+            {/* Price */}
             <div className="space-y-3">
               <Label className="text-lg font-normal">
                 {FORM_SECTIONS.PRICE}
@@ -323,13 +306,11 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 name="price"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    {/* <FormLabel className="text-sm font-normal text-gray-700">
-                      Event title
-                    </FormLabel> */}
                     <FormControl>
                       <Input
                         placeholder="Enter price"
                         className="w-full"
+                        type="number"
                         {...field}
                       />
                     </FormControl>

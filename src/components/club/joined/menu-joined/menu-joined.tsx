@@ -10,6 +10,15 @@ import { ClubService } from "@/services/club-services";
 import { toast } from "sonner";
 import { MatchService } from "@/services/match-service";
 import CreateEventDialog from "./create-event-dialog";
+import CreateCompDialog from "./create-comp-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface MenuJoinedProps {
   clubId: string | number;
@@ -27,11 +36,12 @@ export default function MenuJoined({
   const router = useRouter();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateEventDialogOpen, setIsCreateEventDialogOpen] = useState(false);
+  const [isCreateCompDialogOpen, setIsCreateCompDialogOpen] = useState(false);
+  const [isTypeSelectionOpen, setIsTypeSelectionOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [eventType, setEventType] = useState<string>("");
 
-  // Handle Create Event
-  const handleCreateEventSubmit = async (
+  // Handle Create Match
+  const handleCreateMatchSubmit = async (
     data: MatchFormValues & { banner_match?: File | null }
   ) => {
     setIsLoading(true);
@@ -40,14 +50,12 @@ export default function MenuJoined({
         club_id: clubId,
         name_match: data.event_title,
         match_date: data.date ?? "",
-        // : data.TimeSlot ?? "",
-
         location: data.location,
         description: data.description ?? "",
-        price: "0",
+        price: data.price || "0",
         gender_restriction: data.gender,
         skill_level: data.level,
-        quota: 10,
+        quota: Number(data.quota) || 10,
         banner_match: data.banner_match || null,
         TimeSlot: data.TimeSlot.map((slot) => ({
           start_time: slot.start_time,
@@ -57,22 +65,27 @@ export default function MenuJoined({
 
       await MatchService.createMatch(payload, access_token);
 
-      toast.success("Event created successfully! 🎉");
+      toast.success("Match created successfully! 🎉");
       setIsCreateEventDialogOpen(false);
       router.refresh();
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("Error creating match:", error);
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to create event. Please try again."
+          : "Failed to create match. Please try again."
       );
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Handle Edit Club - with submit logic (similar to create-club.tsx)
+  // Handle Create Competition
+  const handleCreateCompSubmit = () => {
+    console.log("data");
+  };
+
+  // Handle Edit Club
   const handleEditClubSubmit = async (
     data: ClubFormValues & { logo?: File | null }
   ) => {
@@ -90,12 +103,9 @@ export default function MenuJoined({
       };
 
       await ClubService.updateClubs(clubId, payload, access_token);
-      console.log("clubid", clubId);
 
       toast.success("Club updated successfully! 🎉");
       setIsEditDialogOpen(false);
-
-      // Refresh the page data
       router.refresh();
     } catch (error) {
       console.error("Error updating club:", error);
@@ -109,20 +119,14 @@ export default function MenuJoined({
     }
   };
 
-  const handleSubmit = () => {
-    // if (e) {
-    //   // handle function match event
-    // } else if (e) {
-    //   // handle function competitions event
-    // }
-  };
-
-  const handleActivities = () => {
-    router.push(`/club/${clubId}/activities`);
-  };
-
-  const handleStats = () => {
-    router.push(`/club/${clubId}/stats`);
+  // Handle Type Selection
+  const handleSelectEventType = (type: "Match" | "Competition") => {
+    setIsTypeSelectionOpen(false);
+    if (type === "Match") {
+      setIsCreateEventDialogOpen(true);
+    } else {
+      setIsCreateCompDialogOpen(true);
+    }
   };
 
   const menuItems = [
@@ -130,7 +134,7 @@ export default function MenuJoined({
       id: "create-event",
       label: "Create Event",
       icon: racquet,
-      onClick: () => setIsCreateEventDialogOpen(true),
+      onClick: () => setIsTypeSelectionOpen(true),
     },
     {
       id: "edit-club",
@@ -149,7 +153,7 @@ export default function MenuJoined({
             className="flex flex-col items-center gap-2 group"
             onClick={item.onClick}
           >
-            <div className="w-40 h-9 gap-2 flex items-center justify-center bg-background-button-rc  rounded-lg transition-colors">
+            <div className="w-40 h-9 gap-2 flex items-center justify-center bg-background-button-rc rounded-lg transition-colors hover:opacity-80">
               <Image
                 src={item.icon}
                 alt={item.label}
@@ -163,10 +167,72 @@ export default function MenuJoined({
         ))}
       </div>
 
+      {/* Type Selection Dialog */}
+      <Dialog open={isTypeSelectionOpen} onOpenChange={setIsTypeSelectionOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              Select Event Type
+            </DialogTitle>
+            <DialogDescription>
+              Choose the type of event you want to create
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-4 py-4">
+            {/* Match Button */}
+            <Button
+              variant="outline"
+              className="h-auto justify-start text-left p-4 hover:bg-accent"
+              onClick={() => handleSelectEventType("Match")}
+            >
+              <div className="flex flex-col items-start gap-1 w-full">
+                <p className="text-base font-semibold">Match</p>
+                <p className="text-sm text-muted-foreground">
+                  Create a match event with time slots
+                </p>
+              </div>
+            </Button>
+
+            {/* Competition Button */}
+            <Button
+              variant="outline"
+              className="h-auto justify-start text-left p-4 hover:bg-accent"
+              onClick={() => handleSelectEventType("Competition")}
+            >
+              <div className="flex flex-col items-start gap-1 w-full">
+                <p className="text-base font-semibold">Competition</p>
+                <p className="text-sm text-muted-foreground">
+                  Create a competition or tournament event
+                </p>
+              </div>
+            </Button>
+          </div>
+
+          <div className="flex justify-end">
+            <Button
+              variant="ghost"
+              onClick={() => setIsTypeSelectionOpen(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Match Dialog */}
       <CreateEventDialog
         open={isCreateEventDialogOpen}
         onOpenChange={setIsCreateEventDialogOpen}
-        onSubmit={handleCreateEventSubmit}
+        onSubmit={handleCreateMatchSubmit}
+        isLoading={isLoading}
+      />
+
+      {/* Competition Dialog */}
+      <CreateCompDialog
+        open={isCreateCompDialogOpen}
+        onOpenChange={setIsCreateCompDialogOpen}
+        onSubmit={handleCreateCompSubmit}
         isLoading={isLoading}
       />
 
