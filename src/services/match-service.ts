@@ -192,6 +192,8 @@ export class MatchService {
       formData.append("location", payload.location);
       formData.append("gender_restriction", payload.gender_restriction);
       formData.append("skill_level", payload.skill_level);
+      formData.append("price", payload.price);
+      formData.append("quota", String(payload.quota));
 
       if (payload.description) {
         formData.append("description", payload.description);

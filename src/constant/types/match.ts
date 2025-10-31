@@ -181,10 +181,10 @@ export type CreateMatchPayload = {
   // match_time: string;
   location: string;
   description?: string;
-  price?: string;
+  price: string;
   gender_restriction: string;
   skill_level: string;
-  quota?: number;
+  quota: number;
   banner_match?: File | null;
   TimeSlot: Array<{
     start_time: string;

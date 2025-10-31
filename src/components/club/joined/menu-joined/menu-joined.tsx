@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { comp_1, pencil, podium, racquet } from "@/public";
+import { pencil, racquet } from "@/public";
 import EditClubDialog from "./edit-club-dialog";
 import { ClubFormValues, MatchFormValues } from "@/constant/types/zodSchema";
 import { ClubService } from "@/services/club-services";
@@ -28,6 +28,7 @@ export default function MenuJoined({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateEventDialogOpen, setIsCreateEventDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [eventType, setEventType] = useState<string>("");
 
   // Handle Create Event
   const handleCreateEventSubmit = async (
@@ -55,8 +56,6 @@ export default function MenuJoined({
       };
 
       await MatchService.createMatch(payload, access_token);
-
-      // console.log("payload", payload);
 
       toast.success("Event created successfully! 🎉");
       setIsCreateEventDialogOpen(false);
@@ -108,6 +107,14 @@ export default function MenuJoined({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = () => {
+    // if (e) {
+    //   // handle function match event
+    // } else if (e) {
+    //   // handle function competitions event
+    // }
   };
 
   const handleActivities = () => {

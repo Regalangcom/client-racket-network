@@ -10,7 +10,6 @@ import React, { useState } from "react";
 import { MatchDetailCardProps } from "@/constant/types";
 import { MatchTag } from "./match-tags";
 import { matchDetailCard } from "@/constant/match";
-import { formatLongDate } from "@/lib/dns-date.options";
 
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   id,

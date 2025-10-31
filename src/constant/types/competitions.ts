@@ -14,13 +14,6 @@ export interface CompetitionsDetailCardProps {
 }
 
 export interface CompetitionsRegisterProps {
-  // title: string;
-  // date: string;
-  // location: string;
-  // price: string;
-  // club: string;
-  // time: string;
-  // times: string[];
   title: string;
   location: string;
   time: string;
@@ -34,3 +27,70 @@ export type IconsCompetitonsProps = {
   textClass?: string;
   containerClass?: string;
 };
+
+// this used
+export type CompetitionsFilters = {
+  id?: number;
+  page?: string;
+  limit?: string;
+  name_comp?: string;
+  banner?: string;
+  organizer_name?: string;
+  location?: string;
+  competition_date?: string;
+  sport_category?: string;
+  members_count?: string;
+  slot_left?: string;
+  quota?: string;
+};
+
+export type CompetitionData = {
+  id: number;
+  name_comp: string;
+  banner: string;
+  organizer_name: string;
+  location: string;
+  competition_date: string;
+  sport_category: string;
+  members_count: string;
+  slot_left: string;
+  quota: string;
+};
+
+// 📁 types/competition.ts
+
+export type HostInfo = {
+  username: string;
+  phone_number: string;
+};
+
+export type ClubInfo = {
+  id: number;
+  name_club: string;
+  logo: string | null;
+};
+
+export type CompetitionCore = {
+  id: number;
+  name_comp: string | undefined;
+  bannerUrl: string;
+  description: string;
+  // sport_category: string;
+  organizer_name: string;
+  // club_id: number;
+  location: string;
+  price: string;
+  competitions_date: string; // ISO string
+  // quota: number;
+  club: ClubInfo;
+  // name_club: string;
+  logo: string;
+  host: HostInfo;
+  // username: string;
+  // phone_number: string;
+};
+
+// export interface CompetitionDetailResponse {
+//   success: boolean;
+//   data: CompetitionCore;
+// }

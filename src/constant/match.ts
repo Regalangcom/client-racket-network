@@ -86,4 +86,6 @@ export const FORM_SECTIONS = {
   LOCATION: "3. Location",
   LEVEL: "4. Level",
   GENDER: "5. Gender",
+  PARTICIPANT: "6. Participan",
+  PRICE: "7. Price",
 } as const;

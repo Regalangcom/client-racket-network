@@ -216,6 +216,67 @@ export const matchFormSchema = z.object({
   level: z.enum(["Beginner", "Intermediate", "Advanced"], {
     error: "Pilih level yang valid",
   }),
+  price: z
+    .string()
+    .nonempty("Price is required")
+    .refine((val) => !isNaN(Number(val)), {
+      message: "Price must be a number",
+    })
+    .refine((val) => Number(val) > 0, {
+      message: "Price must be greater than 0",
+    }),
+
+  quota: z
+    .string()
+    .nonempty("Participant count is required")
+    .refine((val) => !isNaN(Number(val)), {
+      message: "Participant must be a number",
+    })
+    .refine((val) => Number(val) >= 1, {
+      message: "Participant must be at least 1",
+    }),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(500, "Description must be less than 500 characters")
+    .optional()
+    .or(z.literal("")),
+  banner_match: z.any().optional(),
+});
+
+export const competitionsFormSchema = z.object({
+  type_event: z.string().min(1, "Select event type"),
+
+  event_title: z.string().min(2, "This field title is required"),
+  // date: z.string(),
+  date: z.string().optional(),
+  location: z.string().min(1, "This field location is required"),
+
+  gender: z.enum(["all", "men", "women"], {
+    error: "Please select gender preference",
+  }),
+  level: z.enum(["Beginner", "Intermediate", "Advanced"], {
+    error: "Pilih level yang valid",
+  }),
+  price: z
+    .string()
+    .nonempty("Price is required")
+    .refine((val) => !isNaN(Number(val)), {
+      message: "Price must be a number",
+    })
+    .refine((val) => Number(val) > 0, {
+      message: "Price must be greater than 0",
+    }),
+
+  quota: z
+    .string()
+    .nonempty("Participant count is required")
+    .refine((val) => !isNaN(Number(val)), {
+      message: "Participant must be a number",
+    })
+    .refine((val) => Number(val) >= 1, {
+      message: "Participant must be at least 1",
+    }),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters")
@@ -235,7 +296,7 @@ export type ProfileFormData = z.infer<typeof profileFormSchema>;
 export type RegistrationFormData = z.infer<typeof CompetitionPaymentSchema>;
 export type ClubFormValues = z.infer<typeof clubFormSchema>;
 export type MatchFormValues = z.infer<typeof matchFormSchema>;
-// Extended type with logo preview for UI
+export type CompetitionFormValues = z.infer<typeof competitionsFormSchema>;
 export type ClubFormData = ClubFormValues & {
   logoPreview?: string;
 };

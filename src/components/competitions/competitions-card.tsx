@@ -6,8 +6,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Users, MapPin } from "lucide-react";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
 import Link from "next/link";
+import { CompetitionsFilters } from "@/constant/types";
 
-const CompetitionsCard: React.FC = () => {
+export interface CompetitionCardProps {
+  competitions: CompetitionsFilters;
+}
+
+const CompetitionsCard: React.FC<CompetitionCardProps> = ({ competitions }) => {
   const { isMobile } = useWindowDimension();
 
   return (
@@ -16,9 +21,13 @@ const CompetitionsCard: React.FC = () => {
       <div className="flex items-center px-6 py-3">
         {/* <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden" /> */}
         <span className="font-bold text-base text-black">
-          Jakarta - Women Single
+          {/* Jakarta - Women Single */}
+          {competitions.name_comp}
           <span className="font-semibold text-sm flex text-gray-800">
-            Organized by GRC
+            Organized by{"  "}
+            <span className="font-bold ml-1 ">
+              {competitions.organizer_name}{" "}
+            </span>
           </span>
         </span>
       </div>
@@ -36,7 +45,7 @@ const CompetitionsCard: React.FC = () => {
           }`}
         >
           <Users size={16} className="shrink-0" />
-          <span>28 Members</span>
+          <span>{competitions.members_count} members</span>
         </div>
 
         <div
@@ -47,7 +56,7 @@ const CompetitionsCard: React.FC = () => {
           }`}
         >
           <MapPin size={16} className="shrink-0" />
-          <span>Jakarta</span>
+          <span>{competitions.location}</span>
         </div>
 
         {/* Arena */}
@@ -68,14 +77,14 @@ const CompetitionsCard: React.FC = () => {
               : "flex items-center mb-5  py-2 w-28 bg-[#B5D9D2] rounded-full  text-sm text-gray-700 gap-2"
           }`}
         >
-          <span className="mx-3">5 Sport Left</span>
+          <span className="mx-3">{competitions.slot_left} sport left</span>
         </div>
 
         {/* see details Button */}
         <div className="max-w-full">
           <span className="w-full  mt-4 flex justify-end items-end  border-gray-400 text-gray-800 bg-transparent hover:bg-gray-100 rounded-lg">
             <Link
-              href="/competitions/1"
+              href={`/competitions/${competitions.id}`}
               className="text-right font-bold text-base text-green-rc"
             >
               See detail

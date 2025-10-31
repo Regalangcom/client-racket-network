@@ -290,6 +290,54 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 </FormItem>
               )}
             />
+            <div className="space-y-3">
+              <Label className="text-lg font-normal">
+                {FORM_SECTIONS.PARTICIPANT}
+              </Label>
+              <FormField
+                control={form.control}
+                name="quota"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    {/* <FormLabel className="text-sm font-normal text-gray-700">
+                      Event title
+                    </FormLabel> */}
+                    <FormControl>
+                      <Input
+                        placeholder="Enter amount participant"
+                        className="w-full"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="space-y-3">
+              <Label className="text-lg font-normal">
+                {FORM_SECTIONS.PRICE}
+              </Label>
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    {/* <FormLabel className="text-sm font-normal text-gray-700">
+                      Event title
+                    </FormLabel> */}
+                    <FormControl>
+                      <Input
+                        placeholder="Enter price"
+                        className="w-full"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             {/* Submit */}
             <Button

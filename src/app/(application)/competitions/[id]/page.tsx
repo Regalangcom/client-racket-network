@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { getCompData } from "@/constant/get-all-dummy-data";
 import CompetitionsDetails from "@/components/competitions/competitions-detail";
+import { getAuthServerSession } from "@/lib/auth-options";
+import { CompetitionsService } from "@/services/comp-services";
 export default async function CompetitionDetails({
   params,
 }: {
@@ -8,23 +9,31 @@ export default async function CompetitionDetails({
 }) {
   const { id } = params;
 
-  const competitions = await getCompData(id);
+  const { access_token } = await getAuthServerSession();
 
-  if (!competitions) return notFound();
+  const detailCompetitions = await CompetitionsService.getCompetitionsById(
+    id,
+    access_token || undefined
+  );
+
+  // const competitions = await getCompData(id);
+
+  if (!detailCompetitions) return notFound();
 
   return (
     <section className="sm:p-8 w-full container-lg mx-auto">
       <CompetitionsDetails
-        title={competitions.title}
-        logo={competitions.logo}
-        date={competitions.date}
-        location={competitions.location}
-        price={competitions.price}
-        club={competitions.club}
-        description={competitions.description}
-        name_contact={competitions.name_contact}
-        organized={competitions.organized}
-        contact_avatar={competitions.contact_avatar}
+        id={detailCompetitions.id}
+        name_comp={detailCompetitions.name_comp}
+        club={detailCompetitions.club}
+        host={detailCompetitions.host}
+        organizer_name={detailCompetitions.organizer_name}
+        competitions_date={detailCompetitions.competitions_date}
+        description={detailCompetitions.description}
+        logo={detailCompetitions.logo}
+        location={detailCompetitions.location}
+        price={detailCompetitions.price}
+        bannerUrl={detailCompetitions.bannerUrl}
       />
     </section>
   );

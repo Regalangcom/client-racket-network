@@ -14,6 +14,12 @@ const nextConfig = {
         hostname: 'ui-avatars.com',  
         pathname: '**',
       },
+            {
+        protocol: 'http',  // ✅ http untuk localhost
+        hostname: 'localhost',
+        port: '8080',  // sesuaikan dengan port API kamu
+        pathname: '/uploads/**',
+      },
       {
         protocol: 'http',
         hostname: 'localhost',
