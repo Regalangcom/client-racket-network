@@ -1,5 +1,5 @@
-// components/club/joined/create-event-dialog.tsx
-import React, { useEffect } from "react";
+// components/club/joined/unified-event-dialog.tsx
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -27,7 +27,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { MatchFormValues, matchFormSchema } from "@/constant/types/zodSchema";
+import {
+  CompetitionFormValues,
+  MatchFormValues,
+  matchFormSchema,
+} from "@/constant/types/zodSchema";
 import { LogoUpload } from "../../logo-upload";
 import { GenderRadioGroup } from "../../gender-radio-group";
 import { useLogoUpload } from "@/hooks/uploadLogo";
@@ -35,27 +39,32 @@ import { FORM_SECTIONS, LEVEL_OPTION } from "@/constant/match";
 import { DatePickerField } from "../../date-picker/date-picker-field";
 import { TimeSlotInput } from "../time-slot-input";
 
-interface CreateEventDialogProps {
+interface UnifiedEventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: MatchFormValues & { banner_match?: File | null }) => void;
+  onSubmitMatch: (
+    data: MatchFormValues & { banner_match?: File | null }
+  ) => void;
+  onSubmitCompetition: (
+    data: CompetitionFormValues & { banner?: File | null }
+  ) => void;
   isLoading?: boolean;
-  initialData?: MatchFormValues & { banner_match?: string };
 }
 
-const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
+const UnifiedEventDialog: React.FC<UnifiedEventDialogProps> = ({
   open,
   onOpenChange,
-  onSubmit,
+  onSubmitMatch,
+  onSubmitCompetition,
   isLoading = false,
-  initialData,
 }) => {
+  const [eventType, setEventType] = useState<"Match" | "Competition">("Match");
   const { logoPreview, logoFile, handleLogoChange, resetLogo } =
     useLogoUpload();
 
   const form = useForm<MatchFormValues>({
     resolver: zodResolver(matchFormSchema),
-    defaultValues: initialData || {
+    defaultValues: {
       type_event: "Match",
       event_title: "",
       date: "",
@@ -72,14 +81,33 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   });
 
   useEffect(() => {
-    if (open && initialData) {
-      form.reset(initialData);
+    if (eventType === "Match") {
+      form.setValue("type_event", "Match");
+    } else {
+      form.setValue("type_event", "Competition");
     }
-  }, [open, initialData, form]);
+  }, [eventType, form]);
 
   const handleFormSubmit = (data: MatchFormValues) => {
-    console.log("Match Submitted Data:", data);
-    onSubmit({ ...data, banner_match: logoFile });
+    console.log(`${eventType} Submitted Data:`, data);
+
+    if (eventType === "Match") {
+      onSubmitMatch({ ...data, banner_match: logoFile });
+    } else if (eventType === "Competition") {
+      // For competition, convert the data structure
+      const compData = {
+        type_event: "Competition",
+        event_title: data.event_title,
+        date: data.date,
+        location: data.location,
+        gender: data.gender,
+        level: data.level,
+        description: data.description,
+        quota: data.quota,
+        price: data.price,
+      };
+      onSubmitCompetition({ ...compData, banner: logoFile });
+    }
   };
 
   useEffect(() => {
@@ -99,6 +127,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
         price: "",
       });
       resetLogo();
+      setEventType("Match");
     }
   }, [open, form, resetLogo]);
 
@@ -107,10 +136,10 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
       <DialogContent className="max-w-screen-xl max-h-[95vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-start">
-            Create Match
+            Create Event
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-600 text-start">
-            Create a new match event for your club
+            Create a new event for your club
           </DialogDescription>
         </DialogHeader>
 
@@ -119,11 +148,30 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
             onSubmit={form.handleSubmit(handleFormSubmit)}
             className="space-y-10 mt-4"
           >
-            {/* Hidden type_event field - always Match */}
+            {/* Event Type Selector */}
+            <div className="space-y-2">
+              <Label className="text-lg font-normal">Event Type</Label>
+              <Select
+                value={eventType}
+                onValueChange={(value: "Match" | "Competition") =>
+                  setEventType(value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select event type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Match">Match</SelectItem>
+                  <SelectItem value="Competition">Competition</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Hidden type_event field */}
             <input
               type="hidden"
               {...form.register("type_event")}
-              value="Match"
+              value={eventType}
             />
 
             {/* Basic Info */}
@@ -132,23 +180,19 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                 {FORM_SECTIONS.BASIC_INFO}
               </Label>
 
-              <LogoUpload
-                label="Banner"
-                pictureUrl={logoPreview}
-                onLogoChange={handleLogoChange}
-              />
-
               <FormField
                 control={form.control}
                 name="event_title"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
                     <FormLabel className="text-sm font-normal text-gray-700">
-                      Event title
+                      {eventType === "Match"
+                        ? "Event title"
+                        : "Competition title"}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter event title"
+                        placeholder={`Enter ${eventType.toLowerCase()} title`}
                         className="w-full"
                         {...field}
                       />
@@ -157,30 +201,37 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                   </FormItem>
                 )}
               />
-
               {/* Date Picker */}
               <DatePickerField form={form} />
 
-              {/* TIME SLOT - ONLY FOR MATCH */}
-              <FormField
-                control={form.control}
-                name="TimeSlot"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-normal text-gray-700">
-                      Time Slots
-                    </FormLabel>
-                    <FormControl>
-                      <TimeSlotInput
-                        value={field.value}
-                        onChange={field.onChange}
-                        error={form.formState.errors.TimeSlot?.message}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <LogoUpload
+                label="Banner"
+                pictureUrl={logoPreview}
+                onLogoChange={handleLogoChange}
               />
+
+              {/* TIME SLOT - ONLY FOR MATCH */}
+              {eventType === "Match" && (
+                <FormField
+                  control={form.control}
+                  name="TimeSlot"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-normal text-gray-700">
+                        Time Slots
+                      </FormLabel>
+                      <FormControl>
+                        <TimeSlotInput
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={form.formState.errors.TimeSlot?.message}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <FormField
                 control={form.control}
@@ -192,7 +243,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter event description"
+                        placeholder={`Enter ${eventType.toLowerCase()} description`}
                         className="w-full"
                         {...field}
                       />
@@ -326,7 +377,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
               disabled={isLoading}
               className="w-full bg-[#174038] hover:bg-[#083d30] text-[#E1FFA0] py-3"
             >
-              {isLoading ? "Creating..." : "Create Match"}
+              {isLoading ? "Creating..." : `Create ${eventType}`}
             </Button>
           </form>
         </Form>
@@ -335,4 +386,4 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({
   );
 };
 
-export default CreateEventDialog;
+export default UnifiedEventDialog;

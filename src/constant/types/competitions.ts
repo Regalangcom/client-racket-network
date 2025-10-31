@@ -72,25 +72,20 @@ export type ClubInfo = {
 
 export type CompetitionCore = {
   id: number;
-  name_comp: string | undefined;
+  name_comp: string;
   bannerUrl: string;
+  banner: string;
   description: string;
-  // sport_category: string;
   organizer_name: string;
-  // club_id: number;
   location: string;
+  club_id: number;
+  gender_restriction: string;
+  skill_level: string;
+  quota: string;
   price: string;
   competitions_date: string; // ISO string
-  // quota: number;
   club: ClubInfo;
   // name_club: string;
   logo: string;
   host: HostInfo;
-  // username: string;
-  // phone_number: string;
 };
-
-// export interface CompetitionDetailResponse {
-//   success: boolean;
-//   data: CompetitionCore;
-// }

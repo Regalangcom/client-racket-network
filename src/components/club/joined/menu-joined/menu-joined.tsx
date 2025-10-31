@@ -9,16 +9,7 @@ import { ClubFormValues, MatchFormValues } from "@/constant/types/zodSchema";
 import { ClubService } from "@/services/club-services";
 import { toast } from "sonner";
 import { MatchService } from "@/services/match-service";
-import CreateEventDialog from "./create-event-dialog";
-import CreateCompDialog from "./create-comp-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import UnifiedEventDialog from "./create-event-dialog";
 
 interface MenuJoinedProps {
   clubId: string | number;
@@ -35,9 +26,7 @@ export default function MenuJoined({
 }: MenuJoinedProps) {
   const router = useRouter();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isCreateEventDialogOpen, setIsCreateEventDialogOpen] = useState(false);
-  const [isCreateCompDialogOpen, setIsCreateCompDialogOpen] = useState(false);
-  const [isTypeSelectionOpen, setIsTypeSelectionOpen] = useState(false);
+  const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Handle Create Match
@@ -66,7 +55,7 @@ export default function MenuJoined({
       await MatchService.createMatch(payload, access_token);
 
       toast.success("Match created successfully! 🎉");
-      setIsCreateEventDialogOpen(false);
+      setIsEventDialogOpen(false);
       router.refresh();
     } catch (error) {
       console.error("Error creating match:", error);
@@ -81,8 +70,43 @@ export default function MenuJoined({
   };
 
   // Handle Create Competition
-  const handleCreateCompSubmit = () => {
-    console.log("data");
+  const handleCreateCompSubmit = async (
+    data: any & { banner?: File | null }
+  ) => {
+    setIsLoading(true);
+    try {
+      // TODO: Implement competition service call
+      console.log("Competition data:", data);
+
+      // Uncomment when CompetitionService is ready
+      // const payload = {
+      //   club_id: clubId,
+      //   name: data.event_title,
+      //   date: data.date ?? "",
+      //   location: data.location,
+      //   description: data.description ?? "",
+      //   price: data.price || "0",
+      //   gender_restriction: data.gender,
+      //   skill_level: data.level,
+      //   quota: Number(data.quota) || 10,
+      //   banner: data.banner || null,
+      // };
+
+      // await CompetitionService.createCompetition(payload, access_token);
+
+      toast.success("Competition created successfully! 🎉");
+      setIsEventDialogOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Error creating competition:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to create competition. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle Edit Club
@@ -119,22 +143,12 @@ export default function MenuJoined({
     }
   };
 
-  // Handle Type Selection
-  const handleSelectEventType = (type: "Match" | "Competition") => {
-    setIsTypeSelectionOpen(false);
-    if (type === "Match") {
-      setIsCreateEventDialogOpen(true);
-    } else {
-      setIsCreateCompDialogOpen(true);
-    }
-  };
-
   const menuItems = [
     {
       id: "create-event",
       label: "Create Event",
       icon: racquet,
-      onClick: () => setIsTypeSelectionOpen(true),
+      onClick: () => setIsEventDialogOpen(true),
     },
     {
       id: "edit-club",
@@ -167,72 +181,12 @@ export default function MenuJoined({
         ))}
       </div>
 
-      {/* Type Selection Dialog */}
-      <Dialog open={isTypeSelectionOpen} onOpenChange={setIsTypeSelectionOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
-              Select Event Type
-            </DialogTitle>
-            <DialogDescription>
-              Choose the type of event you want to create
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="grid gap-4 py-4">
-            {/* Match Button */}
-            <Button
-              variant="outline"
-              className="h-auto justify-start text-left p-4 hover:bg-accent"
-              onClick={() => handleSelectEventType("Match")}
-            >
-              <div className="flex flex-col items-start gap-1 w-full">
-                <p className="text-base font-semibold">Match</p>
-                <p className="text-sm text-muted-foreground">
-                  Create a match event with time slots
-                </p>
-              </div>
-            </Button>
-
-            {/* Competition Button */}
-            <Button
-              variant="outline"
-              className="h-auto justify-start text-left p-4 hover:bg-accent"
-              onClick={() => handleSelectEventType("Competition")}
-            >
-              <div className="flex flex-col items-start gap-1 w-full">
-                <p className="text-base font-semibold">Competition</p>
-                <p className="text-sm text-muted-foreground">
-                  Create a competition or tournament event
-                </p>
-              </div>
-            </Button>
-          </div>
-
-          <div className="flex justify-end">
-            <Button
-              variant="ghost"
-              onClick={() => setIsTypeSelectionOpen(false)}
-            >
-              Cancel
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Match Dialog */}
-      <CreateEventDialog
-        open={isCreateEventDialogOpen}
-        onOpenChange={setIsCreateEventDialogOpen}
-        onSubmit={handleCreateMatchSubmit}
-        isLoading={isLoading}
-      />
-
-      {/* Competition Dialog */}
-      <CreateCompDialog
-        open={isCreateCompDialogOpen}
-        onOpenChange={setIsCreateCompDialogOpen}
-        onSubmit={handleCreateCompSubmit}
+      {/* Unified Event Dialog (Match & Competition) */}
+      <UnifiedEventDialog
+        open={isEventDialogOpen}
+        onOpenChange={setIsEventDialogOpen}
+        onSubmitMatch={handleCreateMatchSubmit}
+        onSubmitCompetition={handleCreateCompSubmit}
         isLoading={isLoading}
       />
 

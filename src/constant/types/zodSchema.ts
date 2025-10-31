@@ -283,7 +283,7 @@ export const competitionsFormSchema = z.object({
     .max(500, "Description must be less than 500 characters")
     .optional()
     .or(z.literal("")),
-  banner_match: z.any().optional(),
+  banner: z.any().optional(),
 });
 
 export type RegistrationMatchForm = z.infer<typeof registrationMatchSchema>;
