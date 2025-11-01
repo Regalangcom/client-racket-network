@@ -1,6 +1,7 @@
 import {
   CompetitionCore,
-  // CompetitionDetailResponse,
+  CompetitionCreatePayload,
+  CompetitionData,
   CompetitionsFilters,
 } from "@/constant/types";
 
@@ -82,9 +83,8 @@ export class CompetitionsService {
       throw new Error("Failed to fetch match details");
     }
   }
-
   static async createCompetition(
-    payload: CompetitionCore,
+    payload: CompetitionCreatePayload,
     access_token: string
   ): Promise<CompetitionCore | null> {
     try {
@@ -93,7 +93,7 @@ export class CompetitionsService {
       // Append all fields to FormData
       formData.append("club_id", String(payload.club_id));
       formData.append("name_comp", payload.name_comp);
-      formData.append("competition_date", payload.competitions_date);
+      formData.append("competitions_date", payload.competitions_date);
       formData.append("location", payload.location);
       formData.append("description", payload.description);
       formData.append("price", payload.price);
@@ -101,10 +101,17 @@ export class CompetitionsService {
       formData.append("skill_level", payload.skill_level);
       formData.append("quota", String(payload.quota));
 
-      // Append banner if exists
+      // Append banner if exists - USE "banner" not "banner_match"
       if (payload.banner) {
-        formData.append("banner_match", payload.banner);
+        formData.append("banner", payload.banner); // ✅ Fixed: was "banner_match"
       }
+
+      console.log("Creating competition with payload:", {
+        club_id: payload.club_id,
+        name_comp: payload.name_comp,
+        competitions_date: payload.competitions_date,
+        has_banner: !!payload.banner,
+      });
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/api/v1/competitions`,
@@ -127,6 +134,7 @@ export class CompetitionsService {
       }
 
       const result = await response.json();
+      console.log("Competition created successfully:", result);
       return result.data;
     } catch (error) {
       console.error("Error in createCompetition:", error);

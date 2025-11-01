@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { pencil, racquet } from "@/public";
 import EditClubDialog from "./edit-club-dialog";
-import { ClubFormValues, CompetitionFormValues, MatchFormValues } from "@/constant/types/zodSchema";
+import {
+  ClubFormValues,
+  CompetitionFormValues,
+  MatchFormValues,
+} from "@/constant/types/zodSchema";
 import { ClubService } from "@/services/club-services";
 import { toast } from "sonner";
 import { MatchService } from "@/services/match-service";
 import UnifiedEventDialog from "./create-event-dialog";
-import { CompetitionCore } from "@/constant/types";
 import { CompetitionsService } from "@/services/comp-services";
 
 interface MenuJoinedProps {
@@ -36,6 +39,7 @@ export default function MenuJoined({
     data: MatchFormValues & { banner_match?: File | null }
   ) => {
     setIsLoading(true);
+
     try {
       const payload = {
         club_id: clubId,
@@ -43,7 +47,7 @@ export default function MenuJoined({
         match_date: data.date ?? "",
         location: data.location,
         description: data.description ?? "",
-        price: data.price || "0",
+        price: data.price,
         gender_restriction: data.gender,
         skill_level: data.level,
         quota: Number(data.quota) || 10,
@@ -80,22 +84,20 @@ export default function MenuJoined({
       const payload = {
         club_id: clubId,
         name_comp: data.event_title,
-        competitions_date: data.date,
-        organizer_name : data.,
+        competitions_date: data.date ?? "", // Match backend field name
         location: data.location,
-        description: data.description,
+        description: data.description ?? "",
         price: data.price || "0",
-        gender_restriction: data.gender_restriction,
-        skill_level: data.skill_level,
+        gender_restriction: data.gender,
+        skill_level: data.level,
         quota: Number(data.quota) || 10,
-        banner: data.banner || null,
+        banner: data.banner || null, // Use 'banner' for competition
       };
 
-      console.log("Competition Payload:", payload);
-      
+      console.log("Competition Payload:", payload); // Debug log
+
       await CompetitionsService.createCompetition(payload, access_token);
-      
-      
+
       toast.success("Competition created successfully! 🎉");
       setIsEventDialogOpen(false);
       router.refresh();
@@ -110,7 +112,6 @@ export default function MenuJoined({
       setIsLoading(false);
     }
   };
-
 
   // Handle Edit Club
   const handleEditClubSubmit = async (

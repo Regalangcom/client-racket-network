@@ -3,14 +3,17 @@ import React from "react";
 import { FormField, FormLabel } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { UseFormReturn } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { SingleDatePicker } from "./single-date-picker";
 import { RangeDatePicker } from "./range-date-picker";
 import { useDatePicker, DateMode } from "@/hooks/use-date-picker";
-import { MatchFormValues } from "@/constant/types/zodSchema";
 
+// Generic interface - works with any form that has date/dateRange fields
 interface DatePickerFieldProps {
-  form: UseFormReturn<MatchFormValues>;
+  form: {
+    control: Control<any>;
+    resetField: (...args: any[]) => void; // Accept any resetField signature
+  };
 }
 
 export const DatePickerField: React.FC<DatePickerFieldProps> = ({ form }) => {

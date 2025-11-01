@@ -13,6 +13,7 @@ import CompetitionTag from "./competitons-tags";
 import { Competitions } from "@/constant/competitions";
 import Separator from "../ui/separator";
 import { CompetitionCore } from "@/constant/types";
+import DEFAULT from "@/public/default.png";
 
 const CompetitionsDetails: React.FC<CompetitionCore> = ({
   name_comp,
@@ -45,7 +46,7 @@ const CompetitionsDetails: React.FC<CompetitionCore> = ({
       <div className="w-full sm:w-[40%] flex md:h-72 sm:h-0 justify-center items-center">
         {bannerUrl && (
           <Image
-            src={bannerUrl}
+            src={bannerUrl || DEFAULT}
             alt={`${name_comp} logo`}
             width={600}
             height={400}

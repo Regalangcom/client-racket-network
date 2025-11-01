@@ -180,7 +180,7 @@ export type CreateMatchPayload = {
   match_date: string;
   // match_time: string;
   location: string;
-  description?: string;
+  description: string;
   price: string;
   gender_restriction: string;
   skill_level: string;

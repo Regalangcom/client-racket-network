@@ -192,20 +192,9 @@ export class MatchService {
       formData.append("location", payload.location);
       formData.append("gender_restriction", payload.gender_restriction);
       formData.append("skill_level", payload.skill_level);
-      formData.append("price", payload.price);
+      formData.append("price", String(payload.price));
       formData.append("quota", String(payload.quota));
-
-      if (payload.description) {
-        formData.append("description", payload.description);
-      }
-
-      if (payload.price) {
-        formData.append("price", payload.price);
-      }
-
-      if (payload.quota) {
-        formData.append("quota", String(payload.quota));
-      }
+      formData.append("description", payload.description);
 
       // Append banner if exists
       if (payload.banner_match) {

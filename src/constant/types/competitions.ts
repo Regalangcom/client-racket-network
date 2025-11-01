@@ -44,18 +44,18 @@ export type CompetitionsFilters = {
   quota?: string;
 };
 
-export type CompetitionData = {
-  id: number;
-  name_comp: string;
-  banner: string;
-  organizer_name: string;
-  location: string;
-  competition_date: string;
-  sport_category: string;
-  members_count: string;
-  slot_left: string;
-  quota: string;
-};
+// export type CompetitionData = {
+//   id: number;
+//   name_comp: string;
+//   banner: string;
+//   organizer_name: string;
+//   location: string;
+//   competition_date: string;
+//   sport_category: string;
+//   members_count: string;
+//   slot_left: string;
+//   quota: string;
+// };
 
 // 📁 types/competition.ts
 
@@ -68,6 +68,21 @@ export type ClubInfo = {
   id: number;
   name_club: string;
   logo: string | null;
+};
+// types/competition-types.ts or constant/types/competition.ts
+
+// Type for CREATE Competition Payload (what you send to API)
+export type CompetitionCreatePayload = {
+  club_id: string | number;
+  name_comp: string;
+  competitions_date: string;
+  location: string;
+  description: string;
+  price: string;
+  gender_restriction: string;
+  skill_level: string;
+  quota: number;
+  banner?: File | null;
 };
 
 export type CompetitionCore = {
@@ -83,9 +98,21 @@ export type CompetitionCore = {
   skill_level: string;
   quota: string;
   price: string;
-  competitions_date: string; // ISO string
+  competitions_date: string;
   club: ClubInfo;
-  // name_club: string;
   logo: string;
   host: HostInfo;
+};
+
+export type CompetitionData = {
+  id: number;
+  name_comp: string;
+  banner: string;
+  organizer_name: string;
+  location: string;
+  competition_date: string;
+  sport_category: string;
+  members_count: string;
+  slot_left: string;
+  quota: string;
 };

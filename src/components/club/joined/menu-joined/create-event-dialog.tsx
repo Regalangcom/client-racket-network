@@ -1,4 +1,5 @@
-// components/club/joined/unified-event-dialog.tsx
+// components/club/joined/create-event-dialog.tsx
+"use client";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,16 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -26,18 +19,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import {
-  CompetitionFormValues,
   MatchFormValues,
   matchFormSchema,
+  CompetitionFormValues,
+  competitionsFormSchema,
 } from "@/constant/types/zodSchema";
-import { LogoUpload } from "../../logo-upload";
-import { GenderRadioGroup } from "../../gender-radio-group";
 import { useLogoUpload } from "@/hooks/uploadLogo";
-import { FORM_SECTIONS, LEVEL_OPTION } from "@/constant/match";
-import { DatePickerField } from "../../date-picker/date-picker-field";
-import { TimeSlotInput } from "../time-slot-input";
+import { EventFormFields } from "@/components/form/event-form-fields";
+
+type EventType = "Match" | "Competition";
 
 interface UnifiedEventDialogProps {
   open: boolean;
@@ -58,11 +49,12 @@ const UnifiedEventDialog: React.FC<UnifiedEventDialogProps> = ({
   onSubmitCompetition,
   isLoading = false,
 }) => {
-  const [eventType, setEventType] = useState<"Match" | "Competition">("Match");
+  const [eventType, setEventType] = useState<EventType>("Match");
   const { logoPreview, logoFile, handleLogoChange, resetLogo } =
     useLogoUpload();
 
-  const form = useForm<MatchFormValues>({
+  // Separate forms with their own schemas
+  const matchForm = useForm<MatchFormValues>({
     resolver: zodResolver(matchFormSchema),
     defaultValues: {
       type_event: "Match",
@@ -80,56 +72,72 @@ const UnifiedEventDialog: React.FC<UnifiedEventDialogProps> = ({
     },
   });
 
-  useEffect(() => {
-    if (eventType === "Match") {
-      form.setValue("type_event", "Match");
-    } else {
-      form.setValue("type_event", "Competition");
-    }
-  }, [eventType, form]);
+  const compForm = useForm<CompetitionFormValues>({
+    resolver: zodResolver(competitionsFormSchema),
+    defaultValues: {
+      type_event: "Competition",
+      event_title: "",
+      date: "",
+      location: "",
+      gender: "all",
+      level: "Beginner",
+      banner: "",
+      description: "",
+      quota: "",
+      price: "",
+    },
+  });
 
-  const handleFormSubmit = (data: MatchFormValues) => {
-    console.log(`${eventType} Submitted Data:`, data);
+  // Handle event type change
+  const handleEventTypeChange = (value: EventType) => {
+    setEventType(value);
+    resetLogo();
+  };
 
+  // Handle form submission
+  const handleFormSubmit = (data: any) => {
     if (eventType === "Match") {
+      console.log("Match Submitted Data:", data);
       onSubmitMatch({ ...data, banner_match: logoFile });
-    } else if (eventType === "Competition") {
-      // For competition, convert the data structure
-      const compData = {
-        type_event: "Competition",
-        event_title: data.event_title,
-        date: data.date,
-        location: data.location,
-        gender: data.gender,
-        level: data.level,
-        description: data.description,
-        quota: data.quota,
-        price: data.price,
-      };
-      onSubmitCompetition({ ...compData, banner: logoFile });
+    } else {
+      console.log("Competition Submitted Data:", data);
+      onSubmitCompetition({ ...data, banner: logoFile });
     }
   };
 
-  useEffect(() => {
-    if (!open) {
-      form.reset({
-        type_event: "Match",
-        event_title: "",
-        date: "",
-        dateRange: { from: "", to: "" },
-        TimeSlot: [],
-        location: "",
-        gender: "all",
-        level: "Beginner",
-        banner_match: "",
-        description: "",
-        quota: "",
-        price: "",
-      });
-      resetLogo();
-      setEventType("Match");
-    }
-  }, [open, form, resetLogo]);
+  // // Reset forms when dialog closes
+  // useEffect(() => {
+  //   if (!open) {
+  //     setEventType("Match");
+  //     matchForm.reset({
+  //       type_event: "Match",
+  //       event_title: "",
+  //       date: "",
+  //       dateRange: { from: "", to: "" },
+  //       TimeSlot: [],
+  //       location: "",
+  //       gender: "all",
+  //       level: "Beginner",
+  //       banner_match: "",
+  //       description: "",
+  //       quota: "",
+  //       price: "",
+  //     });
+  //     compForm.reset({
+  //       type_event: "Competition",
+  //       event_title: "",
+  //       date: "",
+  //       location: "",
+  //       gender: "all",
+  //       level: "Beginner",
+  //       banner: "",
+  //       description: "",
+  //       quota: "",
+  //       price: "",
+  //     });
+  //     resetLogo();
+  //   }
+  // }, [open, matchForm, compForm, resetLogo]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -139,248 +147,89 @@ const UnifiedEventDialog: React.FC<UnifiedEventDialogProps> = ({
             Create Event
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-600 text-start">
-            Create a new event for your club
+            Create a new {eventType.toLowerCase()} event for your club
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleFormSubmit)}
-            className="space-y-10 mt-4"
-          >
-            {/* Event Type Selector */}
-            <div className="space-y-2">
-              <Label className="text-lg font-normal">Event Type</Label>
-              <Select
-                value={eventType}
-                onValueChange={(value: "Match" | "Competition") =>
-                  setEventType(value)
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select event type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Match">Match</SelectItem>
-                  <SelectItem value="Competition">Competition</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+        {/* Event Type Selector */}
+        <div className="space-y-2 border-b pb-4">
+          <Label className="text-sm font-medium">Event Type</Label>
+          <Select value={eventType} onValueChange={handleEventTypeChange}>
+            <SelectTrigger className="w-full md:w-[300px]">
+              <SelectValue placeholder="Select event type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Match">
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">Match</span>
+                  <span className="text-xs text-muted-foreground">
+                    Event with time slots
+                  </span>
+                </div>
+              </SelectItem>
+              <SelectItem value="Competition">
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">Competition</span>
+                  <span className="text-xs text-muted-foreground">
+                    Tournament event
+                  </span>
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-            {/* Hidden type_event field */}
-            <input
-              type="hidden"
-              {...form.register("type_event")}
-              value={eventType}
-            />
-
-            {/* Basic Info */}
-            <div className="space-y-3">
-              <Label className="text-lg font-normal">
-                {FORM_SECTIONS.BASIC_INFO}
-              </Label>
-
-              <FormField
-                control={form.control}
-                name="event_title"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-normal text-gray-700">
-                      {eventType === "Match"
-                        ? "Event title"
-                        : "Competition title"}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={`Enter ${eventType.toLowerCase()} title`}
-                        className="w-full"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* Date Picker */}
-              <DatePickerField form={form} />
-
-              <LogoUpload
-                label="Banner"
-                pictureUrl={logoPreview}
-                onLogoChange={handleLogoChange}
-              />
-
-              {/* TIME SLOT - ONLY FOR MATCH */}
-              {eventType === "Match" && (
-                <FormField
-                  control={form.control}
-                  name="TimeSlot"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-normal text-gray-700">
-                        Time Slots
-                      </FormLabel>
-                      <FormControl>
-                        <TimeSlotInput
-                          value={field.value}
-                          onChange={field.onChange}
-                          error={form.formState.errors.TimeSlot?.message}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
-
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-normal text-gray-700">
-                      Description
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={`Enter ${eventType.toLowerCase()} description`}
-                        className="w-full"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Location */}
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-lg font-normal">
-                    {FORM_SECTIONS.LOCATION}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter location"
-                      className="w-full"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Level */}
-            <FormField
-              control={form.control}
-              name="level"
-              render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-lg font-normal">
-                    {FORM_SECTIONS.LEVEL}
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a level" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {LEVEL_OPTION.map((level) => (
-                        <SelectItem key={level.value} value={level.value}>
-                          {level.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Gender */}
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel className="text-lg font-normal">
-                    {FORM_SECTIONS.GENDER}
-                  </FormLabel>
-                  <FormControl>
-                    <GenderRadioGroup
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Participant */}
-            <div className="space-y-3">
-              <Label className="text-lg font-normal">
-                {FORM_SECTIONS.PARTICIPANT}
-              </Label>
-              <FormField
-                control={form.control}
-                name="quota"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormControl>
-                      <Input
-                        placeholder="Enter amount participant"
-                        className="w-full"
-                        type="number"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Price */}
-            <div className="space-y-3">
-              <Label className="text-lg font-normal">
-                {FORM_SECTIONS.PRICE}
-              </Label>
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormControl>
-                      <Input
-                        placeholder="Enter price"
-                        className="w-full"
-                        type="number"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* Submit */}
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-[#174038] hover:bg-[#083d30] text-[#E1FFA0] py-3"
+        {/* Match Form */}
+        {eventType === "Match" && (
+          <Form {...matchForm}>
+            <form
+              onSubmit={matchForm.handleSubmit(handleFormSubmit)}
+              className="space-y-10 mt-4"
             >
-              {isLoading ? "Creating..." : `Create ${eventType}`}
-            </Button>
-          </form>
-        </Form>
+              <input
+                type="hidden"
+                {...matchForm.register("type_event")}
+                value="Match"
+              />
+
+              <EventFormFields
+                control={matchForm.control}
+                eventType="Match"
+                logoPreview={logoPreview}
+                onLogoChange={(file) => file && handleLogoChange(file)}
+                isLoading={isLoading}
+                form={matchForm}
+                errors={matchForm.formState.errors}
+              />
+            </form>
+          </Form>
+        )}
+
+        {/* Competition Form */}
+        {eventType === "Competition" && (
+          <Form {...compForm}>
+            <form
+              onSubmit={compForm.handleSubmit(handleFormSubmit)}
+              className="space-y-10 mt-4"
+            >
+              <input
+                type="hidden"
+                {...compForm.register("type_event")}
+                value="Competition"
+              />
+
+              <EventFormFields
+                control={compForm.control}
+                eventType="Competition"
+                logoPreview={logoPreview}
+                onLogoChange={(file) => file && handleLogoChange(file)}
+                isLoading={isLoading}
+                form={compForm}
+                errors={compForm.formState.errors}
+              />
+            </form>
+          </Form>
+        )}
       </DialogContent>
     </Dialog>
   );
