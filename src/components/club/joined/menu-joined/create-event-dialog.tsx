@@ -194,6 +194,7 @@ const UnifiedEventDialog: React.FC<UnifiedEventDialogProps> = ({
 
               <EventFormFields
                 control={matchForm.control}
+                watch={matchForm.watch("event_title")}
                 eventType="Match"
                 logoPreview={logoPreview}
                 onLogoChange={(file) => file && handleLogoChange(file)}
@@ -219,6 +220,7 @@ const UnifiedEventDialog: React.FC<UnifiedEventDialogProps> = ({
               />
 
               <EventFormFields
+                watch={compForm.watch("event_title")}
                 control={compForm.control}
                 eventType="Competition"
                 logoPreview={logoPreview}

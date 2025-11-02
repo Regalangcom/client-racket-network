@@ -34,6 +34,7 @@ interface EventFormFieldsProps {
   isLoading: boolean;
   form: any; // For DatePickerField
   errors?: any;
+  watch: any;
 }
 
 export const EventFormFields: React.FC<EventFormFieldsProps> = ({
@@ -44,7 +45,9 @@ export const EventFormFields: React.FC<EventFormFieldsProps> = ({
   isLoading,
   form,
   errors,
+  watch,
 }) => {
+  // const isWatch = watch("event_title");
   const isMatch = eventType === "Match";
   return (
     <>
@@ -245,7 +248,7 @@ export const EventFormFields: React.FC<EventFormFieldsProps> = ({
       {/* Submit Button */}
       <Button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || !watch}
         className="w-full bg-[#174038] hover:bg-[#083d30] text-[#E1FFA0] py-3"
       >
         {isLoading ? "Creating..." : `Create ${eventType}`}
