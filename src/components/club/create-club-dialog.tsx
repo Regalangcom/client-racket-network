@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -31,13 +31,11 @@ import { LogoUpload } from "./logo-upload";
 import { PrivacyRadioGroup } from "./privacy-radio-group";
 import { GenderRadioGroup } from "./gender-radio-group";
 import { useLogoUpload } from "@/hooks/uploadLogo";
+import { LocationAutocomplete } from "./place-form/location-autocomplete";
+import { VenueAutocomplete } from "./place-form/vanue-autocomplete";
+import { City, Venue } from "@/constant/types/place";
 
-import {
-  SPORT_OPTIONS,
-  LOCATION_OPTIONS,
-  VENUE_OPTIONS,
-  FORM_SECTIONS,
-} from "@/constant/club-tags";
+import { SPORT_OPTIONS, FORM_SECTIONS } from "@/constant/club-tags";
 
 interface CreateClubDialogProps {
   open: boolean;
@@ -58,6 +56,9 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
   const { logoPreview, logoFile, handleLogoChange, resetLogo } =
     useLogoUpload();
 
+  // State for selected city (untuk pass ke venue autocomplete)
+  const [selectedCity, setSelectedCity] = useState<string>("");
+
   // Form initialization
   const form = useForm<ClubFormValues>({
     resolver: zodResolver(clubFormSchema),
@@ -72,6 +73,19 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
     },
   });
 
+  // Handle city selection
+  const handleCitySelect = (city: City) => {
+    form.setValue("location", city.name);
+    setSelectedCity(city.name);
+    // Reset home_court when city changes
+    form.setValue("home_court", "");
+  };
+
+  // Handle venue selection
+  const handleVenueSelect = (venue: Venue) => {
+    form.setValue("home_court", venue.name);
+  };
+
   // Handle form submission
   const handleFormSubmit = (data: ClubFormValues) => {
     onSubmit({ ...data, logo: logoFile });
@@ -82,6 +96,7 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
     if (!open) {
       form.reset();
       resetLogo();
+      setSelectedCity("");
     }
   }, [open, form, resetLogo]);
 
@@ -199,58 +214,50 @@ export const CreateClubDialog: React.FC<CreateClubDialogProps> = ({
               )}
             />
 
-            {/* 4. Location */}
+            {/* 4. Location - UPDATED WITH AUTOCOMPLETE */}
             <div className="space-y-3">
               <Label className="text-lg font-normal">
                 {FORM_SECTIONS.LOCATION}
               </Label>
 
+              {/* City Autocomplete */}
               <FormField
                 control={form.control}
                 name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select location" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {LOCATION_OPTIONS.map((location) => (
-                          <SelectItem
-                            key={location.value}
-                            value={location.value}
-                          >
-                            {location.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormLabel className="text-sm font-normal text-gray-700">
+                      City
+                    </FormLabel>
+                    <FormControl>
+                      <LocationAutocomplete
+                        value={field.value}
+                        onSelect={handleCitySelect}
+                        placeholder="Search city (e.g., Jakarta, Bandung)"
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Venue Autocomplete */}
               <FormField
                 control={form.control}
                 name="home_court"
                 render={({ field }) => (
                   <FormItem>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select venue" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {VENUE_OPTIONS.map((venue) => (
-                          <SelectItem key={venue.value} value={venue.value}>
-                            {venue.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormLabel className="text-sm font-normal text-gray-700">
+                      Home Court / Venue
+                    </FormLabel>
+                    <FormControl>
+                      <VenueAutocomplete
+                        value={field.value}
+                        onSelect={handleVenueSelect}
+                        city={selectedCity}
+                        placeholder="Search venue (e.g., Padel court, Gym)"
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
