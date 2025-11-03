@@ -12,10 +12,10 @@ import { useWindowDimension } from "@/hooks/useWindowdimension";
 import CompetitionTag from "./competitons-tags";
 import { Competitions } from "@/constant/competitions";
 import Separator from "../ui/separator";
-import { CompetitionCore } from "@/constant/types";
+import { CompetitionDetailCore } from "@/constant/types";
 import DEFAULT from "@/public/default.png";
 
-const CompetitionsDetails: React.FC<CompetitionCore> = ({
+const CompetitionsDetails: React.FC<CompetitionDetailCore> = ({
   name_comp,
   bannerUrl,
   id,
@@ -120,7 +120,7 @@ const CompetitionsDetails: React.FC<CompetitionCore> = ({
           </div>
         </div>
         {/* Join button */}
-        <Link href={`/competitions/1/comp-payment`}>
+        <Link href={`/competitions/${id}/comp-payment`}>
           <Button className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
             Register
           </Button>

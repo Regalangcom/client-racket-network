@@ -10,20 +10,23 @@ export interface Match {
   imageUrl: StaticImageData;
 }
 
-export interface MatchRegisterProps {
+export type MatchRegisterProps = {
   location: string;
-  time: string;
+  gender_restriction: string;
+  name_match: string;
+  match_date: string;
   price: string;
-  club: string;
-}
-export interface MatchCardViewProps {
+  name_club: string;
+  // skill_level: string;
+};
+export type MatchCardViewProps = {
   id: string;
   title: string;
   time: string;
   location: string;
   logo?: StaticImageData;
   clubName: string;
-}
+};
 
 export interface MatchCardProps {
   match: MatchCardViewProps;

@@ -103,7 +103,7 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 
         {/* Join buttons */}
         <div className="mt-[100px] grid min-h-[200px] items-start">
-          <Link href={`/match/1/join-match`}>
+          <Link href={`/match/${id}/join-match`}>
             <Button className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
               Join
             </Button>

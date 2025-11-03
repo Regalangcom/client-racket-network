@@ -16,9 +16,7 @@ export interface CompetitionsDetailCardProps {
 export interface CompetitionsRegisterProps {
   title: string;
   location: string;
-  time: string;
-  price: string;
-  club: string;
+  competition_date: string;
 }
 
 export type IconsCompetitonsProps = {
@@ -89,7 +87,7 @@ export type CompetitionCore = {
   id: number;
   name_comp: string;
   bannerUrl: string;
-  banner: string;
+  // banner: string;
   description: string;
   organizer_name: string;
   location: string;
@@ -97,6 +95,25 @@ export type CompetitionCore = {
   gender_restriction: string;
   skill_level: string;
   quota: string;
+  price: string;
+  competitions_date: string;
+  club: ClubInfo;
+  logo: string;
+  host: HostInfo;
+};
+
+export type CompetitionDetailCore = {
+  id: number;
+  name_comp: string;
+  bannerUrl: string;
+  // banner: string;
+  description: string;
+  organizer_name: string;
+  location: string;
+  // club_id: number;
+  // gender_restriction: string;
+  // skill_level: string;
+  // quota: string;
   price: string;
   competitions_date: string;
   club: ClubInfo;

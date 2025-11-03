@@ -110,7 +110,7 @@ export class MatchService {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_API}/clubs/${clubId}/matches?page=${page}&limit=${limit}`,
+        `${process.env.NEXT_PUBLIC_URL_API}/clubs/${clubId}/match?page=${page}&limit=${limit}`,
         {
           method: "GET",
           headers,
@@ -173,6 +173,65 @@ export class MatchService {
       throw new Error("Failed to fetch match details");
     }
   }
+  // static async getMatchById(
+  //   id: string | number,
+  //   access_token?: string
+  // ): Promise<MatchData> {
+  //   try {
+  //     const headers: HeadersInit = {
+  //       "Content-Type": "application/json",
+  //     };
+
+  //     if (access_token) {
+  //       headers["Authorization"] = `Bearer ${access_token}`;
+  //     }
+
+  //     const url = `${process.env.NEXT_PUBLIC_URL_API}/api/v1/match/${id}`;
+
+  //     // 🔍 CRITICAL DEBUG
+  //     console.log("🌐 API URL:", process.env.NEXT_PUBLIC_URL_API);
+  //     console.log("🔗 Full URL:", url);
+  //     console.log("🎫 Match ID:", id);
+  //     console.log("🔑 Has Token:", !!access_token);
+
+  //     const response = await fetch(url, {
+  //       method: "GET",
+  //       headers,
+  //       cache: "no-store",
+  //     });
+
+  //     console.log("📊 Status:", response.status);
+  //     console.log("✅ OK?:", response.ok);
+
+  //     // Clone untuk bisa baca 2x
+  //     const responseClone = response.clone();
+  //     const responseText = await responseClone.text();
+  //     console.log("📄 Raw Response:", responseText);
+
+  //     if (!response.ok) {
+  //       let errorJson;
+  //       try {
+  //         errorJson = JSON.parse(responseText);
+  //       } catch (e) {
+  //         throw new Error(`HTTP ${response.status}: ${responseText}`);
+  //       }
+
+  //       console.error("❌ Error:", errorJson);
+  //       throw new Error(errorJson.message || "Failed to fetch match details");
+  //     }
+
+  //     const result: SingleMatchResponse = await response.json();
+  //     console.log("✅ Success Data:", result);
+
+  //     return result.data;
+  //   } catch (error) {
+  //     console.error("💥 Error:", error);
+  //     if (error instanceof Error) {
+  //       throw error;
+  //     }
+  //     throw new Error("Failed to fetch match details");
+  //   }
+  // }
 
   /**
    * Create new match/event

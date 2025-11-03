@@ -33,9 +33,15 @@ export const Competitions = (
  * @param {string} location - The location of the competition.
  * @returns {Array<{icon: string, label: string}>} - An array of objects containing the competition details.
  */
-/*******  a49f6f8f-8d92-4fa1-9835-f20ad78181fd  *******/ export const CompetitionsDetail =
-  (title: string, time: string, location: string) => [
+export const CompetitionsDetail = (
+  title: string,
+  competitions_date: string,
+  location: string
+) => {
+  const formattedDate = formatLongDate(competitions_date, "en");
+  return [
     { icon: Trophy, label: title },
-    { icon: calender, label: time },
+    { icon: calender, label: formattedDate },
     { icon: maps, label: location },
   ];
+};

@@ -4,6 +4,7 @@
 import { accounts, maps, prices, reviews, times } from "@/public";
 import { DetailItem } from "./types";
 import displayIDRCurrency from "@/utils/currency";
+import { formatLongDate } from "@/lib/dns-date.options";
 
 export const matchDetailCard = (
   location: string,
@@ -48,18 +49,27 @@ export const matchDetailCard = (
 };
 
 export const matchIconRegister = (
+  name_match: string,
   location: string,
-  time: string,
+  gender_restriction: string,
   price: string,
-  club: string
-): DetailItem[] => [
-  { icon: accounts, label: "Women only", hasTimeSelector: false },
-  { icon: maps, label: location },
-  { icon: prices, label: price },
-  { icon: reviews, label: club },
-  { icon: times, label: time },
-];
+  name_club: string,
+  match_date: string
+): DetailItem[] => {
+  const formateDate = formatLongDate(match_date, "en");
+  const priceLabel =
+    price === "0" || !price ? "Free" : displayIDRCurrency(price);
 
+  const bind = `${name_match} - ${gender_restriction}`;
+
+  return [
+    { icon: accounts, label: bind, hasTimeSelector: false },
+    { icon: maps, label: location },
+    { icon: prices, label: priceLabel },
+    { icon: reviews, label: name_club },
+    { icon: times, label: formateDate },
+  ];
+};
 // Sport Options
 export const TYPE_EVENT = [
   { value: "Match", label: "Match" },

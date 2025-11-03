@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { getMatchDataBeforePayment } from "@/constant/get-all-dummy-data";
 import MatchRegister from "@/components/match/match-register";
+import { getAuthServerSession } from "@/lib/auth-options";
+import { MatchService } from "@/services/match-service";
 
 export default async function MatchRegisterPage({
   params,
@@ -9,20 +10,26 @@ export default async function MatchRegisterPage({
 }) {
   const { id } = params;
 
-  // Ambil data match berdasarkan ID
-  const match = await getMatchDataBeforePayment(id);
+  const { access_token } = await getAuthServerSession();
+  const matchDetail = await MatchService.getMatchById(
+    id,
+    access_token || undefined
+  );
 
-  if (!match) {
+  if (!matchDetail) {
     notFound();
   }
 
   return (
     <section className="sm:p-8 md:container">
       <MatchRegister
-        location={match.location}
-        time={match.time}
-        price={match.price}
-        club={match.club}
+        // skill_level={matchDetail.skill_level}
+        gender_restriction={matchDetail.gender_restriction}
+        name_match={matchDetail.name_match}
+        location={matchDetail.location}
+        match_date={matchDetail.match_date}
+        price={matchDetail.price}
+        name_club={matchDetail.club.name_club || "Unknown Club"}
       />
     </section>
   );

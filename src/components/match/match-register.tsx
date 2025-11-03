@@ -19,7 +19,6 @@ import {
   registrationMatchSchema,
 } from "@/constant/types/zodSchema";
 import { MatchRegisterProps } from "@/constant/types";
-import Link from "next/link";
 import { matchIconRegister } from "@/constant/match";
 import { MatchIconRegisters } from "./match-tags";
 import Separator from "../ui/separator";
@@ -28,13 +27,22 @@ import { useState } from "react";
 
 const MatchRegister: React.FC<MatchRegisterProps> = ({
   location,
-  time,
+  match_date,
+  gender_restriction,
+  name_match,
   price,
-  club,
+  name_club,
 }) => {
   const router = useRouter();
   const { isMobile } = useWindowDimension();
-  const details = matchIconRegister(location, time, price, club);
+  const details = matchIconRegister(
+    gender_restriction,
+    location,
+    name_match,
+    price,
+    name_club,
+    match_date
+  );
 
   const {
     register,
@@ -106,9 +114,7 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
           </div>
 
           {/* SEPARATOR */}
-          <div className="py-4 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
-            <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
-          </div>
+          <Separator />
         </div>
 
         {/* Kolom Kanan - Registrasi & Pembayaran */}

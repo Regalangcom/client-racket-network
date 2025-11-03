@@ -29,11 +29,8 @@ import Separator from "../ui/separator";
 
 const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   title,
-  // date,
-  time,
+  competition_date,
   location,
-  price,
-  // club,
 }) => {
   const router = useRouter();
   const { isMobile } = useWindowDimension();
@@ -98,9 +95,11 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
           {/* Card Match Detail */}
           <div className="bg-white">
             <div className="space-y-3">
-              {CompetitionsDetail(title, time, location).map((tag, idx) => (
-                <CompetitionTag key={idx} {...tag} />
-              ))}
+              {CompetitionsDetail(title, competition_date, location).map(
+                (tag, idx) => (
+                  <CompetitionTag key={idx} {...tag} />
+                )
+              )}
             </div>
           </div>
         </div>
