@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MatchDetailCardProps } from "@/constant/types";
 import { MatchTag } from "./match-tags";
 import { matchDetailCard } from "@/constant/match";
@@ -25,9 +25,19 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 }) => {
   const router = useRouter();
   const isMobile = useWindowDimension();
+  // const [selectedTimeSlotId, setSelectedTimeSlotId] = useState<number | null>(
+  //   TimeSlot.length > 0 ? TimeSlot[0].id || 0 : null
+  // );
+
   const [selectedTimeSlotId, setSelectedTimeSlotId] = useState<number | null>(
-    TimeSlot.length > 0 ? TimeSlot[0].id || 0 : null
+    null
   );
+
+  useEffect(() => {
+    if (TimeSlot.length > 0) {
+      setSelectedTimeSlotId(TimeSlot[0].id || 0);
+    }
+  }, [TimeSlot]);
 
   // const formattedDate = formatLongDate(match_date, "en");
 
