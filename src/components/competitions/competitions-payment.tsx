@@ -192,14 +192,14 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
             </div>
 
             {/* promo code */}
-            <PromoCodeInput
+            {/* <PromoCodeInput
               register={register}
               setValue={setValue}
               getValues={getValues}
               onPromoApplied={handlePromoApplied}
               className="mb-2 mt-4"
               placeholder="TEN87"
-            />
+            /> */}
 
             {/* Card Detail Pembayaran */}
             <div className="bg-white rounded-2xl ">
