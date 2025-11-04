@@ -13,7 +13,6 @@ import CompetitionTag from "./competitons-tags";
 import { Competitions } from "@/constant/competitions";
 import Separator from "../ui/separator";
 import { CompetitionDetailCore } from "@/constant/types";
-import DEFAULT from "@/public/default.png";
 
 const CompetitionsDetails: React.FC<CompetitionDetailCore> = ({
   name_comp,
@@ -44,15 +43,17 @@ const CompetitionsDetails: React.FC<CompetitionDetailCore> = ({
     <div className="flex flex-col max-w-full  sm:flex-row overflow-y-auto">
       {/* Left side image */}
       <div className="w-full sm:w-[40%] flex md:h-72 sm:h-0 justify-center items-center">
-        {bannerUrl && (
+        {bannerUrl ? (
           <Image
-            src={bannerUrl || DEFAULT}
+            src={bannerUrl}
             alt={`${name_comp} logo`}
             width={600}
             height={400}
             className=" object-cover w-full h-[190px] md:h-auto"
             priority
           />
+        ) : (
+          <p>not found</p>
         )}
       </div>
 

@@ -1,7 +1,6 @@
 import {
   CompetitionCore,
   CompetitionCreatePayload,
-  CompetitionData,
   CompetitionsFilters,
 } from "@/constant/types";
 
@@ -103,7 +102,7 @@ export class CompetitionsService {
 
       // Append banner if exists - USE "banner" not "banner_match"
       if (payload.banner) {
-        formData.append("banner", payload.banner); // ✅ Fixed: was "banner_match"
+        formData.append("banner_match", payload.banner); // ✅ Fixed: was "banner_match"
       }
 
       console.log("Creating competition with payload:", {

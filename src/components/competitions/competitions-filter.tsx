@@ -1,7 +1,6 @@
-// components/Competitions/compFilter.tsx
 "use client";
-
-import React, { useState } from "react";
+import React from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import {
   tenis,
   padel,
@@ -13,19 +12,37 @@ import {
 import Image from "next/image";
 
 const CompetitionFilter: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState<string>("Tennis");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const activeFilter = searchParams.get("sport_category") || "";
+
   const filters = [
     { name: "Tennis", icon: tenis, activeIcon: tenisActive },
     { name: "Padel", icon: padel, activeIcon: padelActive },
     { name: "Badminton", icon: badmindton, activeIcon: badmindtonActive },
   ];
 
+  const handleFilterClick = (filterName: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (activeFilter.toLowerCase() === filterName.toLowerCase()) {
+      params.delete("sport_category");
+    } else {
+      params.set("sport_category", filterName);
+    }
+
+    // Navigate with updated params
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <div className="flex flex-wrap gap-3 mt-4">
       {filters.map(({ name, icon, activeIcon }) => (
         <button
           key={name}
-          onClick={() => setActiveFilter(name)}
+          onClick={() => handleFilterClick(name)}
           className={`flex items-center gap-2 px-3  rounded-full border ${
             activeFilter === name
               ? "bg-[#B5D9D2] border-green-900 text-green-900 font-semibold"
@@ -33,9 +50,13 @@ const CompetitionFilter: React.FC = () => {
           }`}
         >
           <Image
-            src={activeFilter === name ? activeIcon : icon}
+            src={
+              activeFilter.toLowerCase() === name.toLowerCase()
+                ? activeIcon
+                : icon
+            }
             alt={name}
-            className=""
+            className="w-5 h-5"
             priority
           />
           <span className="font-semibold">{name}</span>

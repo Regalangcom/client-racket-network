@@ -33,6 +33,7 @@ export type CompetitionsFilters = {
   limit?: string;
   name_comp?: string;
   banner?: string;
+  bannerUrl?: string;
   organizer_name?: string;
   location?: string;
   competition_date?: string;
@@ -41,21 +42,6 @@ export type CompetitionsFilters = {
   slot_left?: string;
   quota?: string;
 };
-
-// export type CompetitionData = {
-//   id: number;
-//   name_comp: string;
-//   banner: string;
-//   organizer_name: string;
-//   location: string;
-//   competition_date: string;
-//   sport_category: string;
-//   members_count: string;
-//   slot_left: string;
-//   quota: string;
-// };
-
-// 📁 types/competition.ts
 
 export type HostInfo = {
   username: string;
@@ -87,7 +73,7 @@ export type CompetitionCore = {
   id: number;
   name_comp: string;
   bannerUrl: string;
-  // banner: string;
+  banner: string;
   description: string;
   organizer_name: string;
   location: string;
@@ -106,14 +92,9 @@ export type CompetitionDetailCore = {
   id: number;
   name_comp: string;
   bannerUrl: string;
-  // banner: string;
   description: string;
   organizer_name: string;
   location: string;
-  // club_id: number;
-  // gender_restriction: string;
-  // skill_level: string;
-  // quota: string;
   price: string;
   competitions_date: string;
   club: ClubInfo;
@@ -124,7 +105,7 @@ export type CompetitionDetailCore = {
 export type CompetitionData = {
   id: number;
   name_comp: string;
-  banner: string;
+  bannerUrl: string;
   organizer_name: string;
   location: string;
   competition_date: string;

@@ -23,7 +23,7 @@ export default async function MatchRegisterPage({
   return (
     <section className="sm:p-8 md:container">
       <MatchRegister
-        // skill_level={matchDetail.skill_level}
+        matchId={matchDetail.id}
         gender_restriction={matchDetail.gender_restriction}
         name_match={matchDetail.name_match}
         location={matchDetail.location}

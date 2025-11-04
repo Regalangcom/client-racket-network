@@ -137,6 +137,7 @@ export const registrationMatchSchema = z.object({
   level: z.enum(["Beginner", "Intermediate", "Advanced"], {
     error: "Pilih level yang valid",
   }),
+
   additionalInfo: z.string().optional(),
 });
 

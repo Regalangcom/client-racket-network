@@ -24,6 +24,10 @@ import { MatchIconRegisters } from "./match-tags";
 import Separator from "../ui/separator";
 import { PromoCodeInput } from "../form/promo-code-input";
 import { useState } from "react";
+import displayIDRCurrency from "@/utils/currency";
+import { VoucherService } from "@/services/voucher-service";
+import { toast } from "sonner";
+import { MatchService } from "@/services/match-service";
 
 const MatchRegister: React.FC<MatchRegisterProps> = ({
   location,
@@ -32,13 +36,24 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
   name_match,
   price,
   name_club,
+  matchId,
 }) => {
   const router = useRouter();
   const { isMobile } = useWindowDimension();
+  // state voucher
+  const [appliedVoucher, setAppliedVoucher] = useState<{
+    code: string;
+    discount: number;
+    promoCodeId: number;
+    final_amount: number;
+  } | null>(null);
+
+  const [isApplyingVoucher, setIsApplyVoucher] = useState<boolean>(false);
+
   const details = matchIconRegister(
-    gender_restriction,
-    location,
     name_match,
+    location,
+    gender_restriction,
     price,
     name_club,
     match_date
@@ -57,25 +72,66 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
   });
 
   const nameWatch = watch("name");
+  const originalPrice = parseFloat(price);
+  const discountAmount = appliedVoucher?.discount || 0;
+  const finalPrice = appliedVoucher?.final_amount || originalPrice;
 
   const onSubmit: SubmitHandler<RegistrationMatchForm> = async (data) => {
     try {
-      // Proses pendaftaran
-      console.log(data);
+      const payload = {
+        match_id: matchId,
+        full_name: data.name,
+        email: data.email,
+        phone_number: data.phoneNumber,
+        skill_level: data.level,
 
-      router.push("/payment");
-      // Contoh: await submitRegistration(data)
+        // From voucher state (not form)
+        promo_code: appliedVoucher?.code || null,
+        promo_code_id: appliedVoucher?.promoCodeId || null,
+
+        original_amount: originalPrice,
+        discount_amount: appliedVoucher?.discount || 0,
+        final_amount: finalPrice,
+      };
+
+      const result = await MatchService.registrationMatch(payload);
+      console.log("result", result);
+
+      // router.push("/payment");
     } catch (error) {
-      console.error("Pendaftaran gagal", error);
+      console.error("registrations is failed", error);
     }
   };
 
-  const [discountAmount, setDiscountAmount] = useState<number>(30000);
-  const originalPrice = 100000; // This would be your actual price
+  const handleApplyVoucher = async (VoucherCode: string) => {
+    setIsApplyVoucher(true);
 
-  const handlePromoApplied = (discount: number) => {
-    setDiscountAmount(discount);
-    // You can also perform any other actions needed when a promo is applied
+    try {
+      const result = await VoucherService.applyVoucher(
+        {
+          voucher_code: VoucherCode,
+          original_amount: originalPrice,
+        },
+        undefined
+      );
+
+      setAppliedVoucher({
+        code: result.data.code,
+        promoCodeId: result.data.promo_code_id,
+        discount: result.data.discount_amount,
+        final_amount: result.data.final_amount,
+      });
+      toast.success("Voucher applied successfully!");
+    } catch (error) {
+      console.log("error", error);
+      toast.error(error instanceof Error ? error.message : "");
+      setIsApplyVoucher(false);
+    }
+  };
+
+  const handleRemoveVoucher = () => {
+    setAppliedVoucher(null);
+    toast.info("Voucher removed");
   };
 
   return (
@@ -205,9 +261,13 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
               register={register}
               setValue={setValue}
               getValues={getValues}
-              onPromoApplied={handlePromoApplied}
+              onApply={handleApplyVoucher}
+              onRemove={handleRemoveVoucher}
+              isLoading={isApplyingVoucher}
+              appliedCode={appliedVoucher?.code || null}
+              discountAmount={discountAmount}
               className="mb-2 mt-4"
-              placeholder="TEN87"
+              placeholder="Enter promo code"
             />
 
             {/* SEPARATOR */}
@@ -220,7 +280,8 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
               {/* Price row */}
               <div className="flex justify-between mb-2">
                 <span>Price</span>
-                <span>Rp {originalPrice.toLocaleString()}</span>
+                <span>{displayIDRCurrency(price)}</span>
+                {/* <span>Rp {originalPrice.toLocaleString()}</span> */}
               </div>
 
               {/* Promo discount row - only shown when discount is applied */}

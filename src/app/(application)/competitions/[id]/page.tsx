@@ -15,6 +15,7 @@ export default async function CompetitionDetails({
     id,
     access_token || undefined
   );
+  console.log("comps", detailCompetitions);
 
   // const competitions = await getCompData(id);
 

@@ -14,6 +14,7 @@ export type MatchRegisterProps = {
   location: string;
   gender_restriction: string;
   name_match: string;
+  matchId: number;
   match_date: string;
   price: string;
   name_club: string;
@@ -47,35 +48,6 @@ export type TimeSlot = {
   createdAt?: string;
   updatedAt?: string;
 };
-
-// Types based on API response
-// export type MatchData = {
-//   id: number;
-//   banner_match: string;
-//   match_date: string;
-//   // match_time: string;
-//   location: string;
-//   name_match: string;
-//   club_id: number;
-//   description: string;
-//   price: string;
-//   gender_restriction: string;
-//   name_club: string;
-//   skill_level: string;
-//   quota: number;
-//   cratedAt: string;
-//   updatedAt: string;
-//   club: {
-//     id: number;
-//     name_club: string;
-//     logo: string;
-//     logoUrl: string;
-//   };
-//   _count: {
-//     UsersOnMatches: number;
-//   };
-//   bannerUrl: string;
-// };
 
 export type MatchData = {
   id: number;
@@ -132,7 +104,6 @@ export type MatchDetail = {
   id: number;
   banner_match: string;
   match_date: string; // ISO string
-  // match_time: string;
   location: string;
   name_match: string;
   club_id: number;
@@ -219,4 +190,41 @@ export type MatchFilter = {
   date_from?: string;
   date_to?: string;
   search?: string;
+};
+
+export type MatchRegistrationPayload = {
+  match_id: number;
+  full_name: string;
+  email: string;
+  phone_number: string;
+  skill_level: "Beginner" | "Intermediate" | "Advanced";
+  promo_code?: string | null;
+  promo_code_id?: number | null;
+  original_amount: number;
+  discount_amount: number;
+  final_amount: number;
+};
+
+export type MatchRegistrationResponse = {
+  success: true;
+  message: string;
+  data: {
+    registration: {
+      id: number;
+      user_id: number | null;
+      match_id: number;
+      full_name: string;
+      email: string;
+      phone_number: string;
+      skill_level: string;
+      promo_code: string | null;
+      promo_code_id: number | null;
+      payment_status: "PENDING" | "PAID" | "FAILED";
+      original_amount: string;
+      discount_amount: string;
+      final_amount: string;
+      createdAt: string;
+      match: { id: number };
+    };
+  };
 };

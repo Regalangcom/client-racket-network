@@ -16,6 +16,9 @@ export default async function MatchDetail({
     id,
     access_token || undefined
   );
+
+  console.log("match data", matchData);
+
   if (!matchData) return notFound();
 
   return (
