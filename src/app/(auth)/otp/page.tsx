@@ -136,7 +136,7 @@ function InputOTPForm() {
         <CardHeader>
           <CardTitle>Verify OTP</CardTitle>
           <CardDescription>
-            Enter the one-time password sent to your phone or email.
+            Enter the one-time password sent to your email.
           </CardDescription>
         </CardHeader>
         <CardContent>

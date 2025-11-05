@@ -36,7 +36,7 @@ export const SignUpFormSchema = z
       .regex(/^[0-9]+$/, { message: "Nomor telepon hanya boleh angka" }),
     confirmPassword: z
       .string()
-      .min(10, { message: "Minimal 10 karakter" })
+      .min(10, { message: "Minimal 8 karakter" })
       .regex(/[a-zA-Z]/, { message: "Harus mengandung minimal 1 huruf" })
       .regex(/[0-9]/, { message: "Harus mengandung minimal 1 angka" })
       .regex(/[^a-zA-Z0-9]/, {
@@ -45,7 +45,7 @@ export const SignUpFormSchema = z
 
     password: z
       .string()
-      .min(10, { message: "Minimal 10 karakter" })
+      .min(10, { message: "Minimal 8 karakter" })
       .regex(/[a-zA-Z]/, { message: "Harus mengandung minimal 1 huruf" })
       .regex(/[0-9]/, { message: "Harus mengandung minimal 1 angka" })
       .regex(/[^a-zA-Z0-9]/, {
