@@ -12,7 +12,6 @@ interface MatchTagProps {
   hasTimeSelector?: boolean;
   TimeSlot?: TimeSlot[];
   selectedTimeSlotId?: number | null;
-  selectedTime?: string;
   onTimeSelect?: (slotId: number) => void;
 }
 

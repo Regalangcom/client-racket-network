@@ -18,7 +18,7 @@ import {
   RegistrationMatchForm,
   registrationMatchSchema,
 } from "@/constant/types/zodSchema";
-import { MatchRegisterProps } from "@/constant/types";
+import { MatchRegisterProps, TimeSlot } from "@/constant/types";
 import { matchIconRegister } from "@/constant/match";
 import { MatchIconRegisters } from "./match-tags";
 import Separator from "../ui/separator";
@@ -29,7 +29,11 @@ import { VoucherService } from "@/services/voucher-service";
 import { toast } from "sonner";
 import { MatchService } from "@/services/match-service";
 
-const MatchRegister: React.FC<MatchRegisterProps> = ({
+interface MatchRegisterPropsExtended extends MatchRegisterProps {
+  selectedTimeSlot?: TimeSlot;
+}
+
+const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
   location,
   match_date,
   gender_restriction,
@@ -37,10 +41,11 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
   price,
   name_club,
   matchId,
+  selectedTimeSlot,
 }) => {
   const router = useRouter();
   const { isMobile } = useWindowDimension();
-  // state voucher
+
   const [appliedVoucher, setAppliedVoucher] = useState<{
     code: string;
     discount: number;
@@ -50,13 +55,19 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
 
   const [isApplyingVoucher, setIsApplyVoucher] = useState<boolean>(false);
 
+  // Format selected time untuk ditampilkan
+  const selectedTimeLabel = selectedTimeSlot
+    ? `${selectedTimeSlot.start_time} - ${selectedTimeSlot.end_time}`
+    : undefined;
+
   const details = matchIconRegister(
     name_match,
     location,
     gender_restriction,
     price,
     name_club,
-    match_date
+    // match_date,
+    selectedTimeLabel
   );
 
   const {
@@ -77,15 +88,20 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
   const finalPrice = appliedVoucher?.final_amount || originalPrice;
 
   const onSubmit: SubmitHandler<RegistrationMatchForm> = async (data) => {
+    if (!selectedTimeSlot) {
+      toast.error("Please select a time slot");
+      return;
+    }
+
     try {
       const payload = {
         match_id: matchId,
+        time_slot_id: selectedTimeSlot.id, // ✅ Kirim time slot id
         full_name: data.name,
         email: data.email,
         phone_number: data.phoneNumber,
         skill_level: data.level,
 
-        // From voucher state (not form)
         promo_code: appliedVoucher?.code || null,
         promo_code_id: appliedVoucher?.promoCodeId || null,
 
@@ -95,11 +111,13 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
       };
 
       const result = await MatchService.registrationMatch(payload);
-      console.log("result", result);
+      console.log("Registration successful", result);
 
+      toast.success("Registration successful!");
       // router.push("/payment");
     } catch (error) {
-      console.error("registrations is failed", error);
+      console.error("Registration failed", error);
+      toast.error("Registration failed. Please try again.");
     }
   };
 
@@ -124,7 +142,10 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
       toast.success("Voucher applied successfully!");
     } catch (error) {
       console.log("error", error);
-      toast.error(error instanceof Error ? error.message : "");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to apply voucher"
+      );
+    } finally {
       setIsApplyVoucher(false);
     }
   };
@@ -139,7 +160,6 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Kolom Kiri - Match Information */}
         <div className="space-y-6">
-          {/* Tombol Kembali untuk Mobile */}
           {isMobile && (
             <div className="flex gap-3 relative w-full">
               <button
@@ -152,11 +172,10 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
             </div>
           )}
 
-          {/* Judul Match Details untuk Desktop */}
           {!isMobile && (
             <p className="text-3xl font-bold mb-4">Match details</p>
           )}
-          {/* Card Match Detail */}
+
           <div className="bg-white rounded-2xl">
             <div className="space-y-2 mb-4">
               {details.map((item, index) => (
@@ -169,14 +188,12 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
             </div>
           </div>
 
-          {/* SEPARATOR */}
           <Separator />
         </div>
 
         {/* Kolom Kanan - Registrasi & Pembayaran */}
         <div className="space-y-6">
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Card Informasi Pendaftaran */}
             <div className="bg-white rounded-2xl mb-6">
               <h3 className="text-2xl font-semibold mb-4">Information</h3>
               <div className="space-y-4">
@@ -220,7 +237,6 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                   )}
                 </div>
 
-                {/* Dropdown Level */}
                 <div className="relative">
                   <Controller
                     name="level"
@@ -256,7 +272,6 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
 
             <Separator />
 
-            {/* promo code */}
             <PromoCodeInput
               register={register}
               setValue={setValue}
@@ -270,21 +285,16 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
               placeholder="Enter promo code"
             />
 
-            {/* SEPARATOR */}
             <Separator />
 
-            {/* Card Detail Pembayaran */}
-            <div className="bg-white rounded-2xl ">
+            <div className="bg-white rounded-2xl">
               <h3 className="text-2xl font-semibold mb-4">Payment Detail</h3>
 
-              {/* Price row */}
               <div className="flex justify-between mb-2">
                 <span>Price</span>
                 <span>{displayIDRCurrency(price)}</span>
-                {/* <span>Rp {originalPrice.toLocaleString()}</span> */}
               </div>
 
-              {/* Promo discount row - only shown when discount is applied */}
               {discountAmount > 0 && (
                 <div className="flex justify-between mb-2">
                   <span>Promo</span>
@@ -294,23 +304,21 @@ const MatchRegister: React.FC<MatchRegisterProps> = ({
                 </div>
               )}
 
-              {/* Total row */}
               <div className="flex justify-between text-[#174038] mb-4 font-bold">
                 <span>Total</span>
                 <span>
                   Rp {(originalPrice - discountAmount).toLocaleString()}
                 </span>
               </div>
+
               <div className="mt-[100px] grid min-h-[200px] items-start">
-                {/* <Link href="/payment"> */}
                 <Button
                   type="submit"
-                  disabled={!nameWatch}
+                  disabled={!nameWatch || !selectedTimeSlot}
                   className="w-full bg-background-button-rc text-white p-3 rounded hover:bg-green-700 transition-colors disabled:opacity-50"
                 >
-                  {isSubmitting ? "Prosesing..." : "Continue"}
+                  {isSubmitting ? "Processing..." : "Continue"}
                 </Button>
-                {/* </Link> */}
               </div>
             </div>
           </form>

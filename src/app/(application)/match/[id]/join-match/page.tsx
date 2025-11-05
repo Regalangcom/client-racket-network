@@ -2,13 +2,21 @@ import { notFound } from "next/navigation";
 import MatchRegister from "@/components/match/match-register";
 import { getAuthServerSession } from "@/lib/auth-options";
 import { MatchService } from "@/services/match-service";
+import { TimeSlot } from "@/constant/types"; // ✅ Import the type
+
+interface PageProps {
+  params: { id: string };
+  searchParams?: { timeSlotId?: string }; // ✅ Optional if you want to pre-select via URL
+}
 
 export default async function MatchRegisterPage({
   params,
-}: {
-  params: { id: string };
-}) {
+  searchParams,
+}: PageProps) {
   const { id } = params;
+  const timeSlotId = searchParams?.timeSlotId
+    ? parseInt(searchParams.timeSlotId)
+    : undefined;
 
   const { access_token } = await getAuthServerSession();
   const matchDetail = await MatchService.getMatchById(
@@ -20,6 +28,11 @@ export default async function MatchRegisterPage({
     notFound();
   }
 
+  // ✅ Safely find selected time slot with proper typing
+  const selectedTimeSlot: TimeSlot | undefined = timeSlotId
+    ? matchDetail.TimeSlot?.find((slot: TimeSlot) => slot.id === timeSlotId)
+    : matchDetail.TimeSlot?.[0]; // Default to first if not specified
+
   return (
     <section className="sm:p-8 md:container">
       <MatchRegister
@@ -30,6 +43,8 @@ export default async function MatchRegisterPage({
         match_date={matchDetail.match_date}
         price={matchDetail.price}
         name_club={matchDetail.club.name_club || "Unknown Club"}
+        selectedTimeSlot={selectedTimeSlot}
+        timeSlots={matchDetail.TimeSlot}
       />
     </section>
   );

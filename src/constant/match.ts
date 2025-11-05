@@ -2,17 +2,82 @@
 // constant/match.ts
 
 import { accounts, maps, prices, reviews, times } from "@/public";
-import { DetailItem } from "./types";
+import { DetailItem, TimeSlot } from "./types";
 import displayIDRCurrency from "@/utils/currency";
-import { formatLongDate } from "@/lib/dns-date.options";
+
+// export const matchDetailCard = (
+//   location: string,
+//   price: string,
+//   name_club: string,
+//   gender_restriction: string
+// ): DetailItem[] => {
+//   // ✅ Format gender label
+//   const genderLabel =
+//     gender_restriction === "women"
+//       ? "Women only"
+//       : gender_restriction === "men"
+//       ? "Men only"
+//       : "All genders";
+
+//   // ✅ Format price label
+//   const priceLabel =
+//     price === "0" || !price ? "Free" : displayIDRCurrency(price);
+
+//   return [
+//     {
+//       icon: accounts,
+//       label: genderLabel,
+//       hasTimeSelector: true,
+//     },
+//     {
+//       icon: maps,
+//       label: location,
+//       hasTimeSelector: false,
+//     },
+//     {
+//       icon: prices,
+//       label: priceLabel,
+//       hasTimeSelector: false,
+//     },
+//     {
+//       icon: reviews,
+//       label: name_club,
+//       hasTimeSelector: false,
+//     },
+//   ];
+// };
+
+// export const matchIconRegister = (
+//   name_match: string,
+//   location: string,
+//   gender_restriction: string,
+//   price: string,
+//   name_club: string,
+//   match_date: string
+// ): DetailItem[] => {
+//   const formateDate = formatLongDate(match_date, "en");
+//   const priceLabel =
+//     price === "0" || !price ? "Free" : displayIDRCurrency(price);
+
+//   const bind = `${name_match} - ${gender_restriction}`;
+
+//   return [
+//     { icon: accounts, label: bind, hasTimeSelector: false },
+//     { icon: maps, label: location },
+//     { icon: prices, label: priceLabel },
+//     { icon: reviews, label: name_club },
+//     { icon: times, label: formateDate },
+//   ];
+// };
 
 export const matchDetailCard = (
   location: string,
   price: string,
   name_club: string,
-  gender_restriction: string
+  gender_restriction: string,
+  timeSlots: TimeSlot[],
+  selectedTimeSlotId: number | null
 ): DetailItem[] => {
-  // ✅ Format gender label
   const genderLabel =
     gender_restriction === "women"
       ? "Women only"
@@ -20,9 +85,17 @@ export const matchDetailCard = (
       ? "Men only"
       : "All genders";
 
-  // ✅ Format price label
   const priceLabel =
     price === "0" || !price ? "Free" : displayIDRCurrency(price);
+
+  // const selectedTimeSlot = timeSlots.find(
+  //   (slot) => slot.id === selectedTimeSlotId
+  // );
+  // const timeLabel = selectedTimeSlot
+  //   ? `${selectedTimeSlot.start_time} - ${selectedTimeSlot.end_time}`
+  //   : "Select time";
+
+  // const bind = `${}`
 
   return [
     {
@@ -30,6 +103,11 @@ export const matchDetailCard = (
       label: genderLabel,
       hasTimeSelector: true,
     },
+    // {
+    //   icon: times,
+    //   label: timeLabel,
+    //   hasTimeSelector: false,
+    // },
     {
       icon: maps,
       label: location,
@@ -48,26 +126,34 @@ export const matchDetailCard = (
   ];
 };
 
+// Function untuk match register page
 export const matchIconRegister = (
   name_match: string,
   location: string,
   gender_restriction: string,
   price: string,
   name_club: string,
-  match_date: string
-): DetailItem[] => {
-  const formateDate = formatLongDate(match_date, "en");
+  // match_date: string,
+  selectedTime?: string
+): Array<{ icon: any; label: string }> => {
+  const genderLabel =
+    gender_restriction === "women"
+      ? "Women only"
+      : gender_restriction === "men"
+      ? "Men only"
+      : "All genders";
+
   const priceLabel =
     price === "0" || !price ? "Free" : displayIDRCurrency(price);
 
-  const bind = `${name_match} - ${gender_restriction}`;
+  const bind = `${name_match} - ${genderLabel}`;
 
   return [
-    { icon: accounts, label: bind, hasTimeSelector: false },
+    { icon: accounts, label: bind },
     { icon: maps, label: location },
     { icon: prices, label: priceLabel },
     { icon: reviews, label: name_club },
-    { icon: times, label: formateDate },
+    ...(selectedTime ? [{ icon: times, label: selectedTime }] : []),
   ];
 };
 // Sport Options

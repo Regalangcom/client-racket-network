@@ -18,7 +18,8 @@ export type MatchRegisterProps = {
   match_date: string;
   price: string;
   name_club: string;
-  // timeSlots: TimeSlot[];
+  timeSlots: TimeSlot[];
+  selectedTimeSlot?: TimeSlot | null;
   // skill_level: string;
 };
 export type MatchCardViewProps = {

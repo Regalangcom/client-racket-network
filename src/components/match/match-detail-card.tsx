@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWindowDimension } from "@/hooks/useWindowdimension";
-import React, { useEffect, useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { MatchDetailCardProps } from "@/constant/types";
 import { MatchTag } from "./match-tags";
 import { matchDetailCard } from "@/constant/match";
@@ -25,10 +26,8 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 }) => {
   const router = useRouter();
   const isMobile = useWindowDimension();
-  // const [selectedTimeSlotId, setSelectedTimeSlotId] = useState<number | null>(
-  //   TimeSlot.length > 0 ? TimeSlot[0].id || 0 : null
-  // );
 
+  // Auto-select first time slot or null if no time slots
   const [selectedTimeSlotId, setSelectedTimeSlotId] = useState<number | null>(
     null
   );
@@ -39,13 +38,13 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
     }
   }, [TimeSlot]);
 
-  // const formattedDate = formatLongDate(match_date, "en");
-
   const details = matchDetailCard(
     location,
     price,
     name_club,
-    gender_restriction
+    gender_restriction,
+    TimeSlot,
+    selectedTimeSlotId
   );
 
   return (
@@ -58,7 +57,7 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
             alt={`${name_match} logo`}
             width={600}
             height={400}
-            className=" object-cover w-full h-[190px] md:h-auto"
+            className="object-cover w-full h-[190px] md:h-auto"
             priority
           />
         ) : (
@@ -95,12 +94,6 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
           ))}
         </div>
 
-        {/* Date Display */}
-        {/* <div className="flex items-center gap-3 rounded-3xl mb-5 mt-2">
-          <span className="text-gray-600">📅</span>
-          <span className="text-gray-700">{formattedDate}</span>
-        </div> */}
-
         {/* SEPARATOR */}
         <div className="py-3 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
           <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
@@ -113,8 +106,15 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
 
         {/* Join buttons */}
         <div className="mt-[100px] grid min-h-[200px] items-start">
-          <Link href={`/match/${id}/join-match`}>
-            <Button className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2">
+          <Link
+            href={`/match/${id}/join-match${
+              selectedTimeSlotId ? `?timeSlotId=${selectedTimeSlotId}` : ""
+            }`}
+          >
+            <Button
+              disabled={!selectedTimeSlotId && TimeSlot.length > 0}
+              className="w-full py-3 bg-background-button-rc text-[#E1FFA0] font-semibold rounded-lg hover:bg-white hover:text-black hover:border-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Join
             </Button>
           </Link>
