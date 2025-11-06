@@ -136,6 +136,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           {/* handle logo */}
           <Label className="text-sm font-normal">Profile picture</Label>
           <LogoUpload
+            label="Picture"
             pictureUrl={logoPreview}
             onLogoChange={handleLogoChange}
           />

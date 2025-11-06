@@ -1,6 +1,8 @@
 import {
   CompetitionCore,
   CompetitionCreatePayload,
+  CompetitionRegistrationPayload,
+  CompetitionRegistrationResponse,
   CompetitionsFilters,
 } from "@/constant/types";
 
@@ -138,6 +140,38 @@ export class CompetitionsService {
     } catch (error) {
       console.error("Error in createCompetition:", error);
       throw error;
+    }
+  }
+
+  static async registrationCompetition(
+    payload: CompetitionRegistrationPayload,
+    access_token?: string
+  ): Promise<CompetitionRegistrationResponse> {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/competitons/register`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to register for competitions");
+      }
+
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to register to competitions");
     }
   }
 }

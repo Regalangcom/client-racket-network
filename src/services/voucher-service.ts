@@ -29,7 +29,9 @@ export class VoucherService {
 
       return data;
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        throw error;
+      }
       throw new Error("Failed to apply voucher");
     }
   }

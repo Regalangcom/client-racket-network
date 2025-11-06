@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import { MatchDetailCardProps } from "@/constant/types";
 import { MatchTag } from "./match-tags";
 import { matchDetailCard } from "@/constant/match";
+import Separator from "../ui/separator";
 
 const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
   id,
@@ -95,9 +96,10 @@ const MatchDetailCard: React.FC<MatchDetailCardProps> = ({
         </div>
 
         {/* SEPARATOR */}
-        <div className="py-3 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
+        <Separator />
+        {/* <div className="py-3 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
           <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
-        </div>
+        </div> */}
 
         <h2 className="text-gray-700 text-xl mb-1 mt-2 font-semibold">
           Description

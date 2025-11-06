@@ -24,9 +24,11 @@ export default async function CompetitonsPaymentPage({
   return (
     <section className="sm:p-8 md:container">
       <CompetitionPayment
-        title={competitionsDetail.name_comp}
+        competitonId={competitionsDetail.id}
+        name_comp={competitionsDetail.name_comp}
         competition_date={competitionsDetail.competitions_date}
         location={competitionsDetail.location}
+        price={competitionsDetail.price}
       />
     </section>
   );

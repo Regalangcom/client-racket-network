@@ -133,7 +133,7 @@ interface PromoCodeInputProps {
   isLoading: boolean;
   appliedCode: string | null;
   discountAmount: number;
-  // errorMessage: string | null;
+  errorMessage: string | null;
 
   className?: string;
   placeholder?: string;
@@ -149,7 +149,7 @@ export const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
   isLoading,
   appliedCode,
   discountAmount,
-  // errorMessage,
+  errorMessage,
   className = "",
   placeholder = "Enter promo code",
   fieldName = "promoCode",
@@ -213,9 +213,9 @@ export const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
         </p>
       )}
 
-      {/* {errorMessage && (
+      {errorMessage && (
         <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
-      )} */}
+      )}
     </div>
   );
 };

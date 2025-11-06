@@ -28,7 +28,6 @@ export default async function MatchRegisterPage({
     notFound();
   }
 
-  // ✅ Safely find selected time slot with proper typing
   const selectedTimeSlot: TimeSlot | undefined = timeSlotId
     ? matchDetail.TimeSlot?.find((slot: TimeSlot) => slot.id === timeSlotId)
     : matchDetail.TimeSlot?.[0]; // Default to first if not specified

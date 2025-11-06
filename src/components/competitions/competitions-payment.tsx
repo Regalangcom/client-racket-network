@@ -1,9 +1,8 @@
 "use client";
 
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -25,15 +24,36 @@ import CompetitionTag from "./competitons-tags";
 import { PromoCodeInput } from "../form/promo-code-input";
 import { useState } from "react";
 import Separator from "../ui/separator";
+import displayIDRCurrency from "@/utils/currency";
+import { VoucherService } from "@/services/voucher-service";
+import { toast } from "sonner";
+import { CompetitionsService } from "@/services/comp-services";
 // import Link from "next/link";
 
 const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
-  title,
+  name_comp,
   competition_date,
   location,
+  price,
+  competitonId,
 }) => {
   const router = useRouter();
   const { isMobile } = useWindowDimension();
+
+  // state
+  const [errorMessage, setIsErrorMessage] = useState<string | null>("");
+
+  // state
+  const [appliedVoucher, setIsAppliedVoucher] = useState<{
+    code: string;
+    discount: number;
+    promoCodeId: number;
+    final_amount: number;
+  } | null>(null);
+
+  // state
+
+  const [isApplyingVoucher, setIsApplyVoucher] = useState<boolean>(false);
 
   const {
     register,
@@ -50,22 +70,75 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
 
   // pantau field tertentu, misalnya "name"
   const nameValue = watch("name");
+  const originalPrice = parseFloat(price);
+  const discountAmount = appliedVoucher?.discount || 0;
+  const finalPrice = appliedVoucher?.final_amount || originalPrice;
+
   const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {
-      // Proses pendaftaran
-      console.log(data);
+      const payload = {
+        competition_id: competitonId,
+        full_name: data.name,
+        email: data.email,
+        phone_number: data.phoneNumber,
+        skill_level: data.level,
+
+        promo_code: appliedVoucher?.code || null,
+        promo_code_id: appliedVoucher?.promoCodeId || null,
+
+        original_amount: originalPrice,
+        discount_amount: appliedVoucher?.discount || 0,
+        final_amount: finalPrice,
+      };
+
+      const result = await CompetitionsService.registrationCompetition(payload);
+      console.log("payload", result);
       router.push("/payment");
     } catch (error) {
       console.error("Pendaftaran gagal", error);
     }
   };
 
-  const [discountAmount, setDiscountAmount] = useState<number>(30000);
-  const originalPrice = 100000; // This would be your actual price
+  const handleApplyVoucher = async (VoucherCode: string) => {
+    setIsApplyVoucher(true);
+    setIsErrorMessage(null);
 
-  const handlePromoApplied = (discount: number) => {
-    setDiscountAmount(discount);
-    // You can also perform any other actions needed when a promo is applied
+    try {
+      const result = await VoucherService.applyVoucher(
+        {
+          voucher_code: VoucherCode,
+          original_amount: originalPrice,
+        },
+        undefined
+      );
+
+      setIsErrorMessage(result.message);
+      setIsAppliedVoucher({
+        code: result.data.code,
+        promoCodeId: result.data.promo_code_id,
+        discount: result.data.discount_amount,
+        final_amount: result.data.final_amount,
+      });
+
+      setIsErrorMessage(result.message);
+      toast.success("Voucher applied successfully!");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to apply voucher";
+
+      setIsErrorMessage(errorMessage);
+      setIsAppliedVoucher(null);
+
+      toast.error(errorMessage);
+    } finally {
+      setIsApplyVoucher(false);
+    }
+  };
+
+  const handleRemoveVoucher = () => {
+    setIsAppliedVoucher(null);
+    setIsErrorMessage(null);
+    toast.info("Voucher removed");
   };
 
   return (
@@ -95,7 +168,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
           {/* Card Match Detail */}
           <div className="bg-white">
             <div className="space-y-3">
-              {CompetitionsDetail(title, competition_date, location).map(
+              {CompetitionsDetail(name_comp, competition_date, location).map(
                 (tag, idx) => (
                   <CompetitionTag key={idx} {...tag} />
                 )
@@ -192,14 +265,18 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
             </div>
 
             {/* promo code */}
-            {/* <PromoCodeInput
+            <PromoCodeInput
               register={register}
+              errorMessage={errorMessage}
               setValue={setValue}
               getValues={getValues}
-              onPromoApplied={handlePromoApplied}
+              onApply={handleApplyVoucher}
+              onRemove={handleRemoveVoucher}
+              isLoading={isApplyingVoucher}
+              appliedCode={appliedVoucher?.code || null}
+              discountAmount={discountAmount}
               className="mb-2 mt-4"
-              placeholder="TEN87"
-            /> */}
+            />
 
             {/* Card Detail Pembayaran */}
             <div className="bg-white rounded-2xl ">
@@ -211,7 +288,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
               {/* Price row */}
               <div className="flex justify-between mb-2">
                 <span>Price</span>
-                <span>Rp {originalPrice.toLocaleString()}</span>
+                <span>{displayIDRCurrency(price)}</span>
               </div>
 
               {/* Promo discount row - only shown when discount is applied */}

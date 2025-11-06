@@ -34,13 +34,13 @@ export const Competitions = (
  * @returns {Array<{icon: string, label: string}>} - An array of objects containing the competition details.
  */
 export const CompetitionsDetail = (
-  title: string,
+  name_comp: string,
   competitions_date: string,
   location: string
 ) => {
   const formattedDate = formatLongDate(competitions_date, "en");
   return [
-    { icon: Trophy, label: title },
+    { icon: Trophy, label: name_comp },
     { icon: calender, label: formattedDate },
     { icon: maps, label: location },
   ];

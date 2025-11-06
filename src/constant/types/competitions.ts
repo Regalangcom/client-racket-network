@@ -13,11 +13,13 @@ export interface CompetitionsDetailCardProps {
   contact_avatar: string;
 }
 
-export interface CompetitionsRegisterProps {
-  title: string;
+export type CompetitionsRegisterProps = {
+  name_comp: string;
   location: string;
   competition_date: string;
-}
+  price: string;
+  competitonId: number;
+};
 
 export type IconsCompetitonsProps = {
   icon: StaticImageData;
@@ -113,4 +115,41 @@ export type CompetitionData = {
   members_count: string;
   slot_left: string;
   quota: string;
+};
+
+export type CompetitionRegistrationPayload = {
+  competition_id: number;
+  full_name: string;
+  email: string;
+  phone_number: string;
+  skill_level: "Beginner" | "Intermediate" | "Advanced";
+  promo_code?: string | null;
+  promo_code_id?: number | null;
+  original_amount: number;
+  discount_amount: number;
+  final_amount: number;
+};
+
+export type CompetitionRegistrationResponse = {
+  success: true;
+  message: string;
+  data: {
+    registration: {
+      id: number;
+      user_id: number | null;
+      competition_id: number;
+      full_name: string;
+      email: string;
+      phone_number: string;
+      skill_level: string;
+      promo_code: string | null;
+      promo_code_id: number | null;
+      payment_status: "PENDING" | "PAID" | "FAILED";
+      original_amount: string;
+      discount_amount: string;
+      final_amount: string;
+      createdAt: string;
+      match: { id: number };
+    };
+  };
 };

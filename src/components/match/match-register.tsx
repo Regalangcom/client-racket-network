@@ -53,6 +53,9 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
     final_amount: number;
   } | null>(null);
 
+  // state
+  const [errorMessage, setIsErrorMessage] = useState<string | null>("");
+
   const [isApplyingVoucher, setIsApplyVoucher] = useState<boolean>(false);
 
   // Format selected time untuk ditampilkan
@@ -139,12 +142,16 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
         discount: result.data.discount_amount,
         final_amount: result.data.final_amount,
       });
+      setIsErrorMessage(null);
       toast.success("Voucher applied successfully!");
     } catch (error) {
-      console.log("error", error);
-      toast.error(
-        error instanceof Error ? error.message : "Failed to apply voucher"
-      );
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to apply voucher";
+
+      setIsErrorMessage(errorMessage);
+      setAppliedVoucher(null);
+
+      toast.error(errorMessage);
     } finally {
       setIsApplyVoucher(false);
     }
@@ -152,6 +159,7 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
 
   const handleRemoveVoucher = () => {
     setAppliedVoucher(null);
+    setIsErrorMessage(null);
     toast.info("Voucher removed");
   };
 
@@ -274,6 +282,7 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
 
             <PromoCodeInput
               register={register}
+              errorMessage={errorMessage}
               setValue={setValue}
               getValues={getValues}
               onApply={handleApplyVoucher}
