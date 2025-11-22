@@ -198,7 +198,6 @@ const Payment: React.FC = () => {
     setSelectedMethod(name); // Set selected payment method
 
     if (name === "qris") {
-      // Jika QRIS dipilih, langsung panggil handlePayment
       await handlePayment();
     }
   };
