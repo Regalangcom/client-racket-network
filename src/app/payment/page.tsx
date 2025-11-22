@@ -9,7 +9,11 @@ export default function PaymentPage() {
   return (
     <section className="container-lg">
       <div className="flex flex-col sm:flex-row gap-4">
-        <div className={`flex-1 p-4 max-w-5xl  ${isLaptop ? "max-w-full" : "max-w-full"} `}>
+        <div
+          className={`flex-1 p-4 max-w-5xl  ${
+            isLaptop ? "max-w-full" : "max-w-full"
+          } `}
+        >
           <div>
             <Payment />
           </div>

@@ -149,7 +149,7 @@ export class CompetitionsService {
   ): Promise<CompetitionRegistrationResponse> {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/competitons/register`,
+        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/competitions/register`,
         {
           method: "POST",
           headers: {

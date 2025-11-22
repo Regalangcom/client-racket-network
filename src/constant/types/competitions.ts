@@ -133,6 +133,7 @@ export type CompetitionRegistrationPayload = {
 export type CompetitionRegistrationResponse = {
   success: true;
   message: string;
+  transaction: { order_id: string };
   data: {
     registration: {
       id: number;
@@ -150,7 +151,6 @@ export type CompetitionRegistrationResponse = {
       final_amount: string;
       createdAt: string;
       match: { id: number };
-      transaction: { order_id: string };
     };
   };
 };

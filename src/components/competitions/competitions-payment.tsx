@@ -82,7 +82,6 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
         email: data.email,
         phone_number: data.phoneNumber,
         skill_level: data.level,
-
         promo_code: appliedVoucher?.code || null,
         promo_code_id: appliedVoucher?.promoCodeId || null,
 
@@ -92,9 +91,14 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
       };
 
       const result = await CompetitionsService.registrationCompetition(payload);
-      const order_id = result.data.registration.transaction.order_id;
-      console.log("payload", result);
-      router.push(`/payment?order_id=${order_id}`);
+      if (result && result.success && result.data && result.transaction) {
+        const orderId = result.transaction.order_id;
+        console.log("Order ID:", orderId);
+        router.push(`/payment?order_id=${orderId}`);
+      } else {
+        console.error("Unexpected response format:", result);
+        toast.error("Registration failed. Please try again.");
+      }
     } catch (error) {
       console.error("Pendaftaran gagal", error);
     }

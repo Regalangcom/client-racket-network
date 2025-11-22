@@ -11,7 +11,6 @@ export default async function CompetitonsPaymentPage({
   const { id } = params;
 
   const { access_token } = await getAuthServerSession();
-
   const competitionsDetail = await CompetitionsService.getCompetitionsById(
     id,
     access_token as string
