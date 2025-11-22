@@ -92,8 +92,9 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
       };
 
       const result = await CompetitionsService.registrationCompetition(payload);
+      const order_id = result.data.registration.transaction.order_id;
       console.log("payload", result);
-      router.push("/payment");
+      router.push(`/payment?order_id=${order_id}`);
     } catch (error) {
       console.error("Pendaftaran gagal", error);
     }

@@ -150,6 +150,7 @@ export type CompetitionRegistrationResponse = {
       final_amount: string;
       createdAt: string;
       match: { id: number };
+      transaction: { order_id: string };
     };
   };
 };
