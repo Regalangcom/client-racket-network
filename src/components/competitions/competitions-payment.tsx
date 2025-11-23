@@ -94,7 +94,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
       if (result && result.success && result.data && result.transaction) {
         const orderId = result.transaction.order_id;
         console.log("Order ID:", orderId);
-        router.push(`/payment?order_id=${orderId}`);
+        router.push(`/payment?orderId=${orderId}`);
       } else {
         console.error("Unexpected response format:", result);
         toast.error("Registration failed. Please try again.");

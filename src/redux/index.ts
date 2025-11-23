@@ -2,9 +2,9 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
 import { authReducer } from "@/redux/store/auth-slice";
-import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-
 import { inboxReducer } from "./store/inbox-slice";
+import paymentReducer from "@/redux/store/payment-slice";
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 /**
  * Creates a Redux Persist storage object that does nothing.
@@ -40,9 +40,21 @@ const authPersistConfig = {
   whitelist: ["authState"],
 };
 
+const paymentPersistConfig = {
+  key: "payment", // Kunci untuk payment
+  storage: storage, // Menggunakan localStorage atau storage yang sesuai
+};
+
 const persistedReducer = persistReducer(authPersistConfig, authReducer);
+const persistedPaymentReducer = persistReducer(
+  paymentPersistConfig,
+  paymentReducer
+);
 
 const rootReducer = combineReducers({
+  // payment
+  payment: persistedPaymentReducer,
+  // auth
   auth: persistedReducer,
   // added
   inbox: inboxReducer,
@@ -60,6 +72,7 @@ export const store = configureStore({
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
+  // devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;
