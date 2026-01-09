@@ -1,12 +1,12 @@
 "use client";
 
 import { ChevronRight, MoveLeft } from "lucide-react";
-import { useState } from "react";
 import { qris } from "@/public";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PaymentService } from "@/services/payment-services";
 import { useDispatch } from "react-redux";
+import { useSession } from "next-auth/react";
 import { setOrderId, setQrString } from "@/redux/store/payment-slice";
 import { toast } from "sonner";
 
@@ -45,6 +45,7 @@ const PaymentItem = ({
 );
 
 const Payment: React.FC = () => {
+  const { data: session, status } = useSession();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -55,6 +56,11 @@ const Payment: React.FC = () => {
     // setSelectedMethod(name);
 
     const handlePayment = async () => {
+      if (!session?.user?.access_token) {
+        toast.error("Please login to continue");
+        return;
+      }
+
       const payload = {
         order_id: Comp_Id as string,
         payment_method: name,
@@ -63,12 +69,16 @@ const Payment: React.FC = () => {
       console.log("payload", payload);
 
       try {
-        const result = await PaymentService.processPayment(payload);
+        const result = await PaymentService.processPayment(
+          payload,
+          session?.user?.access_token
+        );
         if (result.success) {
           // dispatch
           dispatch(setQrString(result.data.qr_string));
           dispatch(setOrderId(result.data.order_id));
-          router.push(`/qris?orderId=${result.data.order_id}`);
+          // router.push(`/qris?orderId=${result.data.order_id}`);
+           window.location.href = `/qris?orderId=${result.data.order_id}`;
         }
         if (!result.success) return toast.error("payment failed");
       } catch (error) {

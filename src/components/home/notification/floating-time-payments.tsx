@@ -8,7 +8,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
-
 interface FloatingCountdownProps {
   targetTime: string | number;
   message: string;
@@ -153,7 +152,7 @@ const FloatingCountdown: React.FC<FloatingCountdownProps> = ({
           <X size={18} strokeWidth={2.5} className="text-gray-800" />
         </Button>
 
-        <Card className="w-[340px] bg-gradient-to-r from-lime-200 via-yellow-200 to-lime-200 h-14 border border-lime-300 hover:shadow-2xl hover:scale-[1.02] min-w-[410px] transition-all cursor-pointer overflow-hidden p-0 relative">
+        <Card className="w-[340px] bg-gradient-to-r from-lime-200 via-yellow-200 to-lime-200 h-14 border border-lime-300 hover:shadow-2xl hover:scale-[1.02] min-w-[429px] transition-all cursor-pointer overflow-hidden p-0 relative">
           {/* Content */}
           <div className="px-4 pt-3 pb-2 flex items-center justify-between gap-3">
             {/* Message */}

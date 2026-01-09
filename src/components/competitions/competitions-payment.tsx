@@ -28,6 +28,7 @@ import displayIDRCurrency from "@/utils/currency";
 import { VoucherService } from "@/services/voucher-service";
 import { toast } from "sonner";
 import { CompetitionsService } from "@/services/comp-services";
+import { useSession } from "next-auth/react";
 // import Link from "next/link";
 
 const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
@@ -38,6 +39,7 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   competitonId,
 }) => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { isMobile } = useWindowDimension();
 
   // state
@@ -90,7 +92,13 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
         final_amount: finalPrice,
       };
 
-      const result = await CompetitionsService.registrationCompetition(payload);
+      const result = await CompetitionsService.registrationCompetition(
+        payload,
+        session?.user?.access_token
+      );
+
+      console.log("competition-payment", result);
+
       if (result && result.success && result.data && result.transaction) {
         const orderId = result.transaction.order_id;
         console.log("Order ID:", orderId);

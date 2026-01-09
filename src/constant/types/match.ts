@@ -6,8 +6,12 @@ export interface Match {
   title: string;
   date: string;
   location: string;
-  status: "ongoing" | "created" | "completed";
+  status: "ongoing" | "created" | "completed" | "waiting_payment";
   imageUrl: StaticImageData;
+  // added
+  paymentDeadline?: string | number; // ISO string atau timestamp dari BE
+  countdownMessage?: string;
+  paymentUrl?: string;
 }
 
 export type MatchRegisterProps = {
