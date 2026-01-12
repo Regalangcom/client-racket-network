@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 
 interface FloatingCountdownProps {
   targetTime: string | number;
+  originalDuration?: number; // Original total duration in ms (to preserve progress across remounts)
   message: string;
   paymentUrl: string;
   onComplete?: () => void;
@@ -29,6 +30,7 @@ interface TimeRemaining {
 
 const FloatingCountdown: React.FC<FloatingCountdownProps> = ({
   targetTime,
+  originalDuration,
   message,
   paymentUrl,
   onComplete,
@@ -55,8 +57,14 @@ const FloatingCountdown: React.FC<FloatingCountdownProps> = ({
         ? new Date(targetTime).getTime()
         : targetTime;
     const now = Date.now();
-    const initialDuration = target - now;
-    totalDurationRef.current = initialDuration;
+
+    // Use provided originalDuration if available (preserves progress across remounts)
+    // Otherwise fallback to calculating from current time
+    if (originalDuration && originalDuration > 0) {
+      totalDurationRef.current = originalDuration;
+    } else {
+      totalDurationRef.current = target - now;
+    }
 
     const calculateTimeRemaining = (): TimeRemaining => {
       const target =
@@ -107,7 +115,7 @@ const FloatingCountdown: React.FC<FloatingCountdownProps> = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [targetTime, onComplete]);
+  }, [targetTime, originalDuration, onComplete]);
 
   const handleClose = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -152,7 +160,7 @@ const FloatingCountdown: React.FC<FloatingCountdownProps> = ({
           <X size={18} strokeWidth={2.5} className="text-gray-800" />
         </Button>
 
-        <Card className="w-[340px] bg-gradient-to-r from-lime-200 via-yellow-200 to-lime-200 h-14 border border-lime-300 hover:shadow-2xl hover:scale-[1.02] min-w-[429px] transition-all cursor-pointer overflow-hidden p-0 relative">
+        <Card className="w-[340px] bg-gradient-to-r from-lime-200 via-yellow-200 to-lime-200 h-14 border border-lime-300 hover:shadow-2xl hover:scale-[1.02] min-w-[369px] transition-all cursor-pointer overflow-hidden p-0 relative">
           {/* Content */}
           <div className="px-4 pt-3 pb-2 flex items-center justify-between gap-3">
             {/* Message */}

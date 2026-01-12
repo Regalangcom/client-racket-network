@@ -98,11 +98,15 @@ export default function PendingPaymentManager({
   }
 
   const targetTime = new Date(pendingPayment.expires_at).getTime();
-  
+
   if (isNaN(targetTime) || targetTime <= Date.now()) {
     console.log("⚠️ Invalid or expired time");
     return null;
   }
+
+  // Calculate original duration from remaining_seconds (convert to ms)
+  // This preserves the progress bar state across page navigations/remounts
+  const originalDuration = pendingPayment.remaining_seconds * 1000;
 
   console.log("✅ Showing FloatingCountdown");
 
@@ -110,8 +114,9 @@ export default function PendingPaymentManager({
     <FloatingCountdown
       id={`payment-${pendingPayment.order_id}`}
       targetTime={targetTime}
+      originalDuration={originalDuration}
       message="⏳ Selesaikan pembayaran Anda"
-      paymentUrl={`/payment/${pendingPayment.order_id}`}
+      paymentUrl={`/qris?orderId=${pendingPayment.order_id}`}
       onComplete={() => setIsVisible(false)}
       onClose={() => setIsVisible(false)}
       position="bottom-right"
