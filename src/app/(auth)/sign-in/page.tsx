@@ -18,7 +18,7 @@ import Link from "next/link";
 import { iconGoogle } from "../../../public";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
@@ -32,6 +32,8 @@ import { toast } from "sonner";
 
 function SignInPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -66,7 +68,7 @@ function SignInPage() {
       if (result?.ok) {
         toast.success("Login berhasil!");
         router.refresh();
-        router.push("/profile");
+        router.push(callbackUrl);
       }
     } catch (error) {
       console.error("Unexpected error:", error);

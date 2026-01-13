@@ -77,6 +77,13 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   const finalPrice = appliedVoucher?.final_amount || originalPrice;
 
   const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
+    // Auth guard - prevent submission if not authenticated
+    if (status !== "authenticated" || !session?.user?.access_token) {
+      toast.error("Please sign in to continue");
+      router.push(`/sign-in?callbackUrl=/competitions/${competitonId}/comp-payment`);
+      return;
+    }
+
     try {
       const payload = {
         competition_id: competitonId,
