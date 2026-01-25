@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import MatchRegister from "@/components/match/match-register";
 import { getAuthServerSession } from "@/lib/auth-options";
 import { MatchService } from "@/services/match-service";
@@ -19,6 +19,12 @@ export default async function MatchRegisterPage({
     : undefined;
 
   const { access_token } = await getAuthServerSession();
+
+  // Auth guard - redirect unauthenticated users to sign-in
+  if (!access_token) {
+    redirect(`/sign-in?callbackUrl=/match/${id}/join-match`);
+  }
+
   const matchDetail = await MatchService.getMatchById(
     id,
     access_token || undefined

@@ -43,6 +43,7 @@ function InputOTPForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
 
   const form = useForm<OtpInFormSchema>({
     resolver: zodResolver(OtpInFormSchema),
@@ -69,7 +70,8 @@ function InputOTPForm() {
       setIsPending(false);
       setIsPendingResendCode(false);
 
-      router.push("/sign-in");
+      const signInUrl = `/sign-in${callbackUrl !== "/profile" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`;
+      router.push(signInUrl);
     } catch (error: any) {
       if (error?.response?.data.errors === "OTP Expired") {
         // setIsMessageError(error.response.data.errors);

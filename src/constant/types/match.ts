@@ -7,7 +7,8 @@ export interface Match {
   date: string;
   location: string;
   status: "ongoing" | "created" | "completed" | "waiting_payment";
-  imageUrl: StaticImageData;
+  imageUrl: StaticImageData | string;
+  clubLogo?: string;
   // added
   paymentDeadline?: string | number; // ISO string atau timestamp dari BE
   countdownMessage?: string;
@@ -200,6 +201,7 @@ export type MatchFilter = {
 
 export type MatchRegistrationPayload = {
   match_id: number;
+  time_slot_id: number;
   full_name: string;
   email: string;
   phone_number: string;
@@ -232,5 +234,9 @@ export type MatchRegistrationResponse = {
       createdAt: string;
       match: { id: number };
     };
+  };
+  transaction?: {
+    order_id: string;
+    payment_method: string;
   };
 };

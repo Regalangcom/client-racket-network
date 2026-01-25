@@ -1,5 +1,5 @@
 import iconGoogle from "@/public/assets/icons/google.png";
-import logoRc from "@/public/assets/icons/logo-RC.svg";
+import logoRc from "@/public/assets/icons/RC01.svg";
 import sampeImage from "@/public/sample.png";
 import gopay from "@/public/assets/icons/gopay.svg";
 import ovo from "@/public/assets/icons/ovo.svg";
@@ -38,6 +38,11 @@ import racquet from "@/public/assets/icons/racquet.svg";
 import pencil from "@/public/assets/icons/pencil.svg";
 import podium from "@/public/assets/icons/ranking-podium.svg";
 import comp_1 from "@/public/assets/icons/comp1.svg";
+import checkFill from "@/public/assets/icons/bi_check-circle-fill.svg";
+import xCircleFill from "@/public/assets/icons/bi_x-circle-fill.svg";
+
+
+
 
 // ========================
 // ICON ACTIVE
@@ -52,6 +57,8 @@ import compeActive from "@/public/assets/icons/compe-active.svg";
 import accountActive from "@/public/assets/icons/account-active.svg";
 
 export {
+  checkFill,
+  xCircleFill,
   racquet,
   pencil,
   podium,

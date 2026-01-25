@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -22,11 +22,19 @@ interface QrisClientProps {
     qr_string?: string;
   };
   orderId: string;
+  paymentType?: "MATCH" | "COMPETITION";
 }
 
-export default function QrisClient({ paymentData, orderId }: QrisClientProps) {
+export default function QrisClient({
+  paymentData,
+  orderId,
+  paymentType = "COMPETITION",
+}: QrisClientProps) {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  // Determine redirect URL based on payment type
+  const redirectUrl = paymentType === "MATCH" ? "/match" : "/competitions";
 
   // Redux - check if QR string already stored
   const qrString = useSelector((state: RootState) => state.payment.qrString);
@@ -39,14 +47,51 @@ export default function QrisClient({ paymentData, orderId }: QrisClientProps) {
     }
   }, [paymentData, qrString, dispatch]);
 
+  // ✅ Check payment status function
+  const checkPaymentStatus = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_API}/api/v1/webhook/payment-status/${orderId}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+      const transactionStatus = data?.data?.midtrans_status?.transaction_status;
+      const paymentStatus = data?.data?.payment?.registration?.payment_status;
+
+      // Redirect if payment is successful
+      if (transactionStatus === "settlement" || paymentStatus === "PAID") {
+        dispatch(resetQrString());
+        router.push(`/payment/status?order_id=${orderId}`);
+      }
+    } catch (error) {
+      console.error("Error checking payment status:", error);
+    }
+  }, [orderId, dispatch, router]);
+
+  // ✅ Poll payment status every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkPaymentStatus();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [checkPaymentStatus]);
+
   const handleExpiration = () => {
     dispatch(resetQrString());
-    router.push("/competitions");
+    router.push(redirectUrl);
   };
 
   const handleCancelPayment = () => {
     dispatch(resetQrString());
-    router.push("/competitions");
+    router.push(redirectUrl);
   };
 
   const expiresAt = paymentData.expired_at || paymentData.expires_at;
@@ -115,7 +160,7 @@ export default function QrisClient({ paymentData, orderId }: QrisClientProps) {
             </Button>
 
             <Button
-              onClick={() => router.refresh()}
+              onClick={checkPaymentStatus}
               className="w-full md:py-6 border-2 bg-white text-black hover:bg-background-button-rc hover:text-white rounded-md"
             >
               Check Status

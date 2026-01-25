@@ -15,7 +15,7 @@ import { SignUpFormData, SignUpFormSchema } from "@/constant/types/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputError from "../../_components/input-errors";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { iconGoogle } from "@/public";
 // module api
@@ -38,6 +38,8 @@ function SignUpPage() {
   const [isMessageError, setIsMessageError] = useState<string | null>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
 
   // handle toogle hide password
   const toogleIsVisibility = () => setIsVisible((prevState) => !prevState);
@@ -66,7 +68,8 @@ function SignUpPage() {
       );
       toast.success(response.data.message);
 
-      router.push(`/otp?email=${response.data.email}`);
+      const otpUrl = `/otp?email=${response.data.email}${callbackUrl !== "/profile" ? `&callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`;
+      router.push(otpUrl);
       setIsPending(false);
       reset();
       // await action(data);
@@ -248,7 +251,7 @@ function SignUpPage() {
                 <p className="text-center text-sm text-zinc-600">
                   Sudah punya akun?{" "}
                   <Link
-                    href="/sign-in"
+                    href={`/sign-in${callbackUrl !== "/profile" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
                     className="text-blue-600 hover:underline"
                   >
                     Masuk

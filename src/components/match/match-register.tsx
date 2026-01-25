@@ -28,6 +28,7 @@ import displayIDRCurrency from "@/utils/currency";
 import { VoucherService } from "@/services/voucher-service";
 import { toast } from "sonner";
 import { MatchService } from "@/services/match-service";
+import { useSession } from "next-auth/react";
 
 interface MatchRegisterPropsExtended extends MatchRegisterProps {
   selectedTimeSlot?: TimeSlot;
@@ -44,6 +45,7 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
   selectedTimeSlot,
 }) => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { isMobile } = useWindowDimension();
 
   const [appliedVoucher, setAppliedVoucher] = useState<{
@@ -91,7 +93,14 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
   const finalPrice = appliedVoucher?.final_amount || originalPrice;
 
   const onSubmit: SubmitHandler<RegistrationMatchForm> = async (data) => {
-    if (!selectedTimeSlot) {
+    // Auth guard - prevent submission if not authenticated
+    if (status !== "authenticated" || !session?.user?.access_token) {
+      toast.error("Please sign in to continue");
+      router.push(`/sign-in?callbackUrl=/match/${matchId}/join-match`);
+      return;
+    }
+
+    if (!selectedTimeSlot || !selectedTimeSlot.id) {
       toast.error("Please select a time slot");
       return;
     }
@@ -99,7 +108,7 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
     try {
       const payload = {
         match_id: matchId,
-        time_slot_id: selectedTimeSlot.id, // ✅ Kirim time slot id
+        time_slot_id: selectedTimeSlot.id as number,
         full_name: data.name,
         email: data.email,
         phone_number: data.phoneNumber,
@@ -113,11 +122,21 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
         final_amount: finalPrice,
       };
 
-      const result = await MatchService.registrationMatch(payload);
+      const result = await MatchService.registrationMatch(
+        payload,
+        session?.user?.access_token
+      );
+
       console.log("Registration successful", result);
 
-      toast.success("Registration successful!");
-      // router.push("/payment");
+      if (result && result.success && result.transaction) {
+        const orderId = result.transaction.order_id;
+        console.log("Order ID:", orderId);
+        router.push(`/payment?orderId=${orderId}`);
+      } else {
+        console.error("Unexpected response format:", result);
+        toast.error("Registration failed. Please try again.");
+      }
     } catch (error) {
       console.error("Registration failed", error);
       toast.error("Registration failed. Please try again.");

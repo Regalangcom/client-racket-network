@@ -94,3 +94,7 @@ Required in `.env`:
 - `NEXTAUTH_URL` - Application URL
 - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` - Google OAuth (if using)
 - `NEXT_PUBLIC_SENTRY_DSN` - Sentry error tracking
+
+- When creating components, prioritize reusable components and use Server Components by default in app/(application)/ Authentication must be handled on the server using getAuthServerSession.
+- If a Client Component requires session data (useSession), it must act only as a bridge to receive or trigger auth callbacks, while the core auth logic and data fetching remain in Server Components.
+

@@ -12,8 +12,11 @@ export default async function QrisPage({ searchParams }: PageProps) {
   const orderId = searchParams.orderId;
 
   if (!orderId) {
-    redirect("/competitions");
+    redirect("/");
   }
+
+  // Determine payment type from order_id prefix
+  const paymentType = orderId.startsWith("MATCH-") ? "MATCH" : "COMPETITION";
 
   const { access_token } = await getAuthServerSession();
 
@@ -32,7 +35,13 @@ export default async function QrisPage({ searchParams }: PageProps) {
       notFound();
     }
 
-    return <QrisClient paymentData={paymentData} orderId={orderId} />;
+    return (
+      <QrisClient
+        paymentData={paymentData}
+        orderId={orderId}
+        paymentType={paymentType}
+      />
+    );
   } catch (error) {
     console.error("Error loading payment:", error);
     notFound();

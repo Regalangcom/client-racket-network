@@ -6,6 +6,8 @@ import FloatingCountdown from './notification/floating-time-payments';
 
 interface PendingPayment {
   order_id: string;
+  type: "COMPETITION" | "MATCH";
+  event_name: string;
   payment_method: string;
   expires_at: string;
   remaining_seconds: number;
@@ -81,11 +83,11 @@ export default function PendingPaymentManager({
     }
   };
 
-  console.log("\n🎨 [CLIENT] PendingPaymentManager rendered");
-  console.log("  - serverPayment:", serverPayment);
-  console.log("  - pendingPayment:", pendingPayment);
-  console.log("  - isVisible:", isVisible);
-  console.log("  - isLoading:", isLoading);
+  // console.log("\n🎨 [CLIENT] PendingPaymentManager rendered");
+  // console.log("  - serverPayment:", serverPayment);
+  // console.log("  - pendingPayment:", pendingPayment);
+  // console.log("  - isVisible:", isVisible);
+  // console.log("  - isLoading:", isLoading);
 
   if (isLoading) {
     console.log("⏳ Loading...");
@@ -110,12 +112,17 @@ export default function PendingPaymentManager({
 
   console.log("✅ Showing FloatingCountdown");
 
+  // Build message with event name
+  const paymentMessage = pendingPayment.event_name
+    ? `Payment for ${pendingPayment.event_name}`
+    : "Waiting for your payment";
+
   return (
     <FloatingCountdown
       id={`payment-${pendingPayment.order_id}`}
       targetTime={targetTime}
       originalDuration={originalDuration}
-      message="⏳ Selesaikan pembayaran Anda"
+      message={paymentMessage}
       paymentUrl={`/qris?orderId=${pendingPayment.order_id}`}
       onComplete={() => setIsVisible(false)}
       onClose={() => setIsVisible(false)}

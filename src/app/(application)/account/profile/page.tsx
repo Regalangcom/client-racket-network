@@ -45,7 +45,7 @@ export default async function ProfilePages() {
   const { access_token } = await getAuthServerSession();
 
   if (!access_token) {
-    redirect("/login");
+    redirect("/sign-in?callbackUrl=/account/profile");
   }
 
   const user = await getUserData(access_token ?? "");

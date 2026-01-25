@@ -29,9 +29,18 @@ const config: Config = {
             opacity: "1",
           },
         },
+        "bounce-subtle": {
+          "0%, 100%": {
+            transform: "translateX(-50%) translateY(0)",
+          },
+          "50%": {
+            transform: "translateX(-50%) translateY(-4px)",
+          },
+        },
       },
       animation: {
         "slide-up-popup": "slide-up-popup 0.3s ease-out",
+        "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
       },
       colors: {
         background: "hsl(var(--background))",

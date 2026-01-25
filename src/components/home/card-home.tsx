@@ -1,4 +1,5 @@
 // components/home/cardHome.tsx
+"use client"
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import InProgressBadge from "./in-badge-Prosess";
 import { Match } from "@/constant/types/match";
+// import { AccountMenu } from "../account/accountMenu/title-menu";
 
 interface HomeCardProps extends Match {}
 
@@ -18,13 +20,23 @@ const HomeCard: React.FC<HomeCardProps> = ({
   location,
   status,
   imageUrl,
+  clubLogo,
 }) => {
   return (
     <Card className="sm:w-[290px] w-full md:w-[350px] h-[466px] overflow-hidden shadow-sm border border-gray-200 flex flex-col p-0">
+      {/* <AccountMenu title="match detail" showBackButton /> */}
       {/* Header */}
       <div className="bg-gray-200 flex items-center px-6  py-3">
         <div className="w-14 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
-          {/* Gambar klub */}
+          {clubLogo && (
+            <Image
+              src={clubLogo}
+              alt={clubName}
+              width={56}
+              height={48}
+              className="object-cover w-full h-full"
+            />
+          )}
         </div>
         <div className="flex items-center justify-between w-full">
           <span className="font-medium text-xs text-gray-800 px-4">
@@ -58,7 +70,7 @@ const HomeCard: React.FC<HomeCardProps> = ({
           </div>
         </div>
         <Link href={`/match/${id}`}>
-          <Button className="mt-4 w-full bg-background-button-rc text-white rounded-lg">
+          <Button className="mt-4 w-full bg-background-button-rc text-[#E1FFA0] rounded-lg">
             View
           </Button>
         </Link>

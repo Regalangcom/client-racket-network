@@ -18,7 +18,7 @@ import Link from "next/link";
 import { iconGoogle } from "../../../public";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
@@ -31,11 +31,19 @@ import { toast } from "sonner";
 // }
 
 function SignInPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/profile";
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  // Validate callback URL to prevent open redirect attacks
+  const getSafeCallbackUrl = (url: string): string => {
+    // Only allow internal paths (starting with /)
+    if (url.startsWith("/") && !url.startsWith("//")) {
+      return url;
+    }
+    return "/profile";
+  };
 
   const {
     register,
@@ -58,22 +66,23 @@ function SignInPage() {
         redirect: false,
       });
 
-      // Cek apakah ada error
       if (result?.error) {
         toast.error(result.error);
-        setIsPending(false);
-        return; // Stop execution kalau error
+        return;
       }
 
       if (result?.ok) {
         toast.success("Login berhasil!");
-        router.refresh();
-        router.push(callbackUrl);
+        // Use hard redirect to ensure session cookie is properly sent
+        const safeUrl = getSafeCallbackUrl(callbackUrl);
+        window.location.href = safeUrl;
+        return; // Prevent finally from setting isPending to false
       }
     } catch (error) {
-      console.error("Unexpected error:", error);
+      console.error("Login error:", error);
+      toast.error("Terjadi kesalahan, silakan coba lagi");
     } finally {
-      setIsPending(false); // Selalu set false, error atau tidak
+      setIsPending(false);
     }
   };
 
@@ -215,7 +224,7 @@ function SignInPage() {
                 <p className="text-center text-sm text-zinc-600">
                   belum punya akun?{" "}
                   <Link
-                    href="/sign-up"
+                    href={`/sign-up${callbackUrl !== "/profile" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
                     className="text-blue-600 hover:underline"
                   >
                     Daftar
