@@ -19,6 +19,8 @@ export type CompetitionsRegisterProps = {
   competition_date: string;
   price: string;
   competitonId: number;
+  isAuthenticated?: boolean;
+  userEmail?: string | null;
 };
 
 export type IconsCompetitonsProps = {

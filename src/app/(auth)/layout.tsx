@@ -17,7 +17,7 @@ function SignInLayout({ children }: { children: React.ReactNode }) {
             priority
             width={144}
             height={144}
-            className="w-36 h-37 md:mx-6 object-cover rounded"
+            className="w-20 h- md:mx-6 object-cover rounded"
           />
         </nav>
       </header>

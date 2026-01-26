@@ -16,7 +16,7 @@ function MatchLayout({ children }: { children: React.ReactNode }) {
             priority
             width={144}
             height={144}
-            className="w-36 h-37  object-cover rounded"
+            className="w-20 h-30  object-cover rounded"
           />
         </nav>
       </header>

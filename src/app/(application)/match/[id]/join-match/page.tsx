@@ -1,12 +1,12 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import MatchRegister from "@/components/match/match-register";
 import { getAuthServerSession } from "@/lib/auth-options";
 import { MatchService } from "@/services/match-service";
-import { TimeSlot } from "@/constant/types"; // ✅ Import the type
+import { TimeSlot } from "@/constant/types";
 
 interface PageProps {
   params: { id: string };
-  searchParams?: { timeSlotId?: string }; // ✅ Optional if you want to pre-select via URL
+  searchParams?: { timeSlotId?: string };
 }
 
 export default async function MatchRegisterPage({
@@ -18,12 +18,8 @@ export default async function MatchRegisterPage({
     ? parseInt(searchParams.timeSlotId)
     : undefined;
 
-  const { access_token } = await getAuthServerSession();
-
-  // Auth guard - redirect unauthenticated users to sign-in
-  if (!access_token) {
-    redirect(`/sign-in?callbackUrl=/match/${id}/join-match`);
-  }
+  const { access_token, email } = await getAuthServerSession();
+  const isAuthenticated = !!access_token;
 
   const matchDetail = await MatchService.getMatchById(
     id,
@@ -36,7 +32,7 @@ export default async function MatchRegisterPage({
 
   const selectedTimeSlot: TimeSlot | undefined = timeSlotId
     ? matchDetail.TimeSlot?.find((slot: TimeSlot) => slot.id === timeSlotId)
-    : matchDetail.TimeSlot?.[0]; // Default to first if not specified
+    : matchDetail.TimeSlot?.[0];
 
   return (
     <section className="sm:p-8 md:container">
@@ -50,6 +46,8 @@ export default async function MatchRegisterPage({
         name_club={matchDetail.club.name_club || "Unknown Club"}
         selectedTimeSlot={selectedTimeSlot}
         timeSlots={matchDetail.TimeSlot}
+        isAuthenticated={isAuthenticated}
+        userEmail={email}
       />
     </section>
   );

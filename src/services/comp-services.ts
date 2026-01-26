@@ -148,14 +148,19 @@ export class CompetitionsService {
     access_token?: string
   ): Promise<CompetitionRegistrationResponse> {
     try {
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (access_token) {
+        headers["Authorization"] = `Bearer ${access_token}`;
+      }
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/api/v1/competitions/register`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json",
-          },
+          headers,
           body: JSON.stringify(payload),
         }
       );

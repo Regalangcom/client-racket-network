@@ -23,7 +23,7 @@ import { matchIconRegister } from "@/constant/match";
 import { MatchIconRegisters } from "./match-tags";
 import Separator from "../ui/separator";
 import { PromoCodeInput } from "../form/promo-code-input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import displayIDRCurrency from "@/utils/currency";
 import { VoucherService } from "@/services/voucher-service";
 import { toast } from "sonner";
@@ -43,9 +43,11 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
   name_club,
   matchId,
   selectedTimeSlot,
+  isAuthenticated = false,
+  userEmail = null,
 }) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { isMobile } = useWindowDimension();
 
   const [appliedVoucher, setAppliedVoucher] = useState<{
@@ -55,12 +57,9 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
     final_amount: number;
   } | null>(null);
 
-  // state
   const [errorMessage, setIsErrorMessage] = useState<string | null>("");
-
   const [isApplyingVoucher, setIsApplyVoucher] = useState<boolean>(false);
 
-  // Format selected time untuk ditampilkan
   const selectedTimeLabel = selectedTimeSlot
     ? `${selectedTimeSlot.start_time} - ${selectedTimeSlot.end_time}`
     : undefined;
@@ -71,7 +70,6 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
     gender_restriction,
     price,
     name_club,
-    // match_date,
     selectedTimeLabel
   );
 
@@ -85,7 +83,17 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
     getValues,
   } = useForm<RegistrationMatchForm>({
     resolver: zodResolver(registrationMatchSchema),
+    defaultValues: {
+      email: userEmail || "",
+    },
   });
+
+  // Pre-fill email for authenticated users
+  useEffect(() => {
+    if (isAuthenticated && userEmail) {
+      setValue("email", userEmail);
+    }
+  }, [isAuthenticated, userEmail, setValue]);
 
   const nameWatch = watch("name");
   const originalPrice = parseFloat(price);
@@ -93,13 +101,6 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
   const finalPrice = appliedVoucher?.final_amount || originalPrice;
 
   const onSubmit: SubmitHandler<RegistrationMatchForm> = async (data) => {
-    // Auth guard - prevent submission if not authenticated
-    if (status !== "authenticated" || !session?.user?.access_token) {
-      toast.error("Please sign in to continue");
-      router.push(`/sign-in?callbackUrl=/match/${matchId}/join-match`);
-      return;
-    }
-
     if (!selectedTimeSlot || !selectedTimeSlot.id) {
       toast.error("Please select a time slot");
       return;
@@ -113,25 +114,27 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
         email: data.email,
         phone_number: data.phoneNumber,
         skill_level: data.level,
-
         promo_code: appliedVoucher?.code || null,
         promo_code_id: appliedVoucher?.promoCodeId || null,
-
         original_amount: originalPrice,
         discount_amount: appliedVoucher?.discount || 0,
         final_amount: finalPrice,
       };
 
+      // Pass token only if authenticated
       const result = await MatchService.registrationMatch(
         payload,
-        session?.user?.access_token
+        isAuthenticated ? session?.user?.access_token : undefined
       );
-
-      console.log("Registration successful", result);
 
       if (result && result.success && result.transaction) {
         const orderId = result.transaction.order_id;
-        console.log("Order ID:", orderId);
+
+        // Store email in localStorage for guest payment flow
+        if (!isAuthenticated) {
+          localStorage.setItem("guest_payment_email", data.email);
+        }
+
         router.push(`/payment?orderId=${orderId}`);
       } else {
         console.error("Unexpected response format:", result);
@@ -139,7 +142,8 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
       }
     } catch (error) {
       console.error("Registration failed", error);
-      toast.error("Registration failed. Please try again.");
+      const errorMsg = error instanceof Error ? error.message : "Registration failed";
+      toast.error(errorMsg);
     }
   };
 
@@ -185,7 +189,7 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
   return (
     <div className="container-lg mx-auto max-w-full px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Kolom Kiri - Match Information */}
+        {/* Left Column - Match Information */}
         <div className="space-y-6">
           {isMobile && (
             <div className="flex gap-3 relative w-full">
@@ -218,10 +222,27 @@ const MatchRegister: React.FC<MatchRegisterPropsExtended> = ({
           <Separator />
         </div>
 
-        {/* Kolom Kanan - Registrasi & Pembayaran */}
+        {/* Right Column - Registration & Payment */}
         <div className="space-y-6">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-white rounded-2xl mb-6">
+              {/* Guest/Authenticated Banner */}
+              {!isAuthenticated && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                  <p className="text-sm text-yellow-800">
+                    <strong>Registering as guest</strong> - Payment confirmation will be sent to your email.
+                  </p>
+                </div>
+              )}
+
+              {isAuthenticated && userEmail && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                  <p className="text-sm text-green-800">
+                    Logged in as <strong>{userEmail}</strong>
+                  </p>
+                </div>
+              )}
+
               <h3 className="text-2xl font-semibold mb-4">Information</h3>
               <div className="space-y-4">
                 <div>

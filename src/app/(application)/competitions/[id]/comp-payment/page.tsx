@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import CompetitionPayment from "@/components/competitions/competitions-payment";
 import { CompetitionsService } from "@/services/comp-services";
 import { getAuthServerSession } from "@/lib/auth-options";
@@ -10,20 +10,13 @@ export default async function CompetitonsPaymentPage({
 }) {
   const { id } = params;
 
-  const { access_token } = await getAuthServerSession();
-
-  // Auth guard - redirect unauthenticated users to sign-in
-  if (!access_token) {
-    redirect(`/sign-in?callbackUrl=/competitions/${id}/comp-payment`);
-  }
+  const { access_token, email } = await getAuthServerSession();
+  const isAuthenticated = !!access_token;
 
   const competitionsDetail = await CompetitionsService.getCompetitionsById(
     id,
-    access_token as string
+    access_token || undefined
   );
-
-  
-
 
   if (!competitionsDetail) {
     notFound();
@@ -37,6 +30,8 @@ export default async function CompetitonsPaymentPage({
         competition_date={competitionsDetail.competitions_date}
         location={competitionsDetail.location}
         price={competitionsDetail.price}
+        isAuthenticated={isAuthenticated}
+        userEmail={email}
       />
     </section>
   );

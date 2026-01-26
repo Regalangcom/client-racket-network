@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { MoveLeft } from "lucide-react";
+import { MoveLeft, Wifi, WifiOff } from "lucide-react";
 import displayIDRCurrency from "@/utils/currency";
 import ExpireTimer from "@/components/ui/expires-At";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { setQrString, resetQrString } from "@/redux/store/payment-slice";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { usePaymentSocket } from "@/hooks/usePaymentSocket";
+import { toast } from "sonner";
 
 interface QrisClientProps {
   paymentData: {
@@ -32,6 +35,10 @@ export default function QrisClient({
 }: QrisClientProps) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { status } = useSession();
+
+  const isAuthenticated = status === "authenticated";
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
 
   // Determine redirect URL based on payment type
   const redirectUrl = paymentType === "MATCH" ? "/match" : "/competitions";
@@ -39,7 +46,28 @@ export default function QrisClient({
   // Redux - check if QR string already stored
   const qrString = useSelector((state: RootState) => state.payment.qrString);
 
-  // ✅ Store QR string to Redux on mount
+  // WebSocket integration for authenticated users
+  const { isConnected } = usePaymentSocket({
+    orderId,
+    onSuccess: () => {
+      setPaymentCompleted(true);
+      dispatch(resetQrString());
+      // Clear guest email from localStorage if exists
+      localStorage.removeItem("guest_payment_email");
+    },
+    onExpired: () => {
+      toast.error("Payment expired");
+      dispatch(resetQrString());
+      router.push(redirectUrl);
+    },
+    onCancelled: () => {
+      toast.error("Payment cancelled");
+      dispatch(resetQrString());
+      router.push(redirectUrl);
+    },
+  });
+
+  // Store QR string to Redux on mount
   useEffect(() => {
     const qrUrl = paymentData.qrUrl || paymentData.qr_string;
     if (qrUrl && !qrString) {
@@ -47,8 +75,10 @@ export default function QrisClient({
     }
   }, [paymentData, qrString, dispatch]);
 
-  // ✅ Check payment status function
+  // Check payment status function (polling)
   const checkPaymentStatus = useCallback(async () => {
+    if (paymentCompleted) return;
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/api/v1/webhook/payment-status/${orderId}`,
@@ -67,30 +97,42 @@ export default function QrisClient({
 
       // Redirect if payment is successful
       if (transactionStatus === "settlement" || paymentStatus === "PAID") {
+        setPaymentCompleted(true);
         dispatch(resetQrString());
+        // Clear guest email from localStorage
+        localStorage.removeItem("guest_payment_email");
         router.push(`/payment/status?order_id=${orderId}`);
       }
     } catch (error) {
       console.error("Error checking payment status:", error);
     }
-  }, [orderId, dispatch, router]);
+  }, [orderId, dispatch, router, paymentCompleted]);
 
-  // ✅ Poll payment status every 5 seconds
+  // Poll payment status every 5 seconds (skip if WebSocket is connected for authenticated users)
   useEffect(() => {
+    // Skip polling if WebSocket is connected (authenticated user with active connection)
+    if (isAuthenticated && isConnected) {
+      console.log("[QRIS] Skipping polling - WebSocket connected");
+      return;
+    }
+
+    console.log("[QRIS] Starting payment status polling");
     const interval = setInterval(() => {
       checkPaymentStatus();
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [checkPaymentStatus]);
+  }, [checkPaymentStatus, isAuthenticated, isConnected]);
 
   const handleExpiration = () => {
     dispatch(resetQrString());
+    localStorage.removeItem("guest_payment_email");
     router.push(redirectUrl);
   };
 
   const handleCancelPayment = () => {
     dispatch(resetQrString());
+    localStorage.removeItem("guest_payment_email");
     router.push(redirectUrl);
   };
 
@@ -111,6 +153,23 @@ export default function QrisClient({
             Payment Confirmation
           </p>
         </div>
+
+        {/* Connection status indicator for authenticated users */}
+        {isAuthenticated && (
+          <div className={`flex items-center gap-2 text-sm ${isConnected ? 'text-green-600' : 'text-yellow-600'}`}>
+            {isConnected ? (
+              <>
+                <Wifi className="h-4 w-4" />
+                <span>Real-time updates active</span>
+              </>
+            ) : (
+              <>
+                <WifiOff className="h-4 w-4" />
+                <span>Checking status periodically...</span>
+              </>
+            )}
+          </div>
+        )}
 
         <div className="mb-0">
           {expiresAt && (

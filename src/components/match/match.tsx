@@ -48,7 +48,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
         <MatchViewDisplay match={match} />
         <Link href={`/match/${match.id}`}>
           <Button className="mt-4 w-full py-5 bg-background-button-rc text-[#E1FFA0] rounded-lg">
-            View
+            Views
           </Button>
         </Link>
       </CardContent>

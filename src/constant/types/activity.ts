@@ -9,6 +9,8 @@ export interface Activity {
   visibility: string;
   title: string;
   message: string;
+  slot_left: number;
+  location: string;
   actor_name: string | null;
   club: ActivityClub;
   reference_id: string;

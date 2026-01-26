@@ -1,4 +1,5 @@
 export type PaymentProcessingPayload = {
+  email?: string; // Required for guest payments
   order_id?: string;
   payment_method: string;
 };
