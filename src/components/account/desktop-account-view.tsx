@@ -15,11 +15,8 @@ export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({
   user,
   menuItems,
 }) => {
-  if (!user || !user.profile) {
-    return <div>No user data available</div>;
-  }
-
-  <div className="flex w-full h-screen">
+  return (
+    <div className="flex w-full h-screen">
     {/* Sidebar Profile */}
     <div className="w-1/4 bg-white p-6 border-r">
       <div className="flex flex-col items-center">
@@ -81,5 +78,6 @@ export const DesktopAccountView: React.FC<DesktopAccountViewProps> = ({
         </div>
       </div>
     </div>
-  </div>;
+  </div>
+  );
 };

@@ -14,11 +14,10 @@ interface AccountPageProps {
 export default function AccountPage({ user }: AccountPageProps) {
   const { isMobile } = useWindowDimension();
 
-  if (!user || !user.profile) {
-    // Tampilkan UI loading atau redirect ke login
+  if (!user) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p>Loading user data or please login...</p>
+        <p>Please login to view your account</p>
       </div>
     );
   }

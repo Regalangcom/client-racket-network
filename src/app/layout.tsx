@@ -18,10 +18,10 @@ const manRope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Racket Network app",
+  title: "Racquet Corner App",
   description: "develop by DC",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/RC01.ico",
   },
 };
 

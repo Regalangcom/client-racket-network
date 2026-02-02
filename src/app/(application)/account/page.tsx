@@ -23,12 +23,12 @@ const getUserLoggedIn = async (access_token: string) => {
 
   try {
     const user = await fetch(
-      `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/me
-`,
+      `${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/me`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
+        cache: "no-store",
       }
     );
     const userData = await user.json();

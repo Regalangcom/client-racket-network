@@ -25,11 +25,10 @@ export const MobileAccountView: React.FC<MobileAccountViewProps> = ({
 
         <div className="">
           <UserProfileCard
-            picture={user.profile.pictureUrl || user.profile.picture}
+            picture={user.profile?.pictureUrl || user.profile?.picture || ""}
             username={user.username}
             phone={user.email}
             onPress={() => {
-              /* Handle profile press */
               router.push("/account/profile");
             }}
           />
