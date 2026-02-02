@@ -22,14 +22,14 @@ import { CompetitionsRegisterProps } from "@/constant/types";
 import { CompetitionsDetail } from "@/constant/competitions";
 import CompetitionTag from "./competitons-tags";
 import { PromoCodeInput } from "../form/promo-code-input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Separator from "../ui/separator";
 import displayIDRCurrency from "@/utils/currency";
 import { VoucherService } from "@/services/voucher-service";
 import { toast } from "sonner";
 import { CompetitionsService } from "@/services/comp-services";
 import { useSession } from "next-auth/react";
-// import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   name_comp,
@@ -37,9 +37,11 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   location,
   price,
   competitonId,
+  isAuthenticated = false,
+  userEmail = null,
 }) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { isMobile } = useWindowDimension();
 
   // state
@@ -54,7 +56,6 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   } | null>(null);
 
   // state
-
   const [isApplyingVoucher, setIsApplyVoucher] = useState<boolean>(false);
 
   const {
@@ -68,22 +69,24 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(CompetitionPaymentSchema),
     mode: "onBlur",
+    defaultValues: {
+      email: userEmail || "",
+    },
   });
 
-  // pantau field tertentu, misalnya "name"
+  // Pre-fill email for authenticated users
+  useEffect(() => {
+    if (isAuthenticated && userEmail) {
+      setValue("email", userEmail);
+    }
+  }, [isAuthenticated, userEmail, setValue]);
+
   const nameValue = watch("name");
   const originalPrice = parseFloat(price);
   const discountAmount = appliedVoucher?.discount || 0;
   const finalPrice = appliedVoucher?.final_amount || originalPrice;
 
   const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
-    // Auth guard - prevent submission if not authenticated
-    if (status !== "authenticated" || !session?.user?.access_token) {
-      toast.error("Please sign in to continue");
-      router.push(`/sign-in?callbackUrl=/competitions/${competitonId}/comp-payment`);
-      return;
-    }
-
     try {
       const payload = {
         competition_id: competitonId,
@@ -93,29 +96,34 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
         skill_level: data.level,
         promo_code: appliedVoucher?.code || null,
         promo_code_id: appliedVoucher?.promoCodeId || null,
-
         original_amount: originalPrice,
         discount_amount: appliedVoucher?.discount || 0,
         final_amount: finalPrice,
       };
 
+      // Pass token only if authenticated
       const result = await CompetitionsService.registrationCompetition(
         payload,
-        session?.user?.access_token
+        isAuthenticated ? session?.user?.access_token : undefined
       );
-
-      console.log("competition-payment", result);
 
       if (result && result.success && result.data && result.transaction) {
         const orderId = result.transaction.order_id;
-        console.log("Order ID:", orderId);
+
+        // Store email in localStorage for guest payment flow
+        if (!isAuthenticated) {
+          localStorage.setItem("guest_payment_email", data.email);
+        }
+
         router.push(`/payment?orderId=${orderId}`);
       } else {
         console.error("Unexpected response format:", result);
         toast.error("Registration failed. Please try again.");
       }
     } catch (error) {
-      console.error("Pendaftaran gagal", error);
+      console.error("Registration failed", error);
+      const errorMsg = error instanceof Error ? error.message : "Registration failed";
+      toast.error(errorMsg);
     }
   };
 
@@ -164,9 +172,8 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
   return (
     <div className="container-lg mx-auto max-w-full px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-6">
-        {/* Kolom Kiri - Match Information */}
+        {/* Left Column - Competition Information */}
         <div className="space-y-6 mb-8">
-          {/* Tombol Kembali untuk Mobile */}
           {isMobile && (
             <div className=" flex gap-3 relative w-full">
               <span
@@ -181,11 +188,10 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
             </div>
           )}
 
-          {/* Judul Match Details untuk Desktop */}
           {!isMobile && (
             <p className="text-3xl font-bold mb-4">Competition details</p>
           )}
-          {/* Card Match Detail */}
+
           <div className="bg-white">
             <div className="space-y-3">
               {CompetitionsDetail(name_comp, competition_date, location).map(
@@ -197,16 +203,31 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
           </div>
         </div>
 
-        {/* Kolom Kanan - Registrasi & Pembayaran */}
+        {/* Right Column - Registration & Payment */}
         <div className="space-y-6">
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Card Informasi Pendaftaran */}
             <div className="bg-white ">
-              {/* Card Waktu Pertandingan */}
-              {/* SEPARATOR */}
               <div className="py-2 mb-8 relative w-[calc(100%+2rem)] -mx-4 md:-mx-6">
                 <div className="bg-gray-300 absolute left-0 right-0 py-[4px]"></div>
               </div>
+
+              {/* Guest/Authenticated Banner */}
+              {!isAuthenticated && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                  <p className="text-sm text-yellow-800">
+                    <strong>Registering as guest</strong> - Payment confirmation will be sent to your email.
+                  </p>
+                </div>
+              )}
+
+              {isAuthenticated && userEmail && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                  <p className="text-sm text-green-800">
+                    Logged in as <strong>{userEmail}</strong>
+                  </p>
+                </div>
+              )}
+
               <h3 className="text-lg font-semibold mb-4 mt-3">Informations</h3>
               <div className="space-y-4">
                 <div>
@@ -214,7 +235,11 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
                     {...register("email")}
                     type="email"
                     placeholder="Email"
-                    className="w-full p-2 border rounded"
+                    readOnly={isAuthenticated}
+                    className={cn(
+                      "w-full p-2 border rounded",
+                      isAuthenticated && "bg-gray-100 cursor-not-allowed text-gray-600"
+                    )}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm mt-1">
@@ -249,8 +274,6 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
                   )}
                 </div>
 
-                {/* Dropdown Level */}
-
                 <div className="relative">
                   <Controller
                     name="level"
@@ -284,7 +307,6 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
               </div>
             </div>
 
-            {/* promo code */}
             <PromoCodeInput
               register={register}
               errorMessage={errorMessage}
@@ -298,20 +320,16 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
               className="mb-2 mt-4"
             />
 
-            {/* Card Detail Pembayaran */}
             <div className="bg-white rounded-2xl ">
-              {/* SEPARATOR */}
               <Separator />
 
               <h3 className="text-xl font-semibold mb-4">Payment detail</h3>
 
-              {/* Price row */}
               <div className="flex justify-between mb-2">
                 <span>Price</span>
                 <span>{displayIDRCurrency(price)}</span>
               </div>
 
-              {/* Promo discount row - only shown when discount is applied */}
               {discountAmount > 0 && (
                 <div className="flex justify-between mb-2">
                   <span>Promo</span>
@@ -321,7 +339,6 @@ const CompetitionPayment: React.FC<CompetitionsRegisterProps> = ({
                 </div>
               )}
 
-              {/* Total row */}
               <div className="flex justify-between text-[#174038] mb-4 font-bold">
                 <span>Total</span>
                 <span>

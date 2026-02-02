@@ -25,7 +25,8 @@ export type MatchRegisterProps = {
   name_club: string;
   timeSlots: TimeSlot[];
   selectedTimeSlot?: TimeSlot | null;
-  // skill_level: string;
+  isAuthenticated?: boolean;
+  userEmail?: string | null;
 };
 export type MatchCardViewProps = {
   id: string;

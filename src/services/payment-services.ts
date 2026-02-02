@@ -10,14 +10,19 @@ export class PaymentService {
     access_token?: string
   ): Promise<PaymentProcessingResponse> {
     try {
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (access_token) {
+        headers["Authorization"] = `Bearer ${access_token}`;
+      }
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/api/v1/payment/process`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json",
-          },
+          headers,
           body: JSON.stringify(payload),
         }
       );
@@ -38,22 +43,26 @@ export class PaymentService {
   }
 
   static async getDetailPayment(
-    // payload: PaymentProcessingPayload,
     orderId: string,
     access_token?: string
   ): Promise<any> {
     try {
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (access_token) {
+        headers["Authorization"] = `Bearer ${access_token}`;
+      }
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/api/v1/payment/process/${orderId}`,
         {
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json",
-          },
-          cache: "no-store", // ✅ Don't cache payment data
+          headers,
+          cache: "no-store",
           next: {
-            revalidate: 0, // ✅ Always fetch fresh data
+            revalidate: 0,
           },
         }
       );

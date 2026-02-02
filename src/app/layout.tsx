@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import ReduxProvider from "@/redux/redux-provider";
 import { NextAuthProvider } from "./_components/refactor/providers/next-auth-provider";
+import { SocketProvider } from "@/providers/socket-provider";
 
 const manRope = localFont({
   src: [
@@ -17,10 +18,10 @@ const manRope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Racket Network app",
+  title: "Racquet Corner App",
   description: "develop by DC",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/RC01.ico",
   },
 };
 
@@ -39,7 +40,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <NextAuthProvider>
-          <ReduxProvider>{children}</ReduxProvider>
+          <SocketProvider>
+            <ReduxProvider>{children}</ReduxProvider>
+          </SocketProvider>
         </NextAuthProvider>
         <Toaster />
       </body>

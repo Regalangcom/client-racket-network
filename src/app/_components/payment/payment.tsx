@@ -9,13 +9,14 @@ import { useDispatch } from "react-redux";
 import { useSession } from "next-auth/react";
 import { setOrderId, setQrString } from "@/redux/store/payment-slice";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 // Data Payment Methods
 const paymentMethods = {
   qrcode: [{ name: "qris", logo: qris }],
 };
 
-// Komponen Row Item
+// Payment Item Component
 const PaymentItem = ({
   name,
   logo,
@@ -48,45 +49,65 @@ const Payment: React.FC = () => {
   const { data: session, status } = useSession();
   const dispatch = useDispatch();
   const router = useRouter();
-
   const searchParams = useSearchParams();
-  const Comp_Id = searchParams.get("orderId");
+  const orderId = searchParams.get("orderId");
+
+  const [guestEmail, setGuestEmail] = useState<string | null>(null);
+  const isAuthenticated = status === "authenticated" && !!session?.user?.access_token;
+
+  // Get guest email from localStorage on mount
+  useEffect(() => {
+    if (!isAuthenticated) {
+      const storedEmail = localStorage.getItem("guest_payment_email");
+      if (storedEmail) {
+        setGuestEmail(storedEmail);
+      }
+    }
+  }, [isAuthenticated]);
 
   const handleClick = async (name: string) => {
-    // setSelectedMethod(name);
-
     const handlePayment = async () => {
-      if (!session?.user?.access_token) {
-        toast.error("Please login to continue");
+      // For guests, we need the email from localStorage
+      if (!isAuthenticated && !guestEmail) {
+        toast.error("Session expired. Please register again.");
+        router.push("/");
         return;
       }
 
-      const payload = {
-        order_id: Comp_Id as string,
+      const payload: {
+        email?: string;
+        order_id: string;
+        payment_method: string;
+      } = {
+        order_id: orderId as string,
         payment_method: name,
       };
 
-      console.log("payload", payload);
+      // Include email for guest payments
+      if (!isAuthenticated && guestEmail) {
+        payload.email = guestEmail;
+      }
 
       try {
         const result = await PaymentService.processPayment(
           payload,
-          session?.user?.access_token
+          isAuthenticated ? session?.user?.access_token : undefined
         );
+
         if (result.success) {
-          // dispatch
           dispatch(setQrString(result.data.qr_string));
           dispatch(setOrderId(result.data.order_id));
-          // router.push(`/qris?orderId=${result.data.order_id}`);
-           window.location.href = `/qris?orderId=${result.data.order_id}`;
+          window.location.href = `/qris?orderId=${result.data.order_id}`;
+        } else {
+          toast.error("Payment failed");
         }
-        if (!result.success) return toast.error("payment failed");
       } catch (error) {
         console.error("Error processing payment:", error);
+        const errorMsg = error instanceof Error ? error.message : "Payment failed";
+        toast.error(errorMsg);
       }
     };
 
-    // validate method name payment
     if (name === "qris") {
       await handlePayment();
     }
@@ -103,6 +124,15 @@ const Payment: React.FC = () => {
             </p>
           </div>
           <div className="space-y-6">
+            {/* Guest indicator */}
+            {!isAuthenticated && guestEmail && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <p className="text-sm text-yellow-800">
+                  Paying as guest: <strong>{guestEmail}</strong>
+                </p>
+              </div>
+            )}
+
             <div className="bg-white rounded-xl w-full">
               <h3 className="text-lg font-semibold mb-3 ">QR Code</h3>
               <div className="divide-y">

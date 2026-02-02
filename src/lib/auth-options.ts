@@ -89,6 +89,7 @@ async function getAuthServerSession(
   return {
     access_token: session?.user?.access_token ?? null,
     userId: session?.user?.id ?? null,
+    email: session?.user?.email ?? null,
   };
 }
 

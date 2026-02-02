@@ -399,14 +399,19 @@ export class MatchService {
     access_token?: string
   ): Promise<MatchRegistrationResponse> {
     try {
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (access_token) {
+        headers["Authorization"] = `Bearer ${access_token}`;
+      }
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/api/v1/match/register`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json",
-          },
+          headers,
           body: JSON.stringify(payload),
         }
       );

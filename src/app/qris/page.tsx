@@ -1,4 +1,3 @@
-// ✅ NO "use client" - This is Server Component
 import { notFound, redirect } from "next/navigation";
 import { getAuthServerSession } from "@/lib/auth-options";
 import QrisClient from "@/components/qris/qris-client";
@@ -20,15 +19,11 @@ export default async function QrisPage({ searchParams }: PageProps) {
 
   const { access_token } = await getAuthServerSession();
 
-  if (!access_token) {
-    redirect("/sign-in");
-  }
-
   try {
-    // ✅ Call server service
+    // Fetch payment details - works for both authenticated and guest users
     const paymentData = await PaymentService.getDetailPayment(
       orderId,
-      access_token
+      access_token || undefined
     );
 
     if (!paymentData) {
