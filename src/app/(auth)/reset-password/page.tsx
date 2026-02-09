@@ -32,7 +32,7 @@ function ResetPasswordPage() {
     // logic for email submission
     try {
       setIsPending(true);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/requestLinkPasswordReset`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_URL_API}/auth/api/v1/users/reqLink`, {
         email: data.email,
       });
       toast.success(response.data.message); // Show success toast
