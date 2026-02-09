@@ -33,8 +33,10 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ onClose, onApply }) => {
   ];
 
   const genderOptions: FilterOption[] = [
-    { value: "laki-laki", label: "Laki-laki" },
-    { value: "perempuan", label: "Perempuan" },
+    { value: "Men Only", label: "men only" },
+    { value: "All Gender", label: "all gender" },
+    // { value: "women", label: "Perempuan" },
+    { value: "Women Only", label: "women only" },
   ];
 
   const locationOptions: FilterOption[] = [

@@ -3,7 +3,7 @@
 import Search from "@/app/_components/refactor/search";
 // import ClubCardSkeleton from "@/components/club/club-card-skeleton";
 import MatchCard from "@/components/match/match";
-import { MatchData } from "@/constant/types";
+import { MatchData, MatchFilter } from "@/constant/types";
 import { getAuthServerSession } from "@/lib/auth-options";
 import { MatchService } from "@/services/match-service";
 import { Calendar } from "lucide-react";
@@ -15,8 +15,22 @@ export default async function MatchPage({
 }) {
   const { access_token } = await getAuthServerSession();
 
+  const filters: MatchFilter = {};
+  if (typeof searchParams.gender_restriction === "string") {
+    filters.gender_restriction = searchParams.gender_restriction;
+  }
+  if (typeof searchParams.location === "string") {
+    filters.location = searchParams.location;
+  }
+  if (typeof searchParams.skill_level === "string") {
+    filters.skill_level = searchParams.skill_level;
+  }
+  if (typeof searchParams.search === "string") {
+    filters.search = searchParams.search;
+  }
+
   const matches: MatchData[] = await MatchService.getMatches(
-    {},
+    filters,
     access_token || null
   );
 

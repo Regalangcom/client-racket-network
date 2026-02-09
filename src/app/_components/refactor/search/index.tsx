@@ -7,14 +7,34 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { filter } from "@/public";
 import FilterOptions from "./filter-options";
+import { useRouter, usePathname } from "next/navigation";
 
 const Search = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const router = useRouter();
+  const pathname = usePathname();
 
   const togglePopup = () => setIsPopupOpen(!isPopupOpen);
 
   const handleApply = (filters: { sports: string[]; payment: string[]; gender: string[]; location: string[] }) => {
-    console.log("Applied Filters:", filters);
+    const params = new URLSearchParams();
+
+    if (filters.gender.length > 0) {
+      params.set("gender_restriction", filters.gender[0]);
+    }
+    if (filters.location.length > 0) {
+      params.set("location", filters.location[0]);
+    }
+    if (filters.sports.length > 0) {
+      params.set("sport_category", filters.sports[0]);
+    }
+    if (searchValue.trim()) {
+      params.set("search", searchValue.trim());
+    }
+
+    const queryString = params.toString();
+    router.push(queryString ? `${pathname}?${queryString}` : pathname);
   };
 
   return (
@@ -22,7 +42,24 @@ const Search = () => {
       <p className="text-black font-bold mb-4">Search match</p>
       <div className="relative flex items-center space-x-1">
         <div className="flex-grow relative">
-          <Input className="border-1 w-full bg-white pr-10" placeholder="Search" />
+          <Input
+            className="border-1 w-full text-black bg-white pr-10"
+            placeholder="Search"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const params = new URLSearchParams(window.location.search);
+                if (searchValue.trim()) {
+                  params.set("search", searchValue.trim());
+                } else {
+                  params.delete("search");
+                }
+                const queryString = params.toString();
+                router.push(queryString ? `${pathname}?${queryString}` : pathname);
+              }
+            }}
+          />
           <button type="button" className="absolute top-1/2 right-3 transform -translate-y-1/2">
             <SearchIcon size={13} className="text-black" />
           </button>
