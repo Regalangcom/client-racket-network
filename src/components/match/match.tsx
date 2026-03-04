@@ -15,22 +15,27 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
   return (
     <Card className="sm:w-[290px] w-full md:w-[290px] h-[466px] rounded-2xl overflow-hidden shadow-sm border border-gray-200 flex flex-col p-0 mb-5">
       {/* Header */}
-      <div className="bg-gray-200 flex items-center px-6 py-3">
-        <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
-          {match.club && (
-            <Image
-              src={match.club.logoUrl || ""}
-              alt={match.club.name_club || "Club"}
-              width={88}
-              height={88}
-              className="object-cover w-12 h-12"
-            />
-          )}
-        </div>
-        <span className="font-medium text-gray-800 px-7">
-          {match.club?.name_club || "Club"}
-        </span>
-      </div>
+   <div className="bg-gray-200 flex items-center justify-between px-6 py-3">
+  <div className="flex items-center">
+    <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
+      {match.club && (
+        <Image
+          src={match.club.logoUrl || ""}
+          alt={match.club.name_club || "Club"}
+          width={88}
+          height={88}
+          className="object-cover w-12 h-12"
+        />
+      )}
+    </div>
+
+    <span className="font-medium text-gray-800 ml-4">
+      {match.club?.name_club || "Club"}
+    </span>
+  </div>
+
+  <span className="font-bold text-sm text-green-950">{match.status}</span>
+</div>
 
       {/* Event image */}
       <div className="w-full h-[180px] relative">
@@ -46,8 +51,23 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
       <CardContent className="flex flex-col justify-between flex-1 p-4">
         <MatchViewDisplay match={match} />
+        <div className="flex items-center text-sm text-gray-600 gap-2 mb-3 mt-5">
+          {/* <Image src={maps} alt="maps" priority /> */}
+          {match.is_full ? (
+            <span className="flex items-center justify-center py-1 w-28 mb-5 text-sm bg-red-200 rounded-full text-red-700">
+              Fully Booked
+            </span>
+          ) : (
+            <span className="flex items-center justify-center py-1 w-28 mb-5 text-sm bg-[#B5D9D2] rounded-full text-gray-700">
+              {match.available_spots} spot left
+            </span>
+          )}
+        </div>
         <Link href={`/match/${match.id}`}>
-          <Button className="mt-4 w-full py-5 bg-background-button-rc text-[#E1FFA0] rounded-lg">
+          <Button
+            disabled={match.is_full}
+            className="mt-4 w-full py-5 bg-background-button-rc text-[#E1FFA0] rounded-lg"
+          >
             Views
           </Button>
         </Link>

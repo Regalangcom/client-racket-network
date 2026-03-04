@@ -218,7 +218,7 @@ export class MatchService {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Failed to create match");
+        throw new Error(error.errors || error.message || "Failed to create match");
       }
 
       const result: SingleMatchResponse = await response.json();
@@ -419,7 +419,7 @@ export class MatchService {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to register for match");
+        throw new Error(data.errors || data.message || "Failed to register for match");
       }
 
       return data;

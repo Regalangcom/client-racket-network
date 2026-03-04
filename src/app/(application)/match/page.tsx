@@ -1,4 +1,4 @@
-// "use client";
+export const dynamic = "force-dynamic";
 
 import Search from "@/app/_components/refactor/search";
 // import ClubCardSkeleton from "@/components/club/club-card-skeleton";
@@ -26,7 +26,7 @@ export default async function MatchPage({
     filters.skill_level = searchParams.skill_level;
   }
   if (typeof searchParams.search === "string") {
-    filters.search = searchParams.search;
+    filters.name = searchParams.search;
   }
 
   const matches: MatchData[] = await MatchService.getMatches(
