@@ -1,6 +1,6 @@
 import React from "react";
 import BottomNavbar from "../_components/refactor/bottom-navbar";
-import Footer from "@/components/footer/footer";
+// import Footer from "@/components/footer/footer";
 import Navbar from "../_components/refactor/navbar";
 
 function ApplicationLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +16,7 @@ function ApplicationLayout({ children }: { children: React.ReactNode }) {
         {/* bottom navbar */}
         <BottomNavbar />
       </section>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

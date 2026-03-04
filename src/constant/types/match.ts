@@ -70,6 +70,9 @@ export type MatchData = {
   name_club: string;
   skill_level: string;
   quota: number;
+  status : string;
+  is_full : boolean;
+  available_spots : number;
   cratedAt: string;
   updatedAt: string;
   club: {
@@ -197,7 +200,7 @@ export type MatchFilter = {
   club_id?: string;
   date_from?: string;
   date_to?: string;
-  search?: string;
+  name?: string;
 };
 
 export type MatchRegistrationPayload = {
@@ -234,6 +237,13 @@ export type MatchRegistrationResponse = {
       final_amount: string;
       createdAt: string;
       match: { id: number };
+      start_at: string | null;
+      end_at: string | null;
+      time_slot?: {
+        id: number;
+        start_time: string;
+        end_time: string;
+      };
     };
   };
   transaction?: {

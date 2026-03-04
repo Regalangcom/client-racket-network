@@ -6,7 +6,7 @@ import FilterSection, { FilterOption } from "./filter-select";
 interface FilterOptionsProps {
   onClose: () => void;
   onApply: (filters: {
-    sports: string[];
+    skill_level: string[];
     payment: string[];
     gender: string[];
     location: string[];
@@ -14,16 +14,15 @@ interface FilterOptionsProps {
 }
 
 const FilterOptions: React.FC<FilterOptionsProps> = ({ onClose, onApply }) => {
-  const [selectedSports, setSelectedSports] = useState<string[]>([]);
+  const [selectedSkillLevel, setSelectedSkillLevel] = useState<string[]>([]);
   const [selectedPayment, setSelectedPayment] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string[]>([]);
 
-  const sportOptions: FilterOption[] = [
-    { value: "padel", label: "Padel" },
-    { value: "tennis", label: "Tennis" },
-    { value: "badminton", label: "Badminton" },
-    { value: "pingpong", label: "Pingpong" },
+  const skillLevelOptions: FilterOption[] = [
+    { value: "Beginner", label: "Beginner" },
+    { value: "Intermediate", label: "Intermediate" },
+    { value: "Advanced", label: "Advanced" },
   ];
 
   const paymentOptions: FilterOption[] = [
@@ -33,23 +32,23 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ onClose, onApply }) => {
   ];
 
   const genderOptions: FilterOption[] = [
-    { value: "Men Only", label: "men only" },
-    { value: "All Gender", label: "all gender" },
+    { value: "Men Only", label: "Men Only" },
+    { value: "All Gender", label: "All Gender" },
     // { value: "women", label: "Perempuan" },
-    { value: "Women Only", label: "women only" },
+    { value: "Woman only", label: "Woman only" },
   ];
 
   const locationOptions: FilterOption[] = [
-    { value: "dki-jakarta", label: "DKI Jakarta" },
-    { value: "bandung", label: "Bandung" },
-    { value: "semarang", label: "Semarang" },
-    { value: "bali", label: "Bali" },
-    { value: "medan", label: "Medan" },
+    { value: "Jakarta", label: "DKI Jakarta" },
+    { value: "Bandung", label: "Bandung" },
+    { value: "Semarang", label: "Semarang" },
+    { value: "Bali", label: "Bali" },
+    { value: "Medan", label: "Medan" },
   ];
 
   const handleApplyFilter = () => {
     onApply({
-      sports: selectedSports,
+      skill_level: selectedSkillLevel,
       payment: selectedPayment,
       gender: selectedGender,
       location: selectedLocation,
@@ -68,12 +67,12 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ onClose, onApply }) => {
 
       <div className="space-y-5">
         <div>
-          <p className="text-black text-base font-bold mb-1">Sports</p>
+          <p className="text-black text-base font-bold mb-1">Skill Level</p>
           <FilterSection
-            label="Sports"
-            options={sportOptions}
-            selectedValues={selectedSports}
-            onSelectionChange={setSelectedSports}
+            label="Skill Level"
+            options={skillLevelOptions}
+            selectedValues={selectedSkillLevel}
+            onSelectionChange={setSelectedSkillLevel}
           />
         </div>
         <div>

@@ -100,9 +100,17 @@ export function ActivityCard({ activity }: ActivityCardProps) {
           </div>
           <div className="flex items-center text-sm text-gray-600 gap-2 mb-3">
             {/* <Image src={maps} alt="maps" priority /> */}
-            <span className="flex items-center justify-center py-1 w-28 mb-5 text-sm bg-[#B5D9D2] rounded-full  text-gray-700 gap-2">
-              <span className="text-center">{activity.slot_left} sport left</span>
-            </span>
+            {activity.is_full_booked ? (
+              <span className="flex items-center justify-center py-1 w-28 mb-5 text-sm bg-red-300 rounded-full text-red-800">
+                Full Booked
+              </span>
+            ) : (
+              <span className="flex items-center justify-center py-1 w-28 mb-5 text-sm bg-[#B5D9D2] rounded-full  text-gray-700 gap-2">
+                <span className="text-center">
+                  {activity.slot_left} sport left
+                </span>
+              </span>
+            )}
           </div>
           <Link href={`/match/${activity.reference_id}`}>
             <Button className="w-full bg-background-button-rc text-[#E1FFA0] rounded-lg">

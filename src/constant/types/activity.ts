@@ -10,6 +10,7 @@ export interface Activity {
   title: string;
   message: string;
   slot_left: number;
+  is_full_booked: boolean;
   location: string;
   actor_name: string | null;
   club: ActivityClub;
