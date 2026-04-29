@@ -235,11 +235,28 @@ export default async function ProtectedPage() {
 - Member request handling
 
 ### 3. Match Management
-- List matches with filters (gender, skill, location, date)
+- List matches with server-side filtering via URL search params
+- **Search by name** — partial, case-insensitive match (`?name=padel`)
+- **Filter by gender restriction** — exact match (`?gender_restriction=Woman only`)
+- **Filter by skill level** — Beginner / Intermediate / Advanced (`?skill_level=Beginner`)
+- **Filter by location** — partial, case-insensitive match (`?location=jakarta`)
+- Filters are combinable and persist in the URL for shareability
 - Match details with time slot selection
 - Match registration with payment
 - Promo code support
 - Real-time participant tracking
+
+#### Match Filter API Reference
+
+| Param | Type | Description | Example |
+|-------|------|-------------|---------|
+| `name` | string | Partial, case-insensitive name search | `?name=padel` |
+| `location` | string | Partial, case-insensitive location search | `?location=union` |
+| `gender_restriction` | string | Exact match on gender rule | `?gender_restriction=Woman only` |
+| `skill_level` | string | Exact match: Beginner, Intermediate, Advanced | `?skill_level=Beginner` |
+| `date` | string (ISO) | Filter matches on a specific day | `?date=2026-03-05` |
+| `page` | number | Page number, default 1 | `?page=1` |
+| `limit` | number | Items per page, default 10 | `?limit=10` |
 
 ### 4. Competition Management
 - Competition listings with search

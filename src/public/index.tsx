@@ -42,6 +42,8 @@ import checkFill from "@/public/assets/icons/bi_check-circle-fill.svg";
 import xCircleFill from "@/public/assets/icons/bi_x-circle-fill.svg";
 
 
+// photografer icon 
+import fotografer from "@/public/assets/icons/log-in-fotografer.svg";
 
 
 // ========================
@@ -57,6 +59,7 @@ import compeActive from "@/public/assets/icons/compe-active.svg";
 import accountActive from "@/public/assets/icons/account-active.svg";
 
 export {
+  fotografer,
   checkFill,
   xCircleFill,
   racquet,
