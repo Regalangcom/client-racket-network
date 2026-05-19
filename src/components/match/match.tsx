@@ -63,14 +63,20 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
             </span>
           )}
         </div>
-        <Link href={`/match/${match.id}`}>
+        {match.is_full || match.status === "FINISHED" ? (
           <Button
-            disabled={match.is_full}
+            disabled
             className="mt-4 w-full py-5 bg-background-button-rc text-[#E1FFA0] rounded-lg"
           >
             Views
           </Button>
-        </Link>
+        ) : (
+          <Link href={`/match/${match.id}`}>
+            <Button className="mt-4 w-full py-5 bg-background-button-rc text-[#E1FFA0] rounded-lg">
+              Views
+            </Button>
+          </Link>
+        )}
       </CardContent>
     </Card>
   );

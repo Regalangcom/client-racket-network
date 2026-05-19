@@ -11,7 +11,7 @@ function ApplicationLayout({ children }: { children: React.ReactNode }) {
         <Navbar />
 
         {/* content page */}
-        <main>{children}</main>
+        <main className="pb-20 md:pb-0">{children}</main>
 
         {/* bottom navbar */}
         <BottomNavbar />
