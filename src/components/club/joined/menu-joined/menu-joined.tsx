@@ -84,14 +84,17 @@ export default function MenuJoined({
       const payload = {
         club_id: clubId,
         name_comp: data.event_title,
-        competitions_date: data.date ?? "", // Match backend field name
+        competitions_date: data.date ?? "",
         location: data.location,
         description: data.description ?? "",
         price: data.price || "0",
         gender_restriction: data.gender,
         skill_level: data.level,
         quota: Number(data.quota) || 10,
-        banner: data.banner || null, // Use 'banner' for competition
+        organizer_name: data.organizer_name,
+        start_time_str: data.start_time_str,
+        end_time_str: data.end_time_str,
+        banner: data.banner || null,
       };
 
       console.log("Competition Payload:", payload); // Debug log

@@ -86,6 +86,71 @@ export const EventFormFields: React.FC<EventFormFieldsProps> = ({
         {/* Date Picker */}
         <DatePickerField form={form} />
 
+        {/* ORGANIZER + TIME - ONLY FOR COMPETITION */}
+        {!isMatch && (
+          <>
+            <FormField
+              control={control}
+              name="organizer_name"
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-sm font-normal text-gray-700">
+                    Organizer Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter organizer name"
+                      className="w-full"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={control}
+                name="start_time_str"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-sm font-normal text-gray-700">
+                      Start Time
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        className="w-full"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="end_time_str"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-sm font-normal text-gray-700">
+                      End Time
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        className="w-full"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </>
+        )}
+
         {/* TIME SLOT - ONLY FOR MATCH */}
         {isMatch && (
           <FormField

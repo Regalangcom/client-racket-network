@@ -85,6 +85,9 @@ const UnifiedEventDialog: React.FC<UnifiedEventDialogProps> = ({
       description: "",
       quota: "",
       price: "",
+      organizer_name: "",
+      start_time_str: "",
+      end_time_str: "",
     },
   });
 

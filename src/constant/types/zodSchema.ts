@@ -249,9 +249,18 @@ export const competitionsFormSchema = z.object({
   type_event: z.string().min(1, "Select event type"),
 
   event_title: z.string().min(2, "This field title is required"),
-  // date: z.string(),
   date: z.string().optional(),
   location: z.string().min(1, "This field location is required"),
+
+  organizer_name: z.string().min(2, "Organizer name is required"),
+  start_time_str: z
+    .string()
+    .min(1, "Start time is required")
+    .regex(/^\d{2}:\d{2}$/, "Format must be HH:mm"),
+  end_time_str: z
+    .string()
+    .min(1, "End time is required")
+    .regex(/^\d{2}:\d{2}$/, "Format must be HH:mm"),
 
   gender: z.enum(["all", "men", "women"], {
     error: "Please select gender preference",

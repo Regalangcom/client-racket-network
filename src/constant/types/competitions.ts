@@ -70,6 +70,9 @@ export type CompetitionCreatePayload = {
   gender_restriction: string;
   skill_level: string;
   quota: number;
+  organizer_name: string;
+  start_time_str: string;
+  end_time_str: string;
   banner?: File | null;
 };
 

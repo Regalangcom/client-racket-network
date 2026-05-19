@@ -101,10 +101,12 @@ export class CompetitionsService {
       formData.append("gender_restriction", payload.gender_restriction);
       formData.append("skill_level", payload.skill_level);
       formData.append("quota", String(payload.quota));
+      formData.append("organizer_name", payload.organizer_name);
+      formData.append("start_time_str", payload.start_time_str);
+      formData.append("end_time_str", payload.end_time_str);
 
-      // Append banner if exists - USE "banner" not "banner_match"
       if (payload.banner) {
-        formData.append("banner_comp", payload.banner); // ✅ Fixed: was "banner_match"
+        formData.append("banner_match", payload.banner);
       }
 
       console.log("Creating competition with payload:", {
