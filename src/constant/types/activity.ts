@@ -15,6 +15,7 @@ export interface Activity {
   actor_name: string | null;
   club: ActivityClub;
   reference_id: string;
+  match_status : string;
   reference_type: "MATCH" | "CLUB";
   bannerUrl: string | null;
   created_at: string;

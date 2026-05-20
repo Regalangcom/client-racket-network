@@ -59,10 +59,15 @@ export function ActivityCard({ activity }: ActivityCardProps) {
             )}
           </div>
           <div className="flex-1 ml-3">
-            <p className="text-sm text-gray-700">
-              <span className="font-bold text-black">{activity.club.name}</span>{" "}
-              created a match
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-700">
+                <span className="font-bold text-black">
+                  {activity.club.name}
+                </span>{" "}
+                created a match
+              </p>
+              <p className="text-red-500">{activity.match_status}</p>
+            </div>
             <p className="text-xs text-gray-500">
               {formatRelativeTime(activity.created_at)}
             </p>

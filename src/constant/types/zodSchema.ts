@@ -27,7 +27,7 @@ export const SignUpFormSchema = z
     username: z
       .string()
       .min(5, { message: "Username minimal 5 karakter" })
-      .max(10, { message: "Username maksimal 10 karakter" }),
+      .max(50, { message: "Username maksimal 50 karakter" }),
     // .transform((val) => val.replace(/\s+/g, "")),
 
     phone_number: z

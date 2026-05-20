@@ -58,39 +58,7 @@ export const MatchIconRegisters: React.FC<DetailItem> = ({ icon, label }) => (
   </React.Fragment>
 );
 
-// export const MatchViewDisplay: React.FC<MatchCardProps> = ({ match }) => {
-//   // ✅ Get first time slot or show "TBA"
-//   const firstTimeSlot =
-//     match.TimeSlot && match.TimeSlot.length > 0 ? match.TimeSlot[0] : null;
 
-//   const timeDisplay = firstTimeSlot
-//     ? `${firstTimeSlot.start_time} - ${firstTimeSlot.end_time}`
-//     : "Time TBA";
-
-//   return (
-//     <React.Fragment>
-//       <div className="space-y-3">
-//         <p className="font-bold text-base text-black">{match.name_match}</p>
-
-//         <div className="flex items-center text-sm text-gray-600 gap-2">
-//           <Image src={calender} alt="calender" priority />
-//           <span className="font-semibold">{timeDisplay}</span>
-//           {/* ✅ Show indicator if multiple slots */}
-//           {match.TimeSlot && match.TimeSlot.length > 1 && (
-//             <span className="text-xs bg-[#B5D9D2] text-black px-2 py-0.5 rounded-full">
-//               +{match.TimeSlot.length - 1} more
-//             </span>
-//           )}
-//         </div>
-
-//         <div className="flex items-center text-sm text-gray-600 gap-2">
-//           <Image src={maps} alt="maps" priority />
-//           <span className="font-semibold">{match.location}</span>
-//         </div>
-//       </div>
-//     </React.Fragment>
-//   );
-// };
 
 export const MatchViewDisplay: React.FC<MatchCardProps> = ({ match }) => {
   // const TimeSlot = match.TimeSlot || [];
