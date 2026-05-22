@@ -9,6 +9,7 @@ import {
   badmindtonActive,
   padelActive,
 } from "@/public";
+import { SPORT_OPTIONS } from "@/constant/club-tags";
 import Image from "next/image";
 
 const CompetitionFilter: React.FC = () => {
@@ -18,11 +19,17 @@ const CompetitionFilter: React.FC = () => {
 
   const activeFilter = searchParams.get("sport_category") || "";
 
-  const filters = [
-    { name: "Tennis", icon: tenis, activeIcon: tenisActive },
-    { name: "Padel", icon: padel, activeIcon: padelActive },
-    { name: "Badminton", icon: badmindton, activeIcon: badmindtonActive },
-  ];
+  const iconMap: Record<string, { icon: any; activeIcon: any }> = {
+    Tennis: { icon: tenis, activeIcon: tenisActive },
+    Padel: { icon: padel, activeIcon: padelActive },
+    PingPong: { icon: padel, activeIcon: padelActive },
+    Badminton: { icon: badmindton, activeIcon: badmindtonActive },
+  };
+
+  const filters = SPORT_OPTIONS.map((sport) => ({
+    name: sport.label,
+    ...iconMap[sport.value],
+  }));
 
   const handleFilterClick = (filterName: string) => {
     const params = new URLSearchParams(searchParams.toString());

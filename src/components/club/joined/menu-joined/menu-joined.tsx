@@ -94,6 +94,7 @@ export default function MenuJoined({
         organizer_name: data.organizer_name,
         start_time_str: data.start_time_str,
         end_time_str: data.end_time_str,
+        sport_category: clubData?.sport_category || "",
         banner: data.banner || null,
       };
 

@@ -73,6 +73,7 @@ export type CompetitionCreatePayload = {
   organizer_name: string;
   start_time_str: string;
   end_time_str: string;
+  sport_category?: string;
   banner?: File | null;
 };
 

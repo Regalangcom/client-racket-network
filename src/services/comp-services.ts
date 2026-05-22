@@ -41,6 +41,7 @@ export class CompetitionsService {
       return data.data || [];
     } catch (error) {
       console.error("Error fetching matches:", error);
+      return [];
     }
   }
 
@@ -104,6 +105,10 @@ export class CompetitionsService {
       formData.append("organizer_name", payload.organizer_name);
       formData.append("start_time_str", payload.start_time_str);
       formData.append("end_time_str", payload.end_time_str);
+
+      if (payload.sport_category) {
+        formData.append("sport_category", payload.sport_category);
+      }
 
       if (payload.banner) {
         formData.append("banner_match", payload.banner);

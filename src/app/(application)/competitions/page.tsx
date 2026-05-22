@@ -12,26 +12,24 @@ export default async function CompetitionsPage({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const { access_token } = await getAuthServerSession();
-  const AllCompetitions: CompetitionData[] =
-    await CompetitionsService.getAllCompetition({}, access_token || null);
 
   const sportCategory = (searchParams.sport_category as string) || "";
   const searchQuery = (searchParams.search as string) || "";
 
-  const filteredCompetitions = AllCompetitions.filter((comp) => {
-    // Filter by sport category
-    const matchesSport = sportCategory
-      ? comp.sport_category.toLowerCase() === sportCategory.toLowerCase()
-      : true;
+  const AllCompetitions: CompetitionData[] =
+    await CompetitionsService.getAllCompetition(
+      { sport_category: sportCategory || undefined },
+      access_token || null
+    );
 
-    // Filter by search query (search in name, organizer, location)
+  const filteredCompetitions = AllCompetitions.filter((comp) => {
     const matchesSearch = searchQuery
       ? comp.name_comp.toLowerCase().includes(searchQuery.toLowerCase()) ||
         comp.organizer_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         comp.location.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
-    return matchesSport && matchesSearch;
+    return matchesSearch;
   });
 
   return (
